@@ -1,6 +1,6 @@
-public Class ProfileDAO {
+public class ProfileDAO {
 
-    public profileDAO () {
+    public ProfileDAO() {
 
     }
 

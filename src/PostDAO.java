@@ -1,7 +1,5 @@
 import java.util.HashMap;
 
-import main.java.com.company.DataUtility;
-
 public class PostDAO {
 
     DataUtility d = new DataUtility();
@@ -10,22 +8,26 @@ public class PostDAO {
     }
 
     //Returns latest 3 postsID on his/friends wall
-    public Integer[] retrievePosts (int UserID) {
+    public int[] retrievePosts (int UserID) {
         //SELECT
+        return new int[]{};
     }
 
     public HashMap<String, Integer> retrieveLikes (int postID) {
         //SELECT
+        return new HashMap<String, Integer>();
     }
 
     //Returns String array containing top 3 tagged posts
     public String[] retrieveWall(int UserID) {
         //SELECT
+        return new String[]{};
 
     }
 
     public String[] retrieveComments(int postID) {
         //retrieve commenet from commentID table and post_comment table
+        return new String[]{};
     }
 
 }

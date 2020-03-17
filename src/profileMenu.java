@@ -32,19 +32,19 @@ public class profileMenu {
                     displayWall(); // display user's wall
                     break;
                 case 3 :
-                    ArrayList<User> friendList = retrieveFriends(); // display friend's wall
+                    //ArrayList<User> friendList = retrieveFriends(); // display friend's wall
                     int count = 1;
-                    for (User user : friendList) {
-                        System.out.println("" + count + ". " + user.getName());
-                    }
-                    int friendChoice = sc.nextInt();
-                    displayFriendsWall(friendList.get(friendChoice-1));
-                    break;
+                    // for (User user : friendList) {
+                    //     System.out.println("" + count + ". " + user.getName());
+                    // }
+                    // int friendChoice = sc.nextInt();
+                    // displayFriendsWall(friendList.get(friendChoice-1));
+                    // break;
                 case 4 :
-                    cityFarmers(); // starts city farmer display menu
+                    // cityFarmers(); // starts city farmer display menu
                     break;
                 case 5 :
-                    login(); // display login page
+                    // login(); // display login page
                     break;
 
                 default :
@@ -63,10 +63,10 @@ public class profileMenu {
         System.out.println(wall);
     }
 
-    public ArrayList<User> retrieveFriends() {
-        ArrayList<User> friendsList = ctrl.retrieveFriends(user);
-        return friendsList;
-
+    public ArrayList<UserProfile> retrieveFriends() {
+        // ArrayList<User> friendsList = ctrl.retrieveFriends(user);
+        // return friendsList;
+        return new ArrayList<UserProfile>();
     }
 
     public void displayFriendsWall (User user) {

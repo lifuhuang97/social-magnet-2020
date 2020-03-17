@@ -74,22 +74,22 @@ public class FarmMenu {
 
             switch(choice){
                 case "1":
-                accessMyFarm();
+                // accessMyFarm();
                     break;
                 case "2":
-                accessStore();
+                // accessStore();
                     break;
                 case "3":
-                accessMyInventory();
+                // accessMyInventory();
                     break;
                 case "4":
-                    accessFriendList();
+                    // accessFriendList();
                     break;
                 case "5":
-                    sendGift();
+                    // sendGift();
                     break;
                 case "M":
-                    returnToMagnet();
+                    // returnToMagnet();
                     break;
                 default:
                     System.out.println("You did not enter a valid option.");
@@ -97,43 +97,43 @@ public class FarmMenu {
         }while (choice != "M");
     }
 
-    public void accessMyFarm(){
-        displayFarmHeader("case1");
+    // public void accessMyFarm(){
+    //     displayFarmHeader("case1");
 
-        // FarmCtrl + getMyPlots method (select * from user_plot where userid = myid)
+    //     // FarmCtrl + getMyPlots method (select * from user_plot where userid = myid)
         
-        // SMDate need a CalcGrowthPercentage for crop (compare cropPlantTime vs GrowTime)
-        // cropPlantTime is calculated by comparing plantTime against current time
-        // convert to minutes
+    //     // SMDate need a CalcGrowthPercentage for crop (compare cropPlantTime vs GrowTime)
+    //     // cropPlantTime is calculated by comparing plantTime against current time
+    //     // convert to minutes
 
 
-        // Get number of plots I own
+    //     // Get number of plots I own
         
-        System.out.println("1. ");
+    //     System.out.println("1. ");
 
-        System.out.println("You have " + " plots of land.");
-        break;
-    }
+    //     System.out.println("You have " + " plots of land.");
+    //     break;
+    // }
 
-    public void accessStore(){
-        break;
-    }
+    // public void accessStore(){
+    //     break;
+    // }
 
-    public void accessMyInventory(){
-        break;
-    }
+    // public void accessMyInventory(){
+    //     break;
+    // }
 
-    public void accessFriendList(){
-        break;
-    }
+    // public void accessFriendList(){
+    //     break;
+    // }
 
-    public void sendGift(){
-        break;
-    }
+    // public void sendGift(){
+    //     break;
+    // }
 
-    public void returnToMagnet(){
-        // Calls social magnet menu screen
-        break;
-    }
+    // public void returnToMagnet(){
+    //     // Calls social magnet menu screen
+    //     break;
+    // }
 
 }
