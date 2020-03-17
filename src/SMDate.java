@@ -1,4 +1,3 @@
-package com.company;
 
 import java.util.GregorianCalendar;
 import java.text.ParseException;
