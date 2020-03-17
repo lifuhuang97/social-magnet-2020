@@ -184,9 +184,6 @@ public class DataUtility {
         return allResults;
     }
 
-    public static void main(String[] args) {
-        QuerySelect("select * from posts");
-    }
 
 }
 
