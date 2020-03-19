@@ -1,17 +1,17 @@
 import java.util.*;
 
-public class profileMenu {
-    public User user;
+public class ProfileMenu {
+    public UserProfile user;
     private ProfileCtrl ctrl;
 
-    public profileMenu(ProfileCtrl ctrl, User user) {
+    public ProfileMenu(ProfileCtrl ctrl, UserProfile user) {
         this.ctrl = ctrl;
         this.user = user;
     }
 
     public void display() {
         System.out.println("== Social Magnet :: Main Menu ==");
-        System.out.println("Welcome, " + user.getName() + "!");
+        System.out.println("Welcome, " + user.getFullName() + "!");
         System.out.println("1. News Feed\n2. My Wall\n3. My Friends\n4. City Farmers\n5. Logout");
         System.out.println("Enter your choice >");
     }
@@ -54,13 +54,13 @@ public class profileMenu {
     }
 
     public void displayNewsFeed() {
-        String newsFeed = ctrl.retrieveNewsFeed(user);
-        System.out.println(newsFeed);
+        // String newsFeed = ctrl.retrieveNewsFeed(user);
+        // System.out.println(newsFeed);
     }
 
     public void displayWall () {
-        String wall = ctrl.retrieveWall(user);
-        System.out.println(wall);
+        // String wall = ctrl.retrieveWall(user);
+        // System.out.println(wall);
     }
 
     public ArrayList<UserProfile> retrieveFriends() {

@@ -1,5 +1,11 @@
 public class WelcomeMenuCtrl {
     public static String register(String username, String fullName, String password, String confirmedPassword) {
+        /*
+            For now, this function returns the string that is to be displayed to the user when he/she registers (includes error messages). 
+
+            TODO: Remove display strings and throw an exception instead 
+        */
+
         String return_msg = null;
         if (!(password.equals(confirmedPassword))) {
             return_msg = "Please ensure that password and confirmed passwor1d match!";
@@ -8,22 +14,22 @@ public class WelcomeMenuCtrl {
         } else if (UserProfileDAO.getUserProfileByUsername(username) != null) {
             return_msg = "Username already exists!";
         } else {
-            boolean status = UserProfileDAO.createUser(username, fullName, password);
-            if(status == true) {
+            if(UserProfileDAO.createUser(username, fullName, password)) {
                 return_msg = username + ", your account is successfully created!";
             } else {
                 return_msg = "An error occured while trying to create an account!";
             }
         }
+
         return return_msg;
     }
 
     public static UserProfile login(String username, String password) {
         UserProfile retrievedUser = UserProfileDAO.getUserProfileByUsername(username);
-        if (password.equals(retrievedUser.getPassword())) {
-            return retrievedUser;
-        } else {
+        if (retrievedUser == null || !(password.equals(retrievedUser.getPassword()))) {
             return null;
+        } else {
+            return retrievedUser;
         }
     }
 }

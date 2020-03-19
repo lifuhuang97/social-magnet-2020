@@ -8,8 +8,8 @@ public class DataUtility {
     // modify port, username and password to ur db
 
     // for cliffen & francine
-    // public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:8889/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    // public static final String CONNECTION_STRING = "jdbc:mysql://localhost:8889/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     
     public static final String USERNAME = "root";
     
@@ -172,7 +172,7 @@ public class DataUtility {
 
         } catch (SQLException e) {
             System.out.println("Something went wrong: " + e.getMessage());
-        }finally{
+        } finally {
             try {
                 if (conn != null) {
                     conn.close();

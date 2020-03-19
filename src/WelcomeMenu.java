@@ -53,11 +53,27 @@ public class WelcomeMenu {
         String display_msg = WelcomeMenuCtrl.register(username, fullName, password, confirmedPassword);
 
         System.out.println(display_msg);
+        System.out.println();
     }
 
     public void login() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter your username > ");
+        String username = sc.nextLine();
+        System.out.print("Enter your password > ");
+        String password = sc.nextLine();
+        UserProfile retrievedUser = WelcomeMenuCtrl.login(username, password);
+
+        if (retrievedUser == null) {
+            System.out.println("Incorrect Username/Password");
+        } 
+        
+        System.out.println();
+
+        ProfileCtrl pmCtrl = new ProfileCtrl();
+        ProfileMenu pm = new ProfileMenu(pmCtrl, retrievedUser);
+
+        pm.readOption();
 
     }
-
-
 }
