@@ -1,3 +1,4 @@
+
 import java.util.HashMap;
 
 public class PostDAO {
@@ -19,14 +20,14 @@ public class PostDAO {
     }
 
     //Returns String array containing top 3 tagged posts
-    public String[] retrieveWall(int UserID) {
+    public static String[] retrieveWall(int UserID) {
         //SELECT
         return new String[]{};
 
     }
 
     public String[] retrieveComments(int postID) {
-        //retrieve commenet from commentID table and post_comment table
+        //retrieve comment from commentID table and post_comment table
         return new String[]{};
     }
 

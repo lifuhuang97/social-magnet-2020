@@ -13,17 +13,17 @@ public class ProfileMenu {
         System.out.println("== Social Magnet :: Main Menu ==");
         System.out.println("Welcome, " + user.getFullName() + "!");
         System.out.println("1. News Feed\n2. My Wall\n3. My Friends\n4. City Farmers\n5. Logout");
-        System.out.println("Enter your choice >");
+        System.out.print("Enter your choice > ");
     }
 
     public void readOption() {
         Scanner sc = new Scanner(System.in);
         int choice;
-        ProfileDAO profileDAO = new ProfileDAO();
         FriendsDAO friendsDAO = new FriendsDAO();
         do {
             display();
-            choice = sc.nextInt();
+            String tempchoice = sc.nextLine();
+            choice = Integer.parseInt(tempchoice);
             switch (choice) {
                 case 1 :
                     displayNewsFeed(); // display news feed
@@ -59,7 +59,9 @@ public class ProfileMenu {
     }
 
     public void displayWall () {
-        // String wall = ctrl.retrieveWall(user);
+        MyWallMenu wallMenu = new MyWallMenu(user);
+        wallMenu.printWall();
+        // wallMenu.getPosts();
         // System.out.println(wall);
     }
 
@@ -69,7 +71,7 @@ public class ProfileMenu {
         return new ArrayList<UserProfile>();
     }
 
-    public void displayFriendsWall (User user) {
+    public void displayFriendsWall (UserProfile user) {
         String friendsWall = ctrl.retrieveWall(user);
         System.out.println(friendsWall);
     }

@@ -2,6 +2,7 @@ import java.util.*;
 public class WelcomeMenu {
 
     public void display() {
+        System.out.println();
         System.out.println("== Social Magnet :: Welcome ==");
         System.out.println("Good morning, anonymous!");
         System.out.println("1. Register");

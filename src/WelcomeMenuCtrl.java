@@ -1,4 +1,5 @@
 public class WelcomeMenuCtrl {
+    
     public static String register(String username, String fullName, String password, String confirmedPassword) {
         /*
             For now, this function returns the string that is to be displayed to the user when he/she registers (includes error messages). 
