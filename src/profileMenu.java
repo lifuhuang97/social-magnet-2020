@@ -13,6 +13,7 @@ public class ProfileMenu {
         System.out.println("== Social Magnet :: Main Menu ==");
         System.out.println("Welcome, " + user.getFullName() + "!");
         System.out.println("1. News Feed\n2. My Wall\n3. My Friends\n4. City Farmers\n5. Logout");
+        System.out.println();
         System.out.print("Enter your choice > ");
     }
 
@@ -44,8 +45,9 @@ public class ProfileMenu {
                     // cityFarmers(); // starts city farmer display menu
                     break;
                 case 5 :
-                    // login(); // display login page
-                    break;
+                    user = null;
+                    WelcomeMenu.execute();
+                    return;
 
                 default :
                     System.out.println("Enter a choice between 1 to 5");

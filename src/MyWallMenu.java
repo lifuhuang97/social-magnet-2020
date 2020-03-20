@@ -35,7 +35,7 @@ public class MyWallMenu {
                     System.out.println();
                     pf = new ProfileMenu(new ProfileCtrl(), currentUser);
                     pf.readOption();
-                    break;
+                    return;
                 case "T":
                     break;
                 case "A":

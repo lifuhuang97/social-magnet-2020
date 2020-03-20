@@ -1,7 +1,7 @@
 import java.util.*;
 public class WelcomeMenu {
 
-    public void display() {
+    public static void display() {
         System.out.println();
         System.out.println("== Social Magnet :: Welcome ==");
         System.out.println("Good morning, anonymous!");
@@ -11,7 +11,7 @@ public class WelcomeMenu {
         System.out.print("Please enter your choice: ");
     }
 
-    public void execute() {
+    public static void execute() {
         Scanner sc = new Scanner(System.in);
         int choice;
         do {
@@ -33,14 +33,14 @@ public class WelcomeMenu {
                     break;
                 case 3 :
                     System.out.println("bye bye");
-                    break;
+                    System.exit(0);
                 default :
                     System.out.println("Enter a choice between 1 to 3");
             }
         } while (choice != 3);
     }
 
-    public void register() {
+    public static void register() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter your username > ");
         String username = sc.nextLine();
@@ -57,7 +57,7 @@ public class WelcomeMenu {
         System.out.println();
     }
 
-    public void login() {
+    public static void login() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter your username > ");
         String username = sc.nextLine();
