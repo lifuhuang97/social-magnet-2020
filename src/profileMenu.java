@@ -1,17 +1,17 @@
 import java.util.*;
 
 public class ProfileMenu {
-    public UserProfile user;
+    public UserProfile currentUser;
     private ProfileCtrl ctrl;
 
-    public ProfileMenu(ProfileCtrl ctrl, UserProfile user) {
+    public ProfileMenu(ProfileCtrl ctrl, UserProfile currentUser) {
         this.ctrl = ctrl;
-        this.user = user;
+        this.currentUser = currentUser;
     }
 
     public void display() {
         System.out.println("== Social Magnet :: Main Menu ==");
-        System.out.println("Welcome, " + user.getFullName() + "!");
+        System.out.println("Welcome, " + currentUser.getFullName() + "!");
         System.out.println("1. News Feed\n2. My Wall\n3. My Friends\n4. City Farmers\n5. Logout");
         System.out.println();
         System.out.print("Enter your choice > ");
@@ -45,8 +45,9 @@ public class ProfileMenu {
                     // cityFarmers(); // starts city farmer display menu
                     break;
                 case 5 :
-                    user = null;
+                    currentUser = null;
                     WelcomeMenu.execute();
+                    System.out.println();
                     return;
 
                 default :
@@ -56,12 +57,12 @@ public class ProfileMenu {
     }
 
     public void displayNewsFeed() {
-        // String newsFeed = ctrl.retrieveNewsFeed(user);
-        // System.out.println(newsFeed);
+        NewsFeedMenu nsfMenu = new NewsFeedMenu(currentUser);
+        nsfMenu.printNewsFeed();
     }
 
     public void displayWall () {
-        MyWallMenu wallMenu = new MyWallMenu(user);
+        MyWallMenu wallMenu = new MyWallMenu(currentUser);
         wallMenu.printWall();
         // wallMenu.getPosts();
         // System.out.println(wall);
@@ -73,8 +74,8 @@ public class ProfileMenu {
         return new ArrayList<UserProfile>();
     }
 
-    public void displayFriendsWall (UserProfile user) {
-        String friendsWall = ctrl.retrieveWall(user);
+    public void displayFriendsWall (UserProfile currentUser) {
+        String friendsWall = ctrl.retrieveWall(currentUser);
         System.out.println(friendsWall);
     }
 

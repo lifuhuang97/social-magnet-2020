@@ -1,17 +1,46 @@
 
-import java.util.HashMap;
+import java.util.*;
 
 public class PostDAO {
+    // Returns all the Post objects made by an array of users 
+    public static  ArrayList<Post> retrievePostsByUserIds (ArrayList<Integer> ids) {
 
-    DataUtility d = new DataUtility();
+        ArrayList<Post> posts = new ArrayList<>();
 
-    public PostDAO() {
+        for (Integer id : ids) {
+            int int_id = id.intValue();
+            ArrayList<Post> postsById = retrievePostsByPostId(int_id);
+
+            for (Post postById : postsById) {
+                posts.add(postById);
+            }
+
+        }
+        
+        return posts;
     }
 
-    //Returns latest 3 postsID on his/friends wall
-    public int[] retrievePosts (int UserID) {
-        //SELECT
-        return new int[]{};
+    public static ArrayList<Post> retrievePostsByPostId(int id) {
+        ArrayList<Post> posts = new ArrayList<>();
+
+        String stmt = "SELECT * FROM POST WHERE POSTID = '" + id + "';";
+
+        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+
+        if (results.size() == 1) {
+            return posts;
+        } else {
+            results.remove(0);
+            for (ArrayList<String> result : results) {
+                int postId = Integer.parseInt(result.get(0));
+                String content = result.get(1);
+                SMDate datetime = new SMDate(result.get(2));
+
+                posts.add(new Post(postId, content, datetime));
+            }
+        }
+
+        return posts;
     }
 
     public HashMap<String, Integer> retrieveLikes (int postID) {

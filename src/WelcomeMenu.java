@@ -2,7 +2,6 @@ import java.util.*;
 public class WelcomeMenu {
 
     public static void display() {
-        System.out.println();
         System.out.println("== Social Magnet :: Welcome ==");
         System.out.println("Good morning, anonymous!");
         System.out.println("1. Register");
@@ -33,7 +32,7 @@ public class WelcomeMenu {
                     break;
                 case 3 :
                     System.out.println("bye bye");
-                    System.exit(0);
+                    break;
                 default :
                     System.out.println("Enter a choice between 1 to 3");
             }

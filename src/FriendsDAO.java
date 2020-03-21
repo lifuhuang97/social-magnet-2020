@@ -1,23 +1,24 @@
 import java.util.*;
 
 public class FriendsDAO {
-    // public UserDAO userDAO;
+    public static ArrayList<UserProfile> getFriendsByUserId (int userID) {
+        ArrayList<UserProfile> friends = new ArrayList<>();
 
-    public FriendsDAO () {
+        String stmt = "SELECT FRIENDID FROM FRIENDS WHERE USERID = '" + userID + "';";
 
-    }
+        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
 
-    public ArrayList<UserProfile> getFriends (int userID) {
-        // ArrayList<User> result = new ArrayList<>();
-        // // ResultSet rs = DataUtility.QuerySelect("SELECT friendID from FRIENDS WHERE USERID = "+ userID);
+        if (results.size() == 1) {
+            return friends;
+        } else {
+            results.remove(0);
+            for (ArrayList<String> result : results) {
+                int friendId = Integer.parseInt(result.get(0));
+                UserProfile friend = UserProfileDAO.getUserProfileByUserId(friendId);
+                friends.add(friend);
+            }
+        }
 
-        // while (rs.next()) {
-        //     int friendID = rs.getInt("friendID");
-        //     User friend = userDAO.retrieveByID(friendID);
-        //     result.add(friend);
-        // }
-
-        // return result;
-        return new ArrayList<UserProfile>();
+        return friends;
     }
 }

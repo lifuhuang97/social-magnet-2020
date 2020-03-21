@@ -28,6 +28,31 @@ public class UserProfileDAO {
         return user;
     }
 
+    public static UserProfile getUserProfileByUserId(int userId) {
+
+        UserProfile user = null;
+        String stmt = "SELECT * FROM USERPROFILE WHERE USERID = '" + userId + "';";
+        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+
+        if(results.size() == 1) {
+            return user;
+            // TODO: Throw error
+        } else {
+            String fullName = results.get(1).get(1);
+            String username = results.get(1).get(2);
+            String password = results.get(1).get(3);
+            int rank = Integer.parseInt(results.get(1).get(4));
+            int xp = Integer.parseInt(results.get(1).get(5));
+            int gold = Integer.parseInt(results.get(1).get(6));
+
+            Rank myRank =  new RankDAO().getMyRank(rank);
+
+            user = new UserProfile(userId, fullName, username, password, myRank, xp, gold);
+        }
+
+        return user;
+    }
+
     public static boolean createUser(String username, String fullName, String password) {
         boolean status = true;
         ArrayList<String> stmts = new ArrayList<>();

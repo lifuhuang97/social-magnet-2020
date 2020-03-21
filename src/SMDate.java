@@ -2,11 +2,10 @@
 import java.util.GregorianCalendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 public class SMDate {
     private Date dateTime;
-
 
     public SMDate() {
         this.dateTime = new Date();

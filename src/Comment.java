@@ -9,7 +9,7 @@ public class Comment {
         this.date = date;
     }
 
-    public int getCommentID() {
+    public int getCommentId() {
         return commentID;
     }
 
