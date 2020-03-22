@@ -52,23 +52,21 @@ public class NewsFeedMenu {
             String username = UserProfileDAO.getUserProfileByUserId(UserPostDAO.getUserIdByPostId(post.getPostId())).getUsername();
             System.out.println(outsideCounter + " " + username + ": " + post.getContent());
 
-            String format_odd = null;
-            String format_even = null;
+            String format_even = "%2s%2$s.%3$s %4$s: %5$s\n";
+            String format_odd = "%9s%2$s.%3$s %4$s: %5$s\n";
 
             if (comments.size() % 2 == 0 && comments.size() > 0) {
-                format_odd = "%9s\n";
-                format_even = "%2s\n";
-            } else {
-                format_odd = "%2s\n";
-                format_even = "%9s\n";
+                format_even = "%9s%2$s.%3$s %4$s: %5$s\n";
+                format_odd = "%2s%2$s.%3$s %4$s: %5$s\n";
             }
 
             for (int i = 0; i < comments.size(); i++) {
                 String comment_username = UserProfileDAO.getUserProfileByUserId(UserCommentDAO.getUserIdByCommentId(comments.get(i).getCommentId())).getUsername();
+
                 if (i % 2 == 0) {
-                    System.out.format(format_even, outsideCounter + "." + insiderCounter + " " + comment_username + ": " + comments.get(i).getContent());
+                    System.out.format(format_even, " ", outsideCounter, insiderCounter, comment_username, comments.get(i).getContent());
                 } else {
-                    System.out.format(format_odd, outsideCounter + "." + insiderCounter + " " + comment_username + ": " + comments.get(i).getContent());
+                    System.out.format(format_odd, " ", outsideCounter, insiderCounter, comment_username, comments.get(i).getContent());
                 }
                 insiderCounter++;
             }

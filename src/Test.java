@@ -30,17 +30,22 @@ public class Test {
         //     System.out.println("Hello");
         // }
 
-        NewsFeedCtrl ctrl = new NewsFeedCtrl();
+        // NewsFeedCtrl ctrl = new NewsFeedCtrl();
 
-        LinkedHashMap <Post, ArrayList<Comment>> results = ctrl.retrieveNewsFeed(9);
+        // LinkedHashMap <Post, ArrayList<Comment>> results = ctrl.retrieveNewsFeed(9);
 
-        for (Post p : results.keySet()) {
-            ArrayList<Comment> comments = results.get(p);
-            System.out.println(p.getContent());
-            for (Comment comment : comments) {
-                System.out.println(comment.getContent());
-            }
-        }
+        // for (Post p : results.keySet()) {
+        //     ArrayList<Comment> comments = results.get(p);
+        //     System.out.println(p.getContent());
+        //     for (Comment comment : comments) {
+        //         System.out.println(comment.getContent());
+        //     }
+        // }
+
+        String format = "%9s\n";
+        System.out.format(format, "hello");
+
+
 
     }
 
