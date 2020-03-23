@@ -71,9 +71,7 @@ public class WelcomeMenu {
         System.out.println();
 
         ProfileCtrl pmCtrl = new ProfileCtrl();
-        ProfileMenu pm = new ProfileMenu(pmCtrl, retrievedUser);
-
-        pm.readOption();
+        ProfileMenu.readOption(pmCtrl, retrievedUser);
 
     }
 }

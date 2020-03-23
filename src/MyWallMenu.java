@@ -33,8 +33,7 @@ public class MyWallMenu {
             switch(choice){
                 case "M":
                     System.out.println();
-                    pf = new ProfileMenu(new ProfileCtrl(), currentUser);
-                    pf.readOption();
+                    ProfileMenu.readOption(new ProfileCtrl(), currentUser);
                     return;
                 case "T":
                     break;

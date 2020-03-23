@@ -21,4 +21,10 @@ public class FriendsDAO {
 
         return friends;
     }
+
+    public static ArrayList<UserProfile> getRequestsByUserId (int UserID) {
+        ArrayList<UserProfile> requestList = new ArrayList<>();
+
+        return requestList;
+    }
 }

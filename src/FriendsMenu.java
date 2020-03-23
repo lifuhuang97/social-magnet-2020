@@ -20,7 +20,7 @@ public class FriendsMenu {
             count ++;
         }
 
-        ArrayList<UserProfile> requestList = FriendsDAO.getRequestsByUserID(currentUser.getUserId());
+        ArrayList<UserProfile> requestList = FriendsDAO.getRequestsByUserId(currentUser.getUserId());
         if (requestList != null && requestList.size() > 0) {
             System.out.println("\nMy Requests:\n");
 
