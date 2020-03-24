@@ -7,7 +7,7 @@ public class UserProfileDAO {
 
         UserProfile user = null;
         String stmt = "SELECT * FROM USERPROFILE WHERE USERNAME = '" + username + "';";
-        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+        ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
         if(results.size() == 1) {
             return user;
@@ -32,7 +32,7 @@ public class UserProfileDAO {
 
         UserProfile user = null;
         String stmt = "SELECT * FROM USERPROFILE WHERE USERID = '" + userId + "';";
-        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+        ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
         if(results.size() == 1) {
             return user;
@@ -106,9 +106,7 @@ public class UserProfileDAO {
         String listOfFriendsIncludingSelf = "(" + userid;
 
         String statement = "SELECT friendID FROM friends WHERE userID = " + userid;
-        ArrayList<ArrayList<String>> friendsList = DataUtility.QuerySelect(statement);
-
-        friendsList.remove(0);
+        ArrayList<ArrayList<String>> friendsList = DataUtility.querySelect(statement);
 
         for(ArrayList<String> friend : friendsList){
             listOfFriendsIncludingSelf += ", " + friend.get(0);
@@ -117,8 +115,7 @@ public class UserProfileDAO {
         listOfFriendsIncludingSelf += ")";
 
         String statement2 = "SELECT gold FROM userprofile WHERE userID in " + listOfFriendsIncludingSelf;
-        ArrayList<ArrayList<String>> allWealth = DataUtility.QuerySelect(statement2);
-        allWealth.remove(0);
+        ArrayList<ArrayList<String>> allWealth = DataUtility.querySelect(statement2);
 
         ArrayList<Integer> allWealthConv = new ArrayList<>();
 

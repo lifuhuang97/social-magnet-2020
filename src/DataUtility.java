@@ -8,8 +8,8 @@ public class DataUtility {
     // modify port, username and password to ur db
 
     // for cliffen & francine
-    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    // public static final String CONNECTION_STRING = "jdbc:mysql://localhost:8889/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    // public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:8889/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     
     public static final String USERNAME = "root";
     
@@ -124,7 +124,7 @@ public class DataUtility {
         }
     }
 
-    public static ArrayList<ArrayList<String>> QuerySelect(String statement) {
+    public static ArrayList<ArrayList<String>> querySelect(String statement) {
 
         // instantiate connection 
         Connection conn = null;
@@ -184,6 +184,53 @@ public class DataUtility {
         return allResults;
     }
 
+    public static ArrayList<String> singleQuerySelect(String statement) {
+
+        // instantiate connection 
+        Connection conn = null;
+
+        // results arraylist to be returned
+        ArrayList<String> result = new ArrayList<>();
+
+        try {
+            // start connection
+            conn = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
+            
+            // prepare the statement w/ connection
+            PreparedStatement stmt = conn.prepareStatement(statement);
+            ResultSet rs = stmt.executeQuery();
+
+            // get information about queried table
+            ResultSetMetaData metadata = rs.getMetaData();
+
+            // know how many columns exist in the query
+            int columnCount = metadata.getColumnCount();
+
+            // add queried data into arraylist as arraylist<string>
+            while(rs.next()){
+                for(int i=1; i<=columnCount; i++){
+                    if(metadata.getColumnTypeName(i).equals("INT")){
+                        // convert queried ints to string
+                        result.add(Integer.toString(rs.getInt(i)));
+                    }else{
+                        result.add(rs.getString(i));
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Couldn't close connection: " + e.getMessage());
+            }
+        }
+        return result;
+    }
 
 }
 

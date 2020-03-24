@@ -5,12 +5,11 @@ public class PostCommentDAO {
         ArrayList<Integer> ids = new ArrayList<>();
         String stmt = "SELECT COMMENTID FROM POST_COMMENT WHERE POSTID = '" + postId +"';";
 
-        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+        ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
         if (results.size() == 1) {
             return ids;
         } else {
-            results.remove(0);
             for (ArrayList<String> result : results) {
                 ids.add(Integer.valueOf(result.get(0)));
             }

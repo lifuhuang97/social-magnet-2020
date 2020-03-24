@@ -6,12 +6,11 @@ public class FriendsDAO {
 
         String stmt = "SELECT FRIENDID FROM FRIENDS WHERE USERID = '" + userID + "';";
 
-        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+        ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
         if (results.size() == 1) {
             return friends;
         } else {
-            results.remove(0);
             for (ArrayList<String> result : results) {
                 int friendId = Integer.parseInt(result.get(0));
                 UserProfile friend = UserProfileDAO.getUserProfileByUserId(friendId);

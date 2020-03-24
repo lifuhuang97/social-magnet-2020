@@ -5,9 +5,8 @@ public class CommentDAO {
 
         String stmt = "SELECT * FROM COMMENT WHERE COMMENTID = '" + commentId + "';";
 
-        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+        ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
-        results.remove(0);
         String content = results.get(0).get(1);
         SMDate datetime = new SMDate(results.get(0).get(2));
 

@@ -25,12 +25,11 @@ public class PostDAO {
 
         String stmt = "SELECT * FROM POST WHERE POSTID = '" + id + "';";
 
-        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+        ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
         if (results.size() == 1) {
             return posts;
         } else {
-            results.remove(0);
             for (ArrayList<String> result : results) {
                 int postId = Integer.parseInt(result.get(0));
                 String content = result.get(1);
