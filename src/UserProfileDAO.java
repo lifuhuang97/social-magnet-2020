@@ -9,16 +9,16 @@ public class UserProfileDAO {
         String stmt = "SELECT * FROM USERPROFILE WHERE USERNAME = '" + username + "';";
         ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
-        if(results.size() == 1) {
+        if(results.size() == 0) {
             return user;
             // TODO: Throw error
         } else {
-            int userId = Integer.parseInt(results.get(1).get(0));
-            String fullName = results.get(1).get(1);
-            String password = results.get(1).get(3);
-            int rank = Integer.parseInt(results.get(1).get(4));
-            int xp = Integer.parseInt(results.get(1).get(5));
-            int gold = Integer.parseInt(results.get(1).get(6));
+            int userId = Integer.parseInt(results.get(0).get(0));
+            String fullName = results.get(0).get(1);
+            String password = results.get(0).get(3);
+            int rank = Integer.parseInt(results.get(0).get(4));
+            int xp = Integer.parseInt(results.get(0).get(5));
+            int gold = Integer.parseInt(results.get(0).get(6));
 
             Rank myRank =  new RankDAO().getMyRank(rank);
 
@@ -34,16 +34,16 @@ public class UserProfileDAO {
         String stmt = "SELECT * FROM USERPROFILE WHERE USERID = '" + userId + "';";
         ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
-        if(results.size() == 1) {
+        if(results.size() == 0) {
             return user;
             // TODO: Throw error
         } else {
-            String fullName = results.get(1).get(1);
-            String username = results.get(1).get(2);
-            String password = results.get(1).get(3);
-            int rank = Integer.parseInt(results.get(1).get(4));
-            int xp = Integer.parseInt(results.get(1).get(5));
-            int gold = Integer.parseInt(results.get(1).get(6));
+            String fullName = results.get(0).get(1);
+            String username = results.get(0).get(2);
+            String password = results.get(0).get(3);
+            int rank = Integer.parseInt(results.get(0).get(4));
+            int xp = Integer.parseInt(results.get(0).get(5));
+            int gold = Integer.parseInt(results.get(0).get(6));
 
             Rank myRank =  new RankDAO().getMyRank(rank);
 

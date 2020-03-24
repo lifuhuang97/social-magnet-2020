@@ -147,15 +147,6 @@ public class DataUtility {
             // know how many columns exist in the query
             int columnCount = metadata.getColumnCount();
 
-            // an arraylist of all the headers from the query
-            ArrayList<String> headers = new ArrayList<>();
-
-            // add column names to the to be returned result
-            for(int i=1; i <=columnCount; i++) {
-                headers.add(metadata.getColumnName(i));
-            }
-            allResults.add(headers);
-
             // add queried data into arraylist as arraylist<string>
             while(rs.next()){
                 ArrayList<String> newData = new ArrayList<>();

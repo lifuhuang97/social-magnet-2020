@@ -8,7 +8,7 @@ public class FriendsDAO {
 
         ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
-        if (results.size() == 1) {
+        if (results.size() == 0) {
             return friends;
         } else {
             for (ArrayList<String> result : results) {

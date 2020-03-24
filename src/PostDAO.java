@@ -27,7 +27,7 @@ public class PostDAO {
 
         ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
-        if (results.size() == 1) {
+        if (results.size() == 0) {
             return posts;
         } else {
             for (ArrayList<String> result : results) {

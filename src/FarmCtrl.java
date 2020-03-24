@@ -22,7 +22,8 @@ import java.util.*;
 
             String thisPlotId = myPlotId_DB.get(0);
             ArrayList<String> thisPlotDetails = DataUtility.singleQuerySelect("SELECT * FROM PLOT WHERE PLOTID = " + thisPlotId);
-
+            
+            // Plot thisPlot = new Plot(Integer.parseInt(thisPlotDetails(0)));
 
         }
 

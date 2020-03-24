@@ -3,9 +3,9 @@
 public class Plot {
     private int plotID;
     private int cropID;
-    private int plantedTime;
+    private SMDate plantedTime;
 
-    public Plot(int plotID, int cropID, int plantedTime) {
+    public Plot(int plotID, int cropID, SMDate plantedTime) {
         this.plotID = plotID;
         this.cropID = cropID;
         this.plantedTime = plantedTime;
@@ -27,11 +27,11 @@ public class Plot {
         this.cropID = cropID;
     }
 
-    public int getPlantedTime() {
+    public SMDate getPlantedTime() {
         return plantedTime;
     }
 
-    public void setPlantedTime(int plantedTime) {
+    public void setPlantedTime(SMDate plantedTime) {
         this.plantedTime = plantedTime;
     }
 }
