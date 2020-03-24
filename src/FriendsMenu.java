@@ -12,7 +12,7 @@ public class FriendsMenu {
    public static void display(FriendsCtrl ctrl, UserProfile currentUser) {
        int count = 1;
 
-        ArrayList<UserProfile> friendsList = FriendsDAO.getFriendsByUserId(currentUser.getUserId());
+        ArrayList<UserProfile> friendsList = getFriendsList(currentUser);
         System.out.println("== Social Magnet :: My Friends ==\nWelcome, " + currentUser.getFullName() + " !\n\nMy Friends:\n");
 
         for (UserProfile userProfile : friendsList) {
@@ -32,21 +32,24 @@ public class FriendsMenu {
     }
 
     public static void readOption(FriendsCtrl ctrl, UserProfile currentUser) {
-        display(ctrl, currentUser);
 
-        Scanner sc = new Scanner(System.in);
         String choice;
-        int friendChoice;
+        ArrayList<UserProfile> friendsList = getFriendsList(currentUser);
+        int friendChoice = 0;
         ProfileCtrl profileCtrl = new ProfileCtrl();
 
         do {
+            Scanner sc = new Scanner(System.in);
             display(ctrl, currentUser);
 
             try {
                 choice = sc.nextLine();
-                if (choice.charAt(0) == 'A') {
+                if (choice.charAt(0) == 'A' && choice.length() >= 2) {
                     friendChoice = Integer.parseInt(choice.substring(1));
                     choice = "A";
+                } else if (choice.charAt(0) == 'U' && choice.length() >= 2) {
+                    friendChoice = Integer.parseInt(choice.substring(1));
+                    choice = "U";
                 }
             } catch (InputMismatchException e){
                 sc.next();
@@ -55,22 +58,59 @@ public class FriendsMenu {
 
             switch (choice) {
                 case "M" :
+                    System.out.println(choice);
                     ProfileMenu.readOption(profileCtrl, currentUser);
+                    System.out.println();
                     break;
                 case "U" :
-                    // ctrl.Unfriend()
+                    UserProfile friend = friendsList.get(friendChoice-1);
+                    unfriend(currentUser, friend)
                     break;
                 case "Q" :
+                    System.out.print("Enter the username > ");
+                    String username = sc.nextLine();
+                    request(currentUser, username);
                     break;
                 case "A" :
+                    UserProfile friendAccept = friendsList.get(friendChoice-1);
+                    accept(currentUser, friendAccept);
                     break;
                 case "R" :
+                    
                     break;
                 case "V" :
                     break;
                 default :
                     System.out.println("Please enter one of the choices above");
             }
+            
         } while (choice != "M");
+    }
+
+    public static ArrayList<UserProfile> getFriendsList(UserProfile userProfile) {
+        ArrayList<UserProfile> result = new ArrayList<>();
+        FriendsCtrl ctrl = new FriendsCtrl();
+        result = ctrl.getFriendsList(userProfile);
+        return result;
+
+    }
+
+    public static boolean unfriend (UserProfile userProfile, UserProfile friend) {
+        boolean result = false;
+        FriendsCtrl ctrl = new FriendsCtrl();
+        ctrl.unfriend(userProfile, friend);
+        return result;
+    }
+
+    public static void request (UserProfile userProfile, String username) {
+        FriendsCtrl ctrl = new FriendsCtrl();
+        ctrl.request(userProfile, username);
+    }
+
+    public static boolean accept (UserProfile userProfile, UserProfile friend) {
+        boolean result = false;
+        FriendsCtrl ctrl = new FriendsCtrl();
+        ctrl.accept(userProfile, friend);
+        return result;
     }
 }

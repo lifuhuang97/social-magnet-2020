@@ -6,11 +6,12 @@ public class FriendsDAO {
 
         String stmt = "SELECT FRIENDID FROM FRIENDS WHERE USERID = '" + userID + "';";
 
-        ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
+        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
 
-        if (results.size() == 0) {
+        if (results.size() == 1) {
             return friends;
         } else {
+            results.remove(0);
             for (ArrayList<String> result : results) {
                 int friendId = Integer.parseInt(result.get(0));
                 UserProfile friend = UserProfileDAO.getUserProfileByUserId(friendId);
@@ -25,5 +26,24 @@ public class FriendsDAO {
         ArrayList<UserProfile> requestList = new ArrayList<>();
 
         return requestList;
+    }
+
+    public static boolean unfriend (int userID, int friendID) {
+        boolean result = false;
+        String stmt = "DELETE USERID FROM FRIENDS WHERE USERID = '" + userID + "' AND FRIENDID = '" + friendID + "';";
+
+        // ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+        return result;
+    }
+
+    public static void addRequest (int userID, int friendID) {
+        String stmt = "INSERT INTO FRIEND_REQUESTS VALUES ('" + userID + "', '" + friendID + "' )";
+    }
+
+    public static boolean accept (int userID, int friendID) {
+        boolean result = false;
+        String stmt1 = "DELETE FROM FRIEND_REQUESTS WHERE USERID = " + userID + " AND FRIENDID = " + friendID ;
+        String stmt2 = "INSERT INTO FRIENDS VALUES ('" + userID + "', '" + friendID + "' )";
+        return result;
     }
 }
