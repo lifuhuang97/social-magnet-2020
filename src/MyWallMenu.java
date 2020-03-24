@@ -57,7 +57,7 @@ public class MyWallMenu {
         System.out.println();
         System.out.print("[M]ain | [T]hread | [A]ccept Gift | [P]ost > ");
 
-        ArrayList<Post> newPosts = ctrl.getPosts(currentUserId);
+        ArrayList<Post> newPosts = ctrl.getTopFivePosts(currentUserId);
         displayPosts(newPosts);
     }
 
