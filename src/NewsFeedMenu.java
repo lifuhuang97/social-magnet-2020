@@ -5,30 +5,30 @@ import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 
 public class NewsFeedMenu {
-    private ProfileMenu pf;
-    private UserProfile currentUser;
-    private NewsFeedCtrl ctrl;
+    // private ProfileMenu pf;
+    // private UserProfile currentUser;
+    // private NewsFeedCtrl ctrl;
 
-    public NewsFeedMenu(UserProfile user){
-        this.currentUser = user;
-        this.ctrl = new NewsFeedCtrl();
-    }
+    // public NewsFeedMenu(UserProfile user){
+    //     this.currentUser = user;
+    //     this.ctrl = new NewsFeedCtrl();
+    // }
 
-    public void printNewsFeed(){
+    public static void printNewsFeed(UserProfile currentUser){
 
         String choice = null;
         Scanner sc = new Scanner(System.in);
         
         do {
-            display();
+            display(currentUser);
             choice = sc.nextLine();
 
             switch (choice) {
                 case "M":
                     System.out.println();
-                    ProfileMenu.readOption(new ProfileCtrl(), currentUser);
                     return;
                 case "T":
+                    System.out.println();
                     break;
                 default:
                     System.out.println("Invalid choice, please try again.");
@@ -36,7 +36,9 @@ public class NewsFeedMenu {
         } while(choice != "M");
     }
 
-    public void display(){
+    public static void display(UserProfile currentUser){
+
+        NewsFeedCtrl ctrl = new NewsFeedCtrl();
 
         LinkedHashMap <Post, ArrayList<Comment>> newsfeed = ctrl.retrieveNewsFeed(currentUser.getUserId());
 

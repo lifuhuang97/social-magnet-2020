@@ -3,6 +3,7 @@ import java.util.GregorianCalendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class SMDate {
     private Date dateTime;
@@ -60,4 +61,32 @@ public class SMDate {
     public String toString() {
         return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(this.dateTime);
     }
+
+    public int getPlantedTime (SMDate plantedDateTime){
+
+        String plantedDateTimeStr = plantedDateTime.toString();
+        String currentDateTimeStr = new SMDate().toString();
+        
+        // Custom date format
+        SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm");  
+        
+        Date startTime = null;
+        Date currentTime = null;
+        try {
+            startTime = format.parse(plantedDateTimeStr);
+            currentTime = format.parse(currentDateTimeStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }    
+        
+        long diff = currentTime.getTime() - startTime.getTime();         
+
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+
+        int plantedTime = Math.toIntExact(minutes);
+
+        return plantedTime;
+
+    }
+
 }

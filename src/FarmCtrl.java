@@ -23,8 +23,8 @@ import java.util.*;
             String thisPlotId = myPlotId_DB.get(0);
             ArrayList<String> thisPlotDetails = DataUtility.singleQuerySelect("SELECT * FROM PLOT WHERE PLOTID = " + thisPlotId);
             
-            // Plot thisPlot = new Plot(Integer.parseInt(thisPlotDetails(0)));
-
+            Plot thisPlot = new Plot(Integer.parseInt(thisPlotDetails.get(0)), Integer.parseInt(thisPlotDetails.get(1)), new SMDate(thisPlotDetails.get(2)));
+            allMyPlots.add(thisPlot);
         }
 
         return allMyPlots;

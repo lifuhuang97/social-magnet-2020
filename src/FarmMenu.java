@@ -2,7 +2,7 @@
  * FarmMenu
  */
 
-import java.util.Scanner;
+import java.util.*;
 
 public class FarmMenu {
 
@@ -87,9 +87,13 @@ public class FarmMenu {
     }
 
     public static void accessMyFarm(UserProfile currentUser){
+
+        FarmCtrl ctrl = new FarmCtrl();
+
         displayFarmHeader("case1", currentUser);
 
-        // FarmCtrl + getMyPlots method (select * from user_plot where userid = myid)
+        ArrayList<Plot> myPlots = ctrl.getMyPlots(currentUser);
+
         
         // SMDate need a CalcGrowthPercentage for crop (compare cropPlantTime vs GrowTime)
         // cropPlantTime is calculated by comparing plantTime against current time

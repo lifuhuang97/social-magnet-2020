@@ -84,4 +84,13 @@ public class Crop {
     public void setXp(int xp) {
         this.xp = xp;
     }
+
+    public void printPercentageGrowth(int minutesGrown){
+
+        String growth = "";
+
+        // double growthPercentage = minutesGrown/
+
+    }
+
 }

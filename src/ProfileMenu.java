@@ -58,8 +58,7 @@ public class ProfileMenu {
     }
 
     public static void displayNewsFeed(ProfileCtrl ctrl, UserProfile currentUser) {
-        NewsFeedMenu nsfMenu = new NewsFeedMenu(currentUser);
-        nsfMenu.printNewsFeed();
+        NewsFeedMenu.printNewsFeed(currentUser);
     }
 
     public static void displayWall (ProfileCtrl ctrl, UserProfile currentUser) {

@@ -32,7 +32,7 @@ public class WelcomeMenu {
                     break;
                 case 3 :
                     System.out.println("bye bye");
-                    break;
+                    System.exit(0);
                 default :
                     System.out.println("Enter a choice between 1 to 3");
             }
