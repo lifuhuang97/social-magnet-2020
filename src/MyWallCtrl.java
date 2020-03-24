@@ -2,31 +2,19 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
+//TODO: DONT PRINT IN CTRL
+
 public class MyWallCtrl {
 
-    private UserProfileDAO userDAO;
     private UserProfile user;
+    private int userId;
 
     public MyWallCtrl(UserProfile user){
-        userDAO = new UserProfileDAO();
         this.user = user;
+        this.userId = user.getUserId();
     }
 
-    public void displayPersonalInfo(int id){
 
-        String username = user.getUsername();
-        String fullname = user.getFullName();
-        Rank rank = user.getRank();
-        String rankDesc = rank.getRankName();
-
-        System.out.println("About " + username);
-        System.out.println("Full Name: " + fullname);
-
-        String wealthRank = UserProfileDAO.wealthRankPrint(user);
-        System.out.print(rankDesc + " Farmer, ");
-        System.out.print(wealthRank + " richest");
-        System.out.println();
-    }
 
     public ArrayList<Post> getTopFivePosts(int id){
 

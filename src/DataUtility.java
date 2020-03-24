@@ -7,16 +7,18 @@ public class DataUtility {
     public static final String DB_NAME = "magnet";
     // modify port, username and password to ur db
 
-    // for cliffen & francine
-    // public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:8889/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    
-    public static final String USERNAME = "root";
-    
-    // for cliffen & francine
-    // public static final String PASSWORD = "";
-    public static final String PASSWORD = "root";
+    // LIFU CHANGE
+    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
+    // Macintosh
+    public static final String USERNAME = "root";
+    public static final String PASSWORD = "root";
+    
+    // Windows 
+    // public static final String USERNAME = "root";
+    // public static final String PASSWORD = "";
+
+    // Multiple update, insert, delete operations
     public static void multiQueryUpdate(ArrayList<String> submittedstatements) {
         Connection conn = null;
         try {
@@ -50,12 +52,14 @@ public class DataUtility {
         }
     }
 
-    public static void queryUpdate(PreparedStatement stmt){
+    // Single update, insert, delete operations
+    public static void queryUpdate(String statement){
         Connection conn = null;
         try{
             conn = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
             // Set this to false to not automatically update database
             conn.setAutoCommit(false);
+            PreparedStatement stmt = conn.prepareStatement(statement);
             stmt.executeUpdate();
             conn.commit(); // commits the database transaction
             conn.close();
@@ -72,6 +76,7 @@ public class DataUtility {
         }
     }
 
+    // Used when you create a new row in the database and require the newly created object id for other insertions
     public static int queryUpdateRetrieveID (String querystatement){
         Connection conn = null;
         int queryInfo = 0;
@@ -103,6 +108,7 @@ public class DataUtility {
         return newID;
     }
 
+    // For updating support tables (e.g. POST --> USER_POST)
     public static void associationUpdate (String table, int var1, int var2){
 
         Connection conn = null;;
@@ -124,6 +130,7 @@ public class DataUtility {
         }
     }
 
+    // Select and return multiple rows
     public static ArrayList<ArrayList<String>> querySelect(String statement) {
 
         // instantiate connection 
@@ -175,6 +182,7 @@ public class DataUtility {
         return allResults;
     }
 
+    // Select and return one row 
     public static ArrayList<String> singleQuerySelect(String statement) {
 
         // instantiate connection 

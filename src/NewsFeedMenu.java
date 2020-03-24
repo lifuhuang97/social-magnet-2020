@@ -1,20 +1,10 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.LinkedHashMap;
-import java.util.NoSuchElementException;
 
 public class NewsFeedMenu {
-    // private ProfileMenu pf;
-    // private UserProfile currentUser;
-    // private NewsFeedCtrl ctrl;
 
-    // public NewsFeedMenu(UserProfile user){
-    //     this.currentUser = user;
-    //     this.ctrl = new NewsFeedCtrl();
-    // }
-
-    public static void printNewsFeed(UserProfile currentUser){
+    public static void readOptions(UserProfile currentUser){
 
         String choice = null;
         Scanner sc = new Scanner(System.in);
@@ -42,7 +32,7 @@ public class NewsFeedMenu {
 
         LinkedHashMap <Post, ArrayList<Comment>> newsfeed = ctrl.retrieveNewsFeed(currentUser.getUserId());
 
-        System.out.println();
+        System.out.println(); 
         System.out.println("== Social Magnet :: News Feed ==");
 
         int outsideCounter = 1;
@@ -53,24 +43,16 @@ public class NewsFeedMenu {
             String username = UserProfileDAO.getUserProfileByUserId(UserPostDAO.getUserIdByPostId(post.getPostId())).getUsername();
             System.out.println(outsideCounter + " " + username + ": " + post.getContent());
 
-            String format_even = "%2s%2$s.%3$s %4$s: %5$s\n";
-            String format_odd = "%9s%2$s.%3$s %4$s: %5$s\n";
-
-            if (comments.size() % 2 == 0 && comments.size() > 0) {
-                format_even = "%9s%2$s.%3$s %4$s: %5$s\n";
-                format_odd = "%2s%2$s.%3$s %4$s: %5$s\n";
-            }
+            String format = "%2s%2$s.%3$s %4$s: %5$s\n";
 
             for (int i = 0; i < comments.size(); i++) {
                 String comment_username = UserProfileDAO.getUserProfileByUserId(UserCommentDAO.getUserIdByCommentId(comments.get(i).getCommentId())).getUsername();
 
-                if (i % 2 == 0) {
-                    System.out.format(format_even, " ", outsideCounter, insiderCounter, comment_username, comments.get(i).getContent());
-                } else {
-                    System.out.format(format_odd, " ", outsideCounter, insiderCounter, comment_username, comments.get(i).getContent());
-                }
+                System.out.format(format, " ", outsideCounter, insiderCounter, comment_username, comments.get(i).getContent());
+
                 insiderCounter++;
             }
+
             outsideCounter++;
             System.out.println();
         }

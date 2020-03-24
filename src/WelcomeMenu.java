@@ -12,31 +12,27 @@ public class WelcomeMenu {
 
     public static void execute() {
         Scanner sc = new Scanner(System.in);
-        int choice;
+        String choice;
         do {
             display();
 
-            try {
-                choice = sc.nextInt();
-            } catch (InputMismatchException e){
-                sc.next();
-                choice = 4;
-            }
+            choice = sc.nextLine();
 
             switch (choice) {
-                case 1 :
+                case "1" :
                     register();
                     break;
-                case 2 :
+                case "2" :
                     login();
                     break;
-                case 3 :
+                case "3" :
                     System.out.println("bye bye");
-                    System.exit(0);
+                    System.exit(0); 
                 default :
                     System.out.println("Enter a choice between 1 to 3");
             }
-        } while (choice != 3);
+        } while (choice != "3");
+        sc.close();
     }
 
     public static void register() {
@@ -57,11 +53,15 @@ public class WelcomeMenu {
     }
 
     public static void login() {
+
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter your username > ");
+
         String username = sc.nextLine();
         System.out.print("Enter your password > ");
+
         String password = sc.nextLine();
+        
         UserProfile retrievedUser = WelcomeMenuCtrl.login(username, password);
 
         if (retrievedUser == null) {
@@ -69,9 +69,7 @@ public class WelcomeMenu {
         } 
         
         System.out.println();
-
-        ProfileCtrl pmCtrl = new ProfileCtrl();
-        ProfileMenu.readOption(pmCtrl, retrievedUser);
+        ProfileMenu.readOptions(retrievedUser);
 
     }
 }

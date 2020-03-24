@@ -1,15 +1,8 @@
 import java.util.*;
 
 public class FriendsMenu {
-    public UserProfile currentUser;
-    private FriendsCtrl ctrl;
 
-    public FriendsMenu (FriendsCtrl ctrl, UserProfile currentUser) {
-        this.ctrl = ctrl;
-        this.currentUser = currentUser;
-    }
-
-   public static void display(FriendsCtrl ctrl, UserProfile currentUser) {
+   public static void display(UserProfile currentUser) {
        int count = 1;
 
         ArrayList<UserProfile> friendsList = getFriendsList(currentUser);
@@ -31,55 +24,66 @@ public class FriendsMenu {
         System.out.print("[M]ain | [U]nfriend | re[Q]uest | [A]ccept | [R]eject | [V]iew > ");
     }
 
-    public static void readOption(FriendsCtrl ctrl, UserProfile currentUser) {
+    public static void readOptions(UserProfile currentUser) {
 
         String choice;
         ArrayList<UserProfile> friendsList = getFriendsList(currentUser);
         int friendChoice = 0;
-        ProfileCtrl profileCtrl = new ProfileCtrl();
+     
 
         do {
             Scanner sc = new Scanner(System.in);
-            display(ctrl, currentUser);
+            display(currentUser);
 
             try {
                 choice = sc.nextLine();
+                // TODO: Exception handling for Integer.parseInt + Cleanup
+
                 if (choice.charAt(0) == 'A' && choice.length() >= 2) {
+                    
                     friendChoice = Integer.parseInt(choice.substring(1));
                     choice = "A";
+
                 } else if (choice.charAt(0) == 'U' && choice.length() >= 2) {
+
                     friendChoice = Integer.parseInt(choice.substring(1));
                     choice = "U";
+
                 }
             } catch (InputMismatchException e){
+
                 sc.next();
                 choice = "Z";
+
             }
 
             switch (choice) {
                 case "M" :
-                    System.out.println(choice);
-                    ProfileMenu.readOption(profileCtrl, currentUser);
                     System.out.println();
-                    break;
+                    return;
+
                 case "U" :
                     UserProfile friend = friendsList.get(friendChoice-1);
-                    unfriend(currentUser, friend)
+                    unfriend(currentUser, friend);
                     break;
+
                 case "Q" :
                     System.out.print("Enter the username > ");
                     String username = sc.nextLine();
                     request(currentUser, username);
                     break;
+
                 case "A" :
                     UserProfile friendAccept = friendsList.get(friendChoice-1);
                     accept(currentUser, friendAccept);
                     break;
+
                 case "R" :
-                    
                     break;
+
                 case "V" :
                     break;
+
                 default :
                     System.out.println("Please enter one of the choices above");
             }

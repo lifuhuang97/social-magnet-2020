@@ -6,12 +6,11 @@ public class FriendsDAO {
 
         String stmt = "SELECT FRIENDID FROM FRIENDS WHERE USERID = '" + userID + "';";
 
-        ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+        ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
-        if (results.size() == 1) {
+        if (results.size() == 0) {
             return friends;
         } else {
-            results.remove(0);
             for (ArrayList<String> result : results) {
                 int friendId = Integer.parseInt(result.get(0));
                 UserProfile friend = UserProfileDAO.getUserProfileByUserId(friendId);
@@ -32,7 +31,7 @@ public class FriendsDAO {
         boolean result = false;
         String stmt = "DELETE USERID FROM FRIENDS WHERE USERID = '" + userID + "' AND FRIENDID = '" + friendID + "';";
 
-        // ArrayList<ArrayList<String>> results = DataUtility.QuerySelect(stmt);
+        // ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
         return result;
     }
 

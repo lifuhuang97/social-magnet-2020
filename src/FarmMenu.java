@@ -45,7 +45,7 @@ public class FarmMenu {
         System.out.println();
     }
 
-    public static void readOption(UserProfile user){
+    public static void readOptions(UserProfile user){
 
         Scanner sc = new Scanner(System.in);
         String choice;
@@ -78,8 +78,8 @@ public class FarmMenu {
                     // sendGift();
                     break;
                 case "M":
-                    // returnToMagnet();
-                    break;
+                    System.out.println();
+                    return;
                 default:
                     System.out.println("You did not enter a valid option.");
             }
