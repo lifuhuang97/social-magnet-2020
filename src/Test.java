@@ -42,10 +42,18 @@ public class Test {
         //     }
         // }
 
-        String format = "%9s\n";
-        System.out.format(format, "hello");
+        // String format = "%9s\n";
+        // System.out.format(format, "hello");
 
+        Scanner sc = new Scanner(System.in);
+        System.out.print("> ");
+        String s = sc.nextLine();
 
+        if (s.matches("^T[1-5]$")) {
+            System.out.println("yes");
+        } else {
+            System.out.println("no");
+        }
 
     }
 

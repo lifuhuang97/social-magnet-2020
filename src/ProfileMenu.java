@@ -5,7 +5,11 @@ public class ProfileMenu {
     public static void display(UserProfile currentUser) {
         System.out.println("== Social Magnet :: Main Menu ==");
         System.out.println("Welcome, " + currentUser.getFullName() + "!");
-        System.out.println("1. News Feed\n2. My Wall\n3. My Friends\n4. City Farmers\n5. Logout");
+        System.out.println("1. News Feed");
+        System.out.println("2. My Wall");
+        System.out.println("3. My Friends");
+        System.out.println("4. City Farmers");
+        System.out.println("5. Logout");
         System.out.println();
         System.out.print("Enter your choice > ");
     }

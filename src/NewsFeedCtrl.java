@@ -1,7 +1,16 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class NewsFeedCtrl {
-    public LinkedHashMap <Post, ArrayList<Comment>> retrieveNewsFeed(int currentUserId) {
+    private UserProfile currentUser;
+
+    public NewsFeedCtrl(UserProfile currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public LinkedHashMap <Post, ArrayList<Comment>> retrieveNewsFeed() {
+        int currentUserId = currentUser.getUserId();
         LinkedHashMap <Post, ArrayList<Comment>> newsfeed = new LinkedHashMap<>();
 
         // Get a list of the current user's friends
@@ -14,33 +23,22 @@ public class NewsFeedCtrl {
             listOfIdsToFindPostBy.add(friend.getUserId());
         }
 
-        // Retrieve arraylists of postids by userids
-        ArrayList<Integer> postIds = new ArrayList<>();
-        for (Integer idToFindPostBy : listOfIdsToFindPostBy) {
-            for(Integer postId : UserPostDAO.getPostIdsByUserId(idToFindPostBy)) {
-                postIds.add(postId);
-            }
-        }
-
-        // Retrieve an arraylist of all the posts
-        ArrayList<Post> posts = PostDAO.retrievePostsByUserIds(postIds);
-
-        // Find the top (latest) 5 posts 
-        ArrayList<Post> topFivePosts = PostDateUtility.getTopNPost(posts, 5);
-
-        for (Post topFivePost : topFivePosts) {
-            // Get all the comment ids associated with post
-            ArrayList<Integer> commentIds = PostCommentDAO.getCommentIdsByPostId(topFivePost.getPostId());
-
-            ArrayList<Comment> comments = new ArrayList<>();
-
-            for (Integer commentId : commentIds) {
-                comments.add(CommentDAO.retrieveCommentById(Integer.valueOf(commentId)));
-            }
-
-            newsfeed.put(topFivePost, comments);
-        }
+        newsfeed = PostUtility.retrievePostsByUserIds(listOfIdsToFindPostBy);
 
         return newsfeed;
     }    
+
+    public HashMap<Post, ArrayList<Comment>> retrieveThread(LinkedHashMap <Post, ArrayList<Comment>> newsfeed, int num) {
+        HashMap<Post, ArrayList<Comment>> thread = new HashMap<>();
+
+        int counter = 1;
+        for (Post post : newsfeed.keySet()) {
+            if (counter == num) {
+                thread.put(post, newsfeed.get(post));
+            }
+            counter += 1;
+        }
+
+        return thread;
+    }
 }
