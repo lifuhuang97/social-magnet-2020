@@ -17,4 +17,16 @@ public class PostCommentDAO {
 
         return ids;
     }
+
+    public static void addPostComment(int postId, int commentId) {
+        String stmt = "INSERT INTO POST_COMMENT (`postID`, `commentID`) VALUES ('" + postId + "', '" + commentId + "');";
+
+        DataUtility.queryUpdate(stmt);
+    }
+
+    public static void deletePostComment(int postId) {
+        String stmt = "DELETE FROM POST_COMMENT WHERE POSTID = '" + postId + "';";
+
+        DataUtility.queryUpdate(stmt);
+    }
 }

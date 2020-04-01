@@ -2,61 +2,64 @@
 import java.util.*;
 
 public class PostDAO {
-    // Returns all the Post objects made by an array of users 
-    public static  ArrayList<Post> retrievePostsByUserIds (ArrayList<Integer> ids) {
-
+    public static ArrayList<Post> retreivePostsByPostsId (ArrayList<Integer> ids) {
         ArrayList<Post> posts = new ArrayList<>();
 
-        for (Integer id : ids) {
-            int int_id = id.intValue();
-            ArrayList<Post> postsById = retrievePostsByPostId(int_id);
+        for (int id : ids) {
+            Post post = null;
+            
+            String stmt = "SELECT * FROM POST WHERE POSTID = '" + id + "';";
 
-            for (Post postById : postsById) {
-                posts.add(postById);
-            }
+            ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
+            if (results.size() > 0) {
+                int postId = Integer.parseInt(results.get(0).get(0));
+                String content = results.get(0).get(1);
+                SMDate datetime = new SMDate(results.get(0).get(2));
+
+                post = new Post(postId, content, datetime);
+                posts.add(post);
+            } 
         }
-        
+
         return posts;
     }
 
-    public static ArrayList<Post> retrievePostsByPostId(int id) {
-        ArrayList<Post> posts = new ArrayList<>();
+    public static Post retrievePostByPostId(int id) {
+        Post post = null;
 
         String stmt = "SELECT * FROM POST WHERE POSTID = '" + id + "';";
 
         ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
         if (results.size() == 0) {
-            return posts;
+            return post;
         } else {
-            for (ArrayList<String> result : results) {
-                int postId = Integer.parseInt(result.get(0));
-                String content = result.get(1);
-                SMDate datetime = new SMDate(result.get(2));
+            int postId = Integer.parseInt(results.get(0).get(0));
+            String content = results.get(0).get(1);
+            SMDate datetime = new SMDate(results.get(0).get(2));
 
-                posts.add(new Post(postId, content, datetime));
-            }
+            post = new Post(postId, content, datetime);
+
         }
 
-        return posts;
+        return post;
     }
 
-    public HashMap<String, Integer> retrieveLikes (int postID) {
-        //SELECT
-        return new HashMap<String, Integer>();
+    public static void deletePost(int postId) {
+        String stmt = "DELETE FROM POST WHERE POSTID = '" + postId + "';";
+
+        DataUtility.queryUpdate(stmt);
     }
 
-    //Returns String array containing top 3 tagged posts
-    public static String[] retrieveWall(int UserID) {
-        //SELECT
-        return new String[]{};
+    public static int addPost(String postContent, String datetime) {
+        String stmt = "INSERT INTO POST (`content`, `datetime`) VALUES ('" + postContent + "', '" + datetime + "');";
 
+        int postId = DataUtility.queryUpdateRetrieveID(stmt);
+
+        return postId;
     }
 
-    public String[] retrieveComments(int postID) {
-        //retrieve comment from commentID table and post_comment table
-        return new String[]{};
-    }
+
 
 }

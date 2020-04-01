@@ -17,7 +17,7 @@ public class Comment {
         return content;
     }
 
-    public SMDate getDate () {
+    public SMDate getDateTime () {
         return date;
     }
 }

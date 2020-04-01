@@ -1,9 +1,9 @@
-import java.util.*;
+import java.util.ArrayList;
 
-public class UserPostDAO {
+public class UserWallDAO {
     public static ArrayList<Integer> getPostIdsByUserId(int userId) {
         ArrayList<Integer> ids = new ArrayList<>();
-        String stmt = "SELECT POSTID FROM USER_POST WHERE USERID = '" + userId +"';";
+        String stmt = "SELECT POSTID FROM USER_WALL WHERE USERID = '" + userId +"';";
 
         ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
 
@@ -19,21 +19,23 @@ public class UserPostDAO {
     }
 
     public static int getUserIdByPostId(int postId) {
-        String stmt = "SELECT USERID FROM USER_POST WHERE POSTID = '" + postId +"';";
+        String stmt = "SELECT USERID FROM USER_WALL WHERE POSTID = '" + postId +"';";
 
         ArrayList<ArrayList<String>> results = DataUtility.querySelect(stmt);
         return Integer.parseInt(results.get(0).get(0));
     }
 
-    public static void deleteUserPost(int postId) {
-        String stmt = "DELETE FROM USER_POST WHERE POSTID = '" + postId + "';";
+    public static void deleteUserWallPost(int postId) {
+        String stmt = "DELETE FROM USER_WALL WHERE POSTID = '" + postId + "';";
 
         DataUtility.queryUpdate(stmt);
     }
 
-    public static void addUserPost(int userId, int postId) {
-        String stmt = "INSERT INTO USER_POST VALUES ('"+ userId +"', '" + postId + "');";
+    public static void addUserWallPost(int userId, int postId) {
+        String stmt = "INSERT INTO USER_WALL VALUES ('"+ userId +"', '" + postId + "');";
 
         DataUtility.queryUpdate(stmt);
     }
+
+
 }

@@ -30,31 +30,44 @@ public class WelcomeMenu {
                     System.exit(0); 
                 default :
                     System.out.println("Enter a choice between 1 to 3");
+                    System.out.println();
             }
         } while (choice != "3");
         sc.close();
     }
 
     public static void register() {
+        System.out.println();
         Scanner sc = new Scanner(System.in);
+
+        System.out.println("== Social Magnet :: Registration ==");
         System.out.print("Enter your username > ");
         String username = sc.nextLine();
+
         System.out.print("Enter your Full name> ");
         String fullName = sc.nextLine();
+
         System.out.print("Enter your password > ");
         String password = sc.nextLine();
+
         System.out.print("Confirm your password > ");
         String confirmedPassword = sc.nextLine();
 
-        String display_msg = WelcomeMenuCtrl.register(username, fullName, password, confirmedPassword);
+        try {
+            WelcomeMenuCtrl.register(username, fullName, password, confirmedPassword);
+            System.out.println(username + " your account is successfully created!");
+        } catch (RegisterException e) {
+            System.out.println(e.getMessage());
+        }
 
-        System.out.println(display_msg);
         System.out.println();
     }
 
     public static void login() {
-
+        System.out.println();
         Scanner sc = new Scanner(System.in);
+
+        System.out.println("== Social Magnet :: Login ==");
         System.out.print("Enter your username > ");
 
         String username = sc.nextLine();
@@ -66,10 +79,12 @@ public class WelcomeMenu {
 
         if (retrievedUser == null) {
             System.out.println("Incorrect Username/Password");
-        } 
-        
+        } else {
+            System.out.println();
+            ProfileMenu.readOptions(retrievedUser);
+        }
+
         System.out.println();
-        ProfileMenu.readOptions(retrievedUser);
 
     }
 }

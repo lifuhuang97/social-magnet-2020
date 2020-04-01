@@ -46,7 +46,38 @@ public class NewsFeedMenu {
         System.out.println(); 
         System.out.println("== Social Magnet :: News Feed ==");
 
-        PostUtility.displayPosts(newsfeed, 1);
+        if (newsfeed.size() == 0) {
+            System.out.println("No threads to view!");
+            System.out.println();
+        }
+
+        int outsideCounter = 1;
+
+        for (Post post : newsfeed.keySet()) {
+            int insiderCounter = 1;
+            ArrayList<Comment> comments = newsfeed.get(post);
+            String username = ctrl.retrieveUsername(post);
+            System.out.println(outsideCounter + " " + username + ": " + post.getContent());
+
+            // display likes and dislikes 
+            int numOfLikes = ctrl.retrieveNumofLikes(post.getPostId());
+            int numOfDislikes = ctrl.retrieveNumOfDislikes(post.getPostId());
+
+            System.out.println("[ " + numOfLikes + ((numOfLikes > 1) ? " likes" : " like") + ", " + numOfDislikes + ((numOfDislikes > 1) ? " dislikes" : " dislike") + " ]");
+
+            String format = "%2s%2$s.%3$s %4$s: %5$s\n";
+
+            for (int i = 0; i < comments.size(); i++) {
+                String comment_username = ctrl.retrieveCommentUsername(comments.get(i));
+
+                System.out.format(format, " ", outsideCounter, insiderCounter, comment_username, comments.get(i).getContent());
+
+                insiderCounter++;
+            }
+
+            outsideCounter++;
+            System.out.println();
+        }
 
         System.out.print("[M]ain | [T]hread > ");
 
@@ -62,7 +93,7 @@ public class NewsFeedMenu {
         } else if (num > newsfeed.size()) {
             System.out.println("The thread that you have specified does not exist.");
         } else {
-            HashMap<Post, ArrayList<Comment>> thread = ctrl.retrieveThread(newsfeed, num);
+            HashMap<Post, ArrayList<Comment>> thread = PostUtility.retrieveThread(newsfeed, num);
             ViewThreadMenu.readOptions(currentUser, thread, num);
         }
 

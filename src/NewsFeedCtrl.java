@@ -1,4 +1,3 @@
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -28,17 +27,19 @@ public class NewsFeedCtrl {
         return newsfeed;
     }    
 
-    public HashMap<Post, ArrayList<Comment>> retrieveThread(LinkedHashMap <Post, ArrayList<Comment>> newsfeed, int num) {
-        HashMap<Post, ArrayList<Comment>> thread = new HashMap<>();
+    public int retrieveNumofLikes(int postId) {
+        return PostLikeDAO.getUserIdByPostId(postId).size();
+    }
 
-        int counter = 1;
-        for (Post post : newsfeed.keySet()) {
-            if (counter == num) {
-                thread.put(post, newsfeed.get(post));
-            }
-            counter += 1;
-        }
+    public int retrieveNumOfDislikes(int postId) {
+        return PostDislikeDAO.getUserIdByPostId(postId).size();
+    }
 
-        return thread;
+    public String retrieveUsername(Post post) {
+        return UserProfileDAO.getUserProfileByUserId(UserPostDAO.getUserIdByPostId(post.getPostId())).getUsername();
+    }
+
+    public String retrieveCommentUsername(Comment comment) {
+        return UserProfileDAO.getUserProfileByUserId(UserCommentDAO.getUserIdByCommentId(comment.getCommentId())).getUsername();
     }
 }

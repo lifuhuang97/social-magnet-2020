@@ -1,4 +1,3 @@
-import java.sql.*;
 import java.util.ArrayList;
 
 public class UserProfileDAO {
@@ -68,63 +67,6 @@ public class UserProfileDAO {
         // }
 
         return status;
-    }
-
-    public static String wealthRankPrint(UserProfile user){
-
-        int myGold = user.getGold();
-
-        ArrayList<Integer> allWealth = wealthComparison(user.getUserId());
-
-        int ranking = allWealth.indexOf(myGold) + 1;
-
-        String tobeprintedRanking = ordinal(ranking);
-
-        if(tobeprintedRanking.equals("1st")){
-            return "";
-        }else{
-            return tobeprintedRanking;
-        }
-
-
-    }
-
-    public static String ordinal(int i){
-        String[] suffixes = new String[] {"\\^th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"};
-        switch(i%100){
-            case 11:
-            case 12:
-            case 13:
-                return i + "th";
-            default:
-                return i + suffixes[i % 10];
-        }
-    }
-
-    public static ArrayList<Integer> wealthComparison(int userid){
-
-        String listOfFriendsIncludingSelf = "(" + userid;
-
-        String statement = "SELECT friendID FROM friends WHERE userID = " + userid;
-        ArrayList<ArrayList<String>> friendsList = DataUtility.querySelect(statement);
-
-        for(ArrayList<String> friend : friendsList){
-            listOfFriendsIncludingSelf += ", " + friend.get(0);
-        }
-
-        listOfFriendsIncludingSelf += ")";
-
-        String statement2 = "SELECT gold FROM userprofile WHERE userID in " + listOfFriendsIncludingSelf;
-        ArrayList<ArrayList<String>> allWealth = DataUtility.querySelect(statement2);
-
-        ArrayList<Integer> allWealthConv = new ArrayList<>();
-
-        for (ArrayList<String> gold : allWealth){
-            allWealthConv.add(Integer.parseInt(gold.get(0)));
-        }
-
-        return allWealthConv;
-
     }
 
 }

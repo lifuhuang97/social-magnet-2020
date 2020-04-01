@@ -16,16 +16,16 @@ public  class ViewThreadMenu {
                     System.out.println();
                     return;
                 case "K":
-                    System.out.println();
-                    break;
+                    kill(currentUser, thread);
+                    return;
                 case "R":
-                    System.out.println();
-                    break;
+                    reply(currentUser, thread);
+                    return;
                 case "L":
-                    like(thread);
+                    like(currentUser, thread);
                     break;
                 case "D":
-                    dislike(thread);
+                    dislike(currentUser, thread);
                     break;
                 default:
                     System.out.println("Invalid choice, please try again.");
@@ -39,7 +39,7 @@ public  class ViewThreadMenu {
         System.out.println(); 
         System.out.println("== Social Magnet :: View a Thread ==");
 
-        PostUtility.displayPosts(thread, num);
+        PostUtility.display(thread, num);
 
         System.out.println("Who likes this post:");
         int likeCounter = 1;
@@ -52,15 +52,47 @@ public  class ViewThreadMenu {
 
         System.out.println();
         System.out.println("Who dislikes this post:");
+        int dislikeCounter = 1;
+
+        for (UserProfile user : ctrl.getPostDislikedBy(thread)) {
+            System.out.format(format, " ", dislikeCounter, user.getFullName(), user.getUsername());
+            dislikeCounter += 1;
+        }
+
+        System.out.println();
 
         System.out.print("[M]ain | [K]ill |  [R]eply | [L]ike | [D]islike > ");
     }
 
-    public static void like(HashMap<Post, ArrayList<Comment>> thread) {
+    public static void reply(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread) {
+        ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);
 
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter your reply > ");
+        String content = sc.nextLine();
+
+        ctrl.reply(thread, content, currentUser.getUserId());
     }
 
-    public static void dislike(HashMap<Post, ArrayList<Comment>> thread) {
+    public static void like(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread) {
+        ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);
 
+        ctrl.likePost(thread, currentUser.getUserId());
+    }
+
+    public static void dislike(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread) {
+        ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);
+
+        ctrl.dislikePost(thread, currentUser.getUserId());
+    }
+
+    public static void kill(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread) {
+        ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);
+        try {
+            ctrl.canKill(thread, currentUser.getUserId());
+        } catch (KillThreadException e) {
+            System.out.println(e.getMessage());
+        }
+        
     }
 }

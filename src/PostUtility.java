@@ -2,22 +2,34 @@ import java.util.*;
 
 public class PostUtility {
     public static LinkedHashMap <Post, ArrayList<Comment>> retrievePostsByUserIds(ArrayList<Integer> listOfIdsToFindPostBy) {
-        // FIXME: The first UserID is to be used to find posts that tagged that ID --  might generate duplicates 
 
         LinkedHashMap <Post, ArrayList<Comment>> to_return = new LinkedHashMap<>();
-
-        // Retrieve arraylists of postids by userids
         ArrayList<Integer> postIds = new ArrayList<>();
-        for (Integer idToFindPostBy : listOfIdsToFindPostBy) {
-            for(Integer postId : UserPostDAO.getPostIdsByUserId(idToFindPostBy)) {
+
+        // Retrieve arraylists of postids by userids (from USER_WALL db)
+        for (int idToFindPostBy : listOfIdsToFindPostBy) {
+            for(int postId : UserWallDAO.getPostIdsByUserId(idToFindPostBy)) {
                 postIds.add(postId);
             }
         }
 
-        // Insert here 
+        // Retrieve arraylists of postids that tagged the userids (check for duplicates by pid)
+        for (int idToFindPostBy : listOfIdsToFindPostBy) {
+            for(int postId : PostTagDAO.getPostIdsByTagId(idToFindPostBy)) {
+                boolean insert = true;
+                for (int existingPostId : postIds) {
+                    if (existingPostId == postId) {
+                        insert = false;
+                    }
+                }
+                if (insert) {
+                    postIds.add(postId);
+                }
+            }
+        }
 
         // Retrieve an arraylist of all the posts
-        ArrayList<Post> posts = PostDAO.retrievePostsByUserIds(postIds);
+        ArrayList<Post> posts = PostDAO.retreivePostsByPostsId(postIds);
 
         ArrayList<Post> topFivePosts = new ArrayList<>();
 
@@ -39,18 +51,32 @@ public class PostUtility {
             ArrayList<Integer> commentIds = PostCommentDAO.getCommentIdsByPostId(topFivePost.getPostId());
 
             ArrayList<Comment> comments = new ArrayList<>();
+            ArrayList<Comment> arranged_comments = new ArrayList<>();
 
             for (Integer commentId : commentIds) {
                 comments.add(CommentDAO.retrieveCommentById(Integer.valueOf(commentId)));
             }
 
-            to_return.put(topFivePost, comments);
+            int m = 3;
+            while (!(comments.isEmpty()) && m != 0) {
+                Comment maxC = comments.get(0);
+                for (Comment comment : comments) {
+                    if (comment.getDateTime().after(maxC.getDateTime())) {
+                        maxC = comment;
+                    }
+                }
+                arranged_comments.add(maxC);
+                comments.remove(maxC);
+                m--;
+            }
+
+            to_return.put(topFivePost, arranged_comments);
         }
 
         return to_return;
     }
 
-    public static void displayPosts(Map<Post, ArrayList<Comment>> posts, int outsideCounter){   
+    public static void display(Map<Post, ArrayList<Comment>> posts, int outsideCounter){   
 
         for (Post post : posts.keySet()) {
             int insiderCounter = 1;
@@ -71,6 +97,20 @@ public class PostUtility {
             outsideCounter++;
             System.out.println();
         }
+    }
+
+    public static HashMap<Post, ArrayList<Comment>> retrieveThread(LinkedHashMap <Post, ArrayList<Comment>> threads, int num) {
+        HashMap<Post, ArrayList<Comment>> thread = new HashMap<>();
+
+        int counter = 1;
+        for (Post post : threads.keySet()) {
+            if (counter == num) {
+                thread.put(post, threads.get(post));
+            }
+            counter += 1;
+        }
+
+        return thread;
     }
     
 }

@@ -12,4 +12,18 @@ public class CommentDAO {
 
         return new Comment(commentId, content, datetime);
     }
+
+    public static int addComment(String content, String datetime) {
+        String stmt = "INSERT INTO COMMENT (`content`, `datetime`) VALUES ('" + content + "', '" + datetime + "')";
+
+        int commentId = DataUtility.queryUpdateRetrieveID(stmt);
+
+        return commentId;
+    }
+
+    public static void deleteComment(int commentId) {
+        String stmt = "DELETE FROM COMMENT WHERE COMMENTID = '" + commentId + "';";
+
+        DataUtility.queryUpdate(stmt);
+    }
 }

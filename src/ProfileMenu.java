@@ -40,7 +40,6 @@ public class ProfileMenu {
                     break;
 
                 case "5" :
-                    System.out.println();
                     return;
 
                 default :
