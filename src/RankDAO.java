@@ -4,6 +4,9 @@ public class RankDAO {
 
     private ArrayList<Rank> allRanks = new ArrayList<Rank>();
 
+    /**
+     * Constructs rankDAO object
+     */
     public RankDAO(){
 
         this.allRanks = new ArrayList<Rank>();
@@ -15,6 +18,11 @@ public class RankDAO {
         allRanks.add(new Rank(5, "Legendary", 12000, 9));
     }
 
+    /**
+     * Retrieve rank object according to rankId
+     * @param id id of rank
+     * @returns Rank object of rank
+     */
     public Rank getMyRank(int id){
         return allRanks.get(id-1);
     }

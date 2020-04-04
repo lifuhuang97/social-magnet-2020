@@ -1,4 +1,3 @@
-
 public class UserProfile {
     private int userId;
     private String fullName;
@@ -77,38 +76,65 @@ public class UserProfile {
     }
 
     /**
-     * Gets the XP
-     * @return the XP
+     * Gets the gold
+     * @return the gold
      */
     public int getGold() {
         return gold;
     }
 
-
+    /**
+     * Sets userId
+     * @param userId the UserID of the User
+     */
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
+     /**
+     * Sets fullName
+     * @param fullName the Full Name of the User
+     */
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
+     /**
+     * Sets username
+     * @param username the Username of the User
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+     /**
+     * Sets password
+     * @param password the Password of the User
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+     /**
+     * Sets rank
+     * @param rank the rank of the user
+     */
     public void setRank(Rank rank) {
         this.rank = rank;
     }
 
+     /**
+     * Sets xp
+     * @param xp the xp of the user
+     */
     public void setXp(int xp) {
         this.xp = xp;
     }
 
+     /**
+     * Sets gold
+     * @param gold the gold of the user
+     */
     public void setGold(int gold) {
         this.gold = gold;
     }

@@ -1,6 +1,12 @@
 import java.util.*;
 
 public class PostUtility {
+    /**
+     * --describe what function does==
+     * @param listOfIdsToFindPostBy
+     * @return --what function returns--
+     */
+     //TODO fill in function description
     public static LinkedHashMap <Post, ArrayList<Comment>> retrievePostsByUserIds(ArrayList<Integer> listOfIdsToFindPostBy) {
 
         LinkedHashMap <Post, ArrayList<Comment>> to_return = new LinkedHashMap<>();
@@ -75,7 +81,14 @@ public class PostUtility {
 
         return to_return;
     }
+    /**
+     * --describe what function does==
+     * @param posts --descrription of what it is--
+     * @param outsideCounter --descrription of what it is--
+     * @return --what function returns--
+     */
 
+     //TODO fill in descriptions
     public static void display(Map<Post, ArrayList<Comment>> posts, int outsideCounter){   
 
         for (Post post : posts.keySet()) {
@@ -99,6 +112,14 @@ public class PostUtility {
         }
     }
 
+    /**
+     * --describe what function does==
+     * @param threads --descrription of what it is--
+     * @param num --descrription of what it is--
+     * @return --what function returns--
+     */
+
+     //TODO fill in descriptions
     public static HashMap<Post, ArrayList<Comment>> retrieveThread(LinkedHashMap <Post, ArrayList<Comment>> threads, int num) {
         HashMap<Post, ArrayList<Comment>> thread = new HashMap<>();
 

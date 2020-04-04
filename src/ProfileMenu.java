@@ -2,6 +2,10 @@ import java.util.*;
 
 public class ProfileMenu {
 
+    /**
+     * Displays profile menu
+     * @param currentUser UserProfile object of current user
+     */
     public static void display(UserProfile currentUser) {
         System.out.println("== Social Magnet :: Main Menu ==");
         System.out.println("Welcome, " + currentUser.getFullName() + "!");
@@ -14,6 +18,10 @@ public class ProfileMenu {
         System.out.print("Enter your choice > ");
     }
 
+    /**
+     * process user's choice for menu
+     * @param currentUser UserProfile object of current user
+     */
     public static void readOptions(UserProfile currentUser) {
         Scanner sc = new Scanner(System.in);
         String choice;
@@ -50,14 +58,26 @@ public class ProfileMenu {
         sc.close();
     }
 
+    /**
+     * Reads user's option for news feed menu
+     * @param currentUser UserProfile object of current user
+     */
     public static void displayNewsFeed(UserProfile currentUser) {
         NewsFeedMenu.readOptions(currentUser);
     }
 
+    /**
+     * Reads user's option for myWall
+     * @param currentUser UserProfile object of current user
+     */
     public static void displayWall (UserProfile currentUser) {
         MyWallMenu.readOptions(currentUser);
     }
 
+    /**
+     * Reads user's option for friend's menu
+     * @param currentUser UserProfile object of current user
+     */
     public static void displayFriendsPage (UserProfile currentUser) {
         FriendsMenu.readOptions(currentUser);
     }

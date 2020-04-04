@@ -2,6 +2,11 @@ import java.util.ArrayList;
 
 public class UserProfileDAO {
 
+    /**
+     * Retrieves UserProfile object by username
+     * @param username username of user
+     * @return UserProfile object of user
+     */
     public static UserProfile getUserProfileByUsername(String username) {
 
         UserProfile user = null;
@@ -27,6 +32,11 @@ public class UserProfileDAO {
         return user;
     }
 
+    /**
+     * Retrieves UserProfile object by userId
+     * @param userId userId of user
+     * @return UserProfile object of user
+     */
     public static UserProfile getUserProfileByUserId(int userId) {
 
         UserProfile user = null;
@@ -52,6 +62,13 @@ public class UserProfileDAO {
         return user;
     }
 
+    /**
+     * Creates a new user in the database
+     * @param username username of user
+     * @param fullName full name of user
+     * @param password password of user
+     * @return boolean of status
+     */
     public static boolean createUser(String username, String fullName, String password) {
         boolean status = true;
         ArrayList<String> stmts = new ArrayList<>();

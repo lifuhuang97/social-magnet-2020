@@ -3,6 +3,14 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public  class ViewThreadMenu {
+
+     /**
+     * Read user option for thread menu
+     * @param currentUser userProfile object current user
+     * @param thread thread user wants to view
+     * @param num 
+     */
+    //TODO define what num is
     public static void readOptions(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread, int num){
         String choice = null;
         Scanner sc = new Scanner(System.in);
@@ -33,6 +41,12 @@ public  class ViewThreadMenu {
         } while (choice != "M");
     }
 
+    /**
+     * Displays menu for thread
+     * @param currentUser userProfile object current user
+     * @param thread thread user wants to view
+     * @param num
+     */
     public static void display(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread, int num){
         ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);
 
@@ -64,6 +78,11 @@ public  class ViewThreadMenu {
         System.out.print("[M]ain | [K]ill |  [R]eply | [L]ike | [D]islike > ");
     }
 
+    /**
+     * Reply to a specific thread
+     * @param currentUser userProfile object current user
+     * @param thread thread user wants to view
+     */
     public static void reply(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread) {
         ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);
 
@@ -74,18 +93,33 @@ public  class ViewThreadMenu {
         ctrl.reply(thread, content, currentUser.getUserId());
     }
 
+    /**
+     * Like a thread
+     * @param currentUser userProfile object current user
+     * @param thread thread user wants to view
+     */
     public static void like(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread) {
         ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);
 
         ctrl.likePost(thread, currentUser.getUserId());
     }
 
+    /**
+     * Dislike a thread
+     * @param currentUser userProfile object current user
+     * @param thread thread user wants to view
+     */
     public static void dislike(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread) {
         ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);
 
         ctrl.dislikePost(thread, currentUser.getUserId());
     }
 
+    /**
+     * kill a thread
+     * @param currentUser userProfile object current user
+     * @param thread thread user wants to view
+     */
     public static void kill(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread) {
         ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);
         try {

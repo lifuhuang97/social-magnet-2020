@@ -1,5 +1,12 @@
 public class WelcomeMenuCtrl {
     
+     /**
+     * Registers a new user
+     * @param username the Username of the User
+     * @param fullName  the Full Name of the User
+     * @param password the Password of the User
+     * @param confirmedPassword the Confirmed Password of the User
+     */
     public static void register(String username, String fullName, String password, String confirmedPassword) {
 
         if (!(password.equals(confirmedPassword))) {
@@ -23,6 +30,12 @@ public class WelcomeMenuCtrl {
 
     }
 
+    /**
+     * Authenticates and logs a user in
+     * @param username the Username of the User
+     * @param password the Password of the User
+     * @return UserProfile object
+     */
     public static UserProfile login(String username, String password) {
         UserProfile retrievedUser = UserProfileDAO.getUserProfileByUsername(username);
 

@@ -5,10 +5,19 @@ import java.util.Map;
 public class ViewThreadCtrl {
     private UserProfile currentUser;
 
+    /**
+     * Constructs a ViewThreadCtrl objet
+     * @param currentUser userProfile object current user
+     */
     public ViewThreadCtrl(UserProfile currentUser) {
         this.currentUser = currentUser;
     }
 
+    /**
+     * Retrieve ArrayList of UserProfile object who liked the post
+     * @param thread thread user liked
+     * @return ArrayList of UserProfile objects
+     */
     public ArrayList<UserProfile> getPostLikedBy(HashMap<Post, ArrayList<Comment>> thread) {
         ArrayList<UserProfile> users = new ArrayList<>();
 
@@ -26,6 +35,11 @@ public class ViewThreadCtrl {
         return users;
     }
 
+    /**
+     * Retrieve ArrayList of UserProfile object who disliked the post
+     * @param thread thread user disliked
+     * @return ArrayList of UserProfile objects
+     */
     public ArrayList<UserProfile> getPostDislikedBy(HashMap<Post, ArrayList<Comment>> thread) {
         ArrayList<UserProfile> users = new ArrayList<>();
 
@@ -43,6 +57,11 @@ public class ViewThreadCtrl {
         return users;
     }
 
+    /**
+     * User likes a post
+     * @param thread thread user wants to like
+     * @param userId userId of user who wants to like
+     */
     public void likePost(HashMap<Post, ArrayList<Comment>> thread, int userId) {
 
         // Obtain post object from thread
@@ -57,6 +76,11 @@ public class ViewThreadCtrl {
         }
     }
 
+    /**
+     * User dislikes a post
+     * @param thread thread user wants to dislike
+     * @param userId userId of user who wants to dislike
+     */
     public void dislikePost(HashMap<Post, ArrayList<Comment>> thread, int userId) {
         // Obtain post object from thread
         Map<Post, ArrayList<Comment>> map = thread;
@@ -71,6 +95,11 @@ public class ViewThreadCtrl {
 
     }
 
+     /**
+     * User replies to a post
+     * @param thread thread user wants to reply to
+     * @param userId userId of user who wants to reply
+     */
     public void reply(HashMap<Post, ArrayList<Comment>> thread, String content, int userId) {
         // Obtain post object from thread
         Map<Post, ArrayList<Comment>> map = thread;
@@ -88,6 +117,11 @@ public class ViewThreadCtrl {
 
     }
 
+     /**
+     * Checks if user has permission to kill thread and calls killThread/killPost accordingly if he/she does
+     * @param thread thread user wants to dislike
+     * @param userId userId of user who wants to kill the thread
+     */
     public void canKill(HashMap<Post, ArrayList<Comment>> thread, int userId) {
         // Obtain post object from thread
         Map<Post, ArrayList<Comment>> map = thread;
@@ -111,6 +145,11 @@ public class ViewThreadCtrl {
         }
     }
 
+     /**
+     * Removes post from user's wall
+     * @param thread thread user wants to remove
+     * @param userId userId of user who wants to remove thread
+     */
     public void killWall(HashMap<Post, ArrayList<Comment>> thread, int userId) {
         // Obtain post object from thread
         Map<Post, ArrayList<Comment>> map = thread;
@@ -121,6 +160,11 @@ public class ViewThreadCtrl {
         PostTagDAO.deletePostTagByTagId(postId, userId);
     }
 
+    /**
+     * Kills thread
+     * @param thread thread user wants to remove
+     * @param userId userId of user who wants to remove thread
+     */
     public void killThread(HashMap<Post, ArrayList<Comment>> thread, int userId) {
         // Obtain post object from thread
         Map<Post, ArrayList<Comment>> map = thread;

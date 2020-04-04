@@ -1,6 +1,9 @@
 import java.util.*;
 public class WelcomeMenu {
 
+     /**
+     * Displays welcome menu to user
+     */
     public static void display() {
         System.out.println("== Social Magnet :: Welcome ==");
         System.out.println("Good morning, anonymous!");
@@ -10,6 +13,9 @@ public class WelcomeMenu {
         System.out.print("Please enter your choice: ");
     }
 
+     /**
+     * Execute user's choice
+     */
     public static void execute() {
         Scanner sc = new Scanner(System.in);
         String choice;
@@ -36,6 +42,9 @@ public class WelcomeMenu {
         sc.close();
     }
 
+     /**
+     * Scan's user input for registration and calls register function from WelcomeMenuCtrl
+     */
     public static void register() {
         System.out.println();
         Scanner sc = new Scanner(System.in);
@@ -63,6 +72,9 @@ public class WelcomeMenu {
         System.out.println();
     }
 
+     /**
+     * Logs user in using WelcomeMenuCtrl login function 
+     */
     public static void login() {
         System.out.println();
         Scanner sc = new Scanner(System.in);
