@@ -1,3 +1,5 @@
+package main.java;
+
 public class Comment {
     private int commentID;
     private String content;

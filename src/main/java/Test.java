@@ -1,3 +1,5 @@
+package main.java;
+
 import java.util.*;
 import java.time.*;
 public class Test {

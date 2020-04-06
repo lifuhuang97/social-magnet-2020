@@ -1,3 +1,5 @@
+package main.java;
+
 public class UserProfile {
     private int userId;
     private String fullName;

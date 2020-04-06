@@ -1,3 +1,4 @@
+package main.java;
 
 public class Post {
     public int postId;
