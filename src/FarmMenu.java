@@ -93,18 +93,19 @@ public class FarmMenu {
         displayFarmHeader("case1", currentUser);
 
         ArrayList<Plot> myPlots = ctrl.getMyPlots(currentUser);
-
+        int numberOfPlots = myPlots.size();
         
         // SMDate need a CalcGrowthPercentage for crop (compare cropPlantTime vs GrowTime)
         // cropPlantTime is calculated by comparing plantTime against current time
         // convert to minutes
 
         // Get number of plots I own
-        
-        System.out.println("1. ");
 
-        System.out.println("You have " + " plots of land.");
-        
+        System.out.println("You have " + numberOfPlots + " plots of land.");
+        for (int i = 1; i <= numberOfPlots; i++) {
+            Plot plot = myPlots.get(i);
+            System.out.println("" + i + ". ");
+        }
     }
 
     // public void accessStore(){

@@ -35,6 +35,14 @@ CREATE TABLE `USER_POST` (
   CONSTRAINT user_post_fk2 foreign key(postID) references POST(postID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `USER_WALL` (
+  `userID` int(3) NOT NULL,
+  `postID` int(3) NOT NULL,
+  CONSTRAINT user_wall_pk primary key (userID, postID),
+  CONSTRAINT user_wall_fk1 foreign key(userID) references USERPROFILE(userID),
+  CONSTRAINT user_wall_fk2 foreign key(postID) references POST(postID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 # POST CLASS - need a function to remove tag
 
 CREATE TABLE `POST_TAGS` (
@@ -93,22 +101,18 @@ CREATE TABLE `FRIENDS` (
   CONSTRAINT friends_fk2 foreign key(friendID) references USERPROFILE(userID)  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-#--------------------------------------------------------------------------------------------
-
--- # FARM
-CREATE TABLE `GIFT` (
-  `userID` int(3) NOT NULL,
-  `friendID` int(3) NOT NULL,
-  `timesent` varchar(16) NOT NULL,
-  `cropID` int(3) NOT NULL,
-  CONSTRAINT gift_pk primary key(userID, friendID, timesent),
-  CONSTRAINT gift_fk1 foreign key (friendID) references USERPROFILE(userID),
-  CONSTRAINT gift_fk2 foreign key (cropID) references CROP(cropID)
+CREATE TABLE `FRIEND_REQUESTS` (
+  `requesterID` int(3) NOT NULL,
+  `requestedID` int(3) NOT NULL,
+  CONSTRAINT friend_request_pk primary key (requesterID, requestedID),
+  CONSTRAINT friend_request_fk1 foreign key(requesterID) references USERPROFILE(userID),
+  CONSTRAINT friend_request_fk2 foreign key(requestedID) references USERPROFILE(userID)  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+#--------------------------------------------------------------------------------------------
 -- # FARM
 CREATE TABLE `CROP` ( # ABSTRACT -- need a super name
-  `cropID` int(3) NOT NULL, # common
+  `cropID` int(3) NOT NULL AUTO_INCREMENT, # common
   `name` varchar(30) NOT NULL, # common
   `cost` int(4) NOT NULL,  # seed
   `harvesttime` int(5) NOT NULL, #seed
@@ -118,6 +122,16 @@ CREATE TABLE `CROP` ( # ABSTRACT -- need a super name
   `xp` int(10) NOT NULL, #crop
   CONSTRAINT crop_pk primary key (cropID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- # FARM
+CREATE TABLE `GIFT` (
+  `userID` int(3) NOT NULL,
+  `friendID` int(3) NOT NULL,
+  `timesent` varchar(16) NOT NULL,
+  `cropID` int(3) NOT NULL,
+  CONSTRAINT gift_pk primary key(userID, friendID, timesent)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 # FARM
 CREATE TABLE `INVENTORY` (
@@ -155,14 +169,14 @@ CONSTRAINT rank_pk primary key (rankID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `userprofile` (`fullname`, `username`, `password`) VALUES ('Harvey Specter', 'harveyspecter999', 'iamthebest');
-INSERT INTO `userprofile` (`fullname`, `username`, `password`) VALUES ('Louis Litt', 'louislitt1337', 'managingpartner');
-INSERT INTO `userprofile` (`fullname`, `username`, `password`) VALUES ('Mike Ross', 'mikeross', 'bigbrainmike');
-INSERT INTO `userprofile` (`fullname`, `username`, `password`) VALUES ('Robert Zane', 'robert_zane', 'nuggets');
-INSERT INTO `userprofile` (`fullname`, `username`, `password`) VALUES ('Frank Gallo', 'frankgalloftw', 'pogchamp');
-INSERT INTO `userprofile` (`fullname`, `username`, `password`) VALUES ('Jessica Pearson', 'jessicapearson', 'securepassword');
-INSERT INTO `userprofile` (`fullname`, `username`, `password`) VALUES ('Jeff Malone', 'jeffmalone', 'schmeff');
-INSERT INTO `userprofile` (`fullname`, `username`, `password`) VALUES ('Elon Musk', 'elonmusketeer', 'marovers');
+INSERT INTO `userprofile` (`fullname`, `username`, `password`, `gold`) VALUES ('Harvey Specter', 'harveyspecter999', 'iamthebest', 50);
+INSERT INTO `userprofile` (`fullname`, `username`, `password`, `gold`) VALUES ('Louis Litt', 'louislitt1337', 'managingpartner', 50);
+INSERT INTO `userprofile` (`fullname`, `username`, `password`, `gold`) VALUES ('Mike Ross', 'mikeross', 'bigbrainmike', 50);
+INSERT INTO `userprofile` (`fullname`, `username`, `password`, `gold`) VALUES ('Robert Zane', 'robert_zane', 'nuggets', 50);
+INSERT INTO `userprofile` (`fullname`, `username`, `password`, `gold`) VALUES ('Frank Gallo', 'frankgalloftw', 'pogchamp', 50);
+INSERT INTO `userprofile` (`fullname`, `username`, `password`, `gold`) VALUES ('Jessica Pearson', 'jessicapearson', 'securepassword', 50);
+INSERT INTO `userprofile` (`fullname`, `username`, `password`, `gold`) VALUES ('Jeff Malone', 'jeffmalone', 'schmeff', 50);
+INSERT INTO `userprofile` (`fullname`, `username`, `password`, `gold`) VALUES ('Elon Musk', 'elonmusketeer', 'marovers', 50);
 
 
 INSERT INTO `post` (`postID`, `content`, `datetime`) VALUES (NULL, 'Give me a mountain – I\'ll climb it. Give me a Katy Perry song – I\'ll sing it', '10/03/2020 12:50');
@@ -209,7 +223,7 @@ INSERT INTO `user_comment` VALUES (8, 2);
 INSERT INTO `user_comment` VALUES (6, 3);
 INSERT INTO `user_comment` VALUES (3, 4);
 
-# Everyone's friends with everyone
+# Everyones friends with everyone
 INSERT INTO `friends` VALUES (1,2);
 INSERT INTO `friends` VALUES (1,3);
 INSERT INTO `friends` VALUES (1,4);
@@ -278,4 +292,10 @@ INSERT INTO `crop` (name, cost, harvesttime, xp, minyield, maxyield, saleprice) 
 INSERT INTO `crop` (name, cost, harvesttime, xp, minyield, maxyield, saleprice) VALUES ("Sunflower", 40, 120, 20, 15, 20, 40);
 INSERT INTO `crop` (name, cost, harvesttime, xp, minyield, maxyield, saleprice) VALUES ("Watermelon", 50, 240, 1, 5, 800, 10);
 
+INSERT INTO `plot` (plotID, cropID, planttime) VALUES (1, 1, 1000);
+INSERT INTO `plot` (plotID, cropID, planttime) VALUES (2, 2, 1100);
+INSERT INTO `plot` (plotID, cropID, planttime) VALUES (3, 3, 1100);
 
+INSERT INTO `user_plot` (userID, plotID) VALUES (3,1);
+INSERT INTO `user_plot` (userID, plotID) VALUES (3,2);
+INSERT INTO `user_plot` (userID, plotID) VALUES (3,3);
