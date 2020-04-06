@@ -6,7 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class SMDate {
+
+// All SMDATE follows a format of DD/MM/YYYY HH:MM
+
+public class SMDate extends Date{
     private Date dateTime;
 
     /**
@@ -133,6 +136,36 @@ public class SMDate {
 
         return plantedTime;
 
+    }
+
+    public static int getTimeDifferenceInMinutes(SMDate date){
+
+        SimpleDateFormat defaultDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        Date plantedDate;
+        Date currentTime = new Date();
+
+        try{
+            plantedDate = defaultDateFormat.parse(date.toString());
+
+            // System.out.println("This is current datetime" + currentTime.getTime());
+
+            // System.out.println("This is plantedDateTime" + plantedDate.getTime());
+
+            long duration = currentTime.getTime() - plantedDate.getTime();
+
+            // System.out.println("This is duration: " + duration);
+    
+            long differenceInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration);
+    
+            // System.out.println("This is diff in minutes " + differenceInMinutes);
+    
+            return (int)differenceInMinutes;
+
+        }catch(ParseException e){
+            System.out.println("Something wrong with date format");
+        }
+        
+        return -1;
     }
 
 }

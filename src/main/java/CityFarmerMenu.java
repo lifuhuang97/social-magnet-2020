@@ -6,7 +6,7 @@ package main.java;
 
 import java.util.*;
 
-public class FarmMenu {
+public class CityFarmerMenu {
 
     public static void displayFarmHeader(String type, UserProfile user){ // + add User object as arg
 
@@ -49,6 +49,8 @@ public class FarmMenu {
 
     public static void readOptions(UserProfile user){
 
+        String returnWhere;
+
         Scanner sc = new Scanner(System.in);
         String choice;
 
@@ -65,8 +67,12 @@ public class FarmMenu {
 
             switch(choice){
                 case "1":
-                    accessMyFarm(user);
-                    break;
+                    returnWhere = viewFarmMenu(user);
+                    if(returnWhere.equals("main")){
+                        return;
+                    }else{
+                        break;
+                    }
                 case "2":
                 // accessStore();
                     break;
@@ -74,8 +80,20 @@ public class FarmMenu {
                 // accessMyInventory();
                     break;
                 case "4":
-                    // accessFriendList();
-                    break;
+                    returnWhere = accessFriendMenu(user);
+                    if(returnWhere.equals("main")){
+                        return;
+                    }else if(returnWhere.equals("farm")){
+                        break;
+                    }else{
+                        String anotherReturnWhere = accessFriendFarmMenu(returnWhere);
+
+                        if(anotherReturnWhere.equals("main")){
+                            return;
+                        }else{
+                            break;
+                        }
+                    }
                 case "5":
                     // sendGift();
                     break;
@@ -86,28 +104,15 @@ public class FarmMenu {
                     System.out.println("You did not enter a valid option.");
             }
         }while (choice != "M");
+
+        sc.close();
     }
 
-    public static void accessMyFarm(UserProfile currentUser){
+    public static String viewFarmMenu(UserProfile currentUser){
 
-        FarmCtrl ctrl = new FarmCtrl();
+        String returnWhere = CityFarmerCtrl.readFarmlandOptions(currentUser);
+        return returnWhere;
 
-        displayFarmHeader("case1", currentUser);
-
-        ArrayList<Plot> myPlots = ctrl.getMyPlots(currentUser);
-        int numberOfPlots = myPlots.size();
-        
-        // SMDate need a CalcGrowthPercentage for crop (compare cropPlantTime vs GrowTime)
-        // cropPlantTime is calculated by comparing plantTime against current time
-        // convert to minutes
-
-        // Get number of plots I own
-
-        System.out.println("You have " + numberOfPlots + " plots of land.");
-        for (int i = 1; i <= numberOfPlots; i++) {
-            Plot plot = myPlots.get(i);
-            System.out.println("" + i + ". ");
-        }
     }
 
     // public void accessStore(){
@@ -118,9 +123,21 @@ public class FarmMenu {
     //     break;
     // }
 
-    // public void accessFriendList(){
-    //     break;
-    // }
+    public static String accessFriendMenu(UserProfile currentUser){
+        
+        String returnWhere = CityFarmerCtrl.readFriendMenuOptions(currentUser);
+        return returnWhere;
+
+    // Here need to print friend list
+
+    }
+
+    public static String accessFriendFarmMenu(String friendUsername){
+
+        String returnWhere = CityFarmerCtrl.readFriendFarmMenuOptions(friendUsername);
+        return returnWhere;
+
+    }
 
     // public void sendGift(){
     //     break;

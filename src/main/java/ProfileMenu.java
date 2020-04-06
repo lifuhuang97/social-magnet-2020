@@ -46,7 +46,7 @@ public class ProfileMenu {
                     break;
 
                 case "4" :
-                    FarmMenu.readOptions(currentUser); // starts city farmer display menu
+                    displayCityFarmerMenu(currentUser); // starts city farmer display menu
                     break;
 
                 case "5" :
@@ -59,6 +59,16 @@ public class ProfileMenu {
 
         sc.close();
     }
+
+
+    /**
+     * Reads user's options for city farmer
+     * @param currentUser Userprofile object of current user
+     */
+    public static void displayCityFarmerMenu(UserProfile currentUser){
+        CityFarmerMenu.readOptions(currentUser);
+    }
+
 
     /**
      * Reads user's option for news feed menu
