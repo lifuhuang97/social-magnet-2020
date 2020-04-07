@@ -3,6 +3,11 @@
 import java.util.*;
 
 public class PostDAO {
+    /**
+     * Retrieve Post objects made by an ArrayList of users
+     * @param ids ArrayList of userIds
+     * @return ArrayList containing Post objects
+     */
     public static ArrayList<Post> retreivePostsByPostsId (ArrayList<Integer> ids) {
         ArrayList<Post> posts = new ArrayList<>();
 
@@ -26,6 +31,11 @@ public class PostDAO {
         return posts;
     }
 
+    /**
+     * Retrieve Post object by postId
+     * @param postId postId used to identify entry in database 
+     * @return Post object
+     */
     public static Post retrievePostByPostId(int id) {
         Post post = null;
 
@@ -47,12 +57,22 @@ public class PostDAO {
         return post;
     }
 
+    /**
+     * Delete post in database by postid
+     * @param postId postId used to identify entry in database 
+     */
     public static void deletePost(int postId) {
         String stmt = "DELETE FROM POST WHERE POSTID = '" + postId + "';";
 
         DataUtility.queryUpdate(stmt);
     }
 
+    /**
+     * Add a post in the database
+     * @param postContent content of the post
+     * @param datetime datetime of the post
+     * @return newly create postId
+     */
     public static int addPost(String postContent, String datetime) {
         String stmt = "INSERT INTO POST (`content`, `datetime`) VALUES ('" + postContent + "', '" + datetime + "');";
 
@@ -60,7 +80,5 @@ public class PostDAO {
 
         return postId;
     }
-
-
 
 }

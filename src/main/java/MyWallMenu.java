@@ -7,7 +7,10 @@ import java.util.LinkedHashMap;
 
 public class MyWallMenu {
 
-
+    /**
+     * Read user option for my wall menu
+     * @param currentUser userProfile object current user
+     */
     public static void readOptions(UserProfile currentUser){
 
         String choice = null;
@@ -48,6 +51,10 @@ public class MyWallMenu {
         sc.close();
     }
 
+    /**
+     * Displays the wall menu for current user
+     * @param currentUser userProfile object current user
+     */
     public static void display(UserProfile currentUser){
 
         WallCtrl ctrl = new WallCtrl(currentUser);
@@ -70,6 +77,10 @@ public class MyWallMenu {
 
     }
 
+    /**
+     * Displays the personal info section of the wall menu for the user 
+     * @param currentUser userProfile object current user
+     */
     public static void displayPersonalInfo(UserProfile currentUser){
 
         WallCtrl ctrl = new WallCtrl(currentUser);
@@ -88,6 +99,11 @@ public class MyWallMenu {
         System.out.println();
     }
 
+    /**
+     * Display a specific thread based on thread number
+     * @param currentUser userProfile object current user
+     * @param num thread number to be displayed
+     */
     public static void displayThread(UserProfile currentUser, int num){
         WallCtrl ctrl = new WallCtrl(currentUser);
 
@@ -104,6 +120,10 @@ public class MyWallMenu {
 
     }
 
+    /**
+     * Post on users wall 
+     * @param currentUser userProfile object current user
+     */
     public static void post(UserProfile currentUser) {
         WallCtrl ctrl = new WallCtrl(currentUser);
         Scanner sc = new Scanner(System.in);

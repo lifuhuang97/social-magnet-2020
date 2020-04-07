@@ -10,9 +10,8 @@ public  class ViewThreadMenu {
      * Read user option for thread menu
      * @param currentUser userProfile object current user
      * @param thread thread user wants to view
-     * @param num 
+     * @param num counter to begin the outer thread numbering
      */
-    //TODO define what num is
     public static void readOptions(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread, int num){
         String choice = null;
         Scanner sc = new Scanner(System.in);
@@ -47,7 +46,7 @@ public  class ViewThreadMenu {
      * Displays menu for thread
      * @param currentUser userProfile object current user
      * @param thread thread user wants to view
-     * @param num
+     * @param num counter to begin the outer thread numbering
      */
     public static void display(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread, int num){
         ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);

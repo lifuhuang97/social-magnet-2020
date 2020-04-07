@@ -10,10 +10,19 @@ public class WallCtrl {
 
     private UserProfile currentUser;
 
+    /**
+     * Constructs a WallCtrl objet
+     * @param currentUser userProfile object current user
+     */
     public WallCtrl(UserProfile currentUser) {
         this.currentUser = currentUser;
     }
 
+    /**
+     * Retrieve ordinal value based on number
+     * @param i number to find its ordinal by
+     * @return ordinal value
+     */
     public String ordinal(int i) {
         String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
         switch (i % 100) {
@@ -26,6 +35,10 @@ public class WallCtrl {
         }
     }
 
+    /**
+     * Retrieve a user's wealth ranking amongst friends
+     * @return wealth ranking amongst friends
+     */
     public String WealthRanking() {
 
         // currentUser's gold 
@@ -66,6 +79,10 @@ public class WallCtrl {
         }
     }
 
+    /**
+     * Retrieve wall in the form of Post and Comment objects (ordered by date)
+     * @return LinkedHashMap of Post and Comment objects
+     */
     public LinkedHashMap <Post, ArrayList<Comment>>  retrieveWall() {
         LinkedHashMap <Post, ArrayList<Comment>> wall = new LinkedHashMap<>();
         int currentUserId = currentUser.getUserId();
@@ -78,6 +95,11 @@ public class WallCtrl {
         return wall;
     }
 
+    /**
+     * Post on wall
+     * @param postContent content to post
+     * @param wallPostedTo the userId of the wall that the post is to be posted on
+     */
     public void post(String postContent, UserProfile wallPostedTo) {
         // get a list of friends
         ArrayList<UserProfile> friends = FriendsDAO.getFriendsByUserId(currentUser.getUserId());
@@ -163,10 +185,21 @@ public class WallCtrl {
     }
 
     // ====================================================
+    /**
+     * Check if two users are friends
+     * @param currentUser UserProfile of first user
+     * @param otherUser UserProfile of second user
+     * @return friend status 
+     */
     public boolean isFriends(UserProfile currentUser, UserProfile otherUser) {
         return FriendsDAO.isFriends(currentUser.getUserId(),otherUser.getUserId());
     }
 
+    /**
+     * Retrieve an ArrayList of common friends 
+     * @param toCompare UserProfile of the user to compare with and find common friends with 
+     * @return ArrayList of common friends
+     */
     public ArrayList<UserProfile> getCommonFriends(UserProfile toCompare) {
         // display friends (common first)
         ArrayList<UserProfile> friends = FriendsDAO.getFriendsByUserId(currentUser.getUserId());
@@ -191,10 +224,20 @@ public class WallCtrl {
         return commonList;
     }
 
+    /**
+     * Retrieve an ArrayList of UserProfile objects who are friends with currentUser
+     * @return ArrayList of UserProfile friend objects
+     */
     public ArrayList<UserProfile> getFriendsList() {
         return FriendsDAO.getFriendsByUserId(currentUser.getUserId());
     }
 
+    /**
+     * Retrieve ArrayList of unique friendList UserProfile Objects that does not exist within commonList 
+     * @param friendList ArrayList of UserProfile
+     * @param commonList ArrayList of UserProfile
+     * @return ArrayList of UserProfile objects
+     */
     public ArrayList<UserProfile> getUnqiueFriends(ArrayList<UserProfile> friendList, ArrayList<UserProfile> commonList) {
         ArrayList<UserProfile> uniqueFriendList = new ArrayList<>();
 
@@ -214,6 +257,12 @@ public class WallCtrl {
         return uniqueFriendList;
     }
 
+    /**
+     * Removes a specified UserProfile object from array of UserProfile objects
+     * @param commonList ArrayList of UserProfile
+     * @param toRemove UserProfile to remove from ArrayList 
+     * @return ArrayList of UserProfile objects after removal
+     */
     public ArrayList<UserProfile> removeCurrentUser(ArrayList<UserProfile> commonList, UserProfile toRemove) {
         Iterator<UserProfile> iter = commonList.iterator();
 

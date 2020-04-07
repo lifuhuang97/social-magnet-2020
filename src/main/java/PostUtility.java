@@ -4,11 +4,10 @@ import java.util.*;
 
 public class PostUtility {
     /**
-     * --describe what function does==
-     * @param listOfIdsToFindPostBy
-     * @return --what function returns--
+     * Retreive all the Post and Comments objects made by an ArrayList of userIds 
+     * @param listOfIdsToFindPostBy An ArrayList containing the userIds to find posts by
+     * @return A LinkHashMap of Post objects for key and ArrayList of Comment objects for value
      */
-     //TODO fill in function description
     public static LinkedHashMap <Post, ArrayList<Comment>> retrievePostsByUserIds(ArrayList<Integer> listOfIdsToFindPostBy) {
 
         LinkedHashMap <Post, ArrayList<Comment>> to_return = new LinkedHashMap<>();
@@ -84,13 +83,11 @@ public class PostUtility {
         return to_return;
     }
     /**
-     * --describe what function does==
-     * @param posts --descrription of what it is--
-     * @param outsideCounter --descrription of what it is--
-     * @return --what function returns--
+     * Display the Post and Comment objects 
+     * @param posts A Map of Post objects for key and Comment objects for value
+     * @param outsideCounter Identify the counter to start numbering the threads from
      */
 
-     //TODO fill in descriptions
     public static void display(Map<Post, ArrayList<Comment>> posts, int outsideCounter){   
 
         for (Post post : posts.keySet()) {
@@ -115,13 +112,12 @@ public class PostUtility {
     }
 
     /**
-     * --describe what function does==
-     * @param threads --descrription of what it is--
-     * @param num --descrription of what it is--
-     * @return --what function returns--
+     * Retreive a specific thread from the LinkedHashMap of Post and Comment objects
+     * @param threads LinkedHashMap of Post and Comment objects structured as threads
+     * @param num thread number to retreive
+     * @return the specific entry within the LinkedHashMap
      */
 
-     //TODO fill in descriptions
     public static HashMap<Post, ArrayList<Comment>> retrieveThread(LinkedHashMap <Post, ArrayList<Comment>> threads, int num) {
         HashMap<Post, ArrayList<Comment>> thread = new HashMap<>();
 

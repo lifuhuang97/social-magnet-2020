@@ -7,6 +7,10 @@ import java.util.LinkedHashMap;
 
 public class NewsFeedMenu {
 
+    /**
+     * Read user option for news feed menu
+     * @param currentUser userProfile object current user
+     */
     public static void readOptions(UserProfile currentUser){
 
         String choice = null;
@@ -39,6 +43,10 @@ public class NewsFeedMenu {
         } while (choice != "M");
     }
 
+    /**
+     * Displays news feed menu
+     * @param currentUser userProfile object current user
+     */
     public static void display(UserProfile currentUser){
 
         NewsFeedCtrl ctrl = new NewsFeedCtrl(currentUser);
@@ -85,6 +93,11 @@ public class NewsFeedMenu {
 
     }
 
+    /**
+     * Display the thread for a specific user
+     * @param currentUser userProfile object current user
+     * @param num thread number of interest
+     */
     public static void displayThread(UserProfile currentUser, int num){
         NewsFeedCtrl ctrl = new NewsFeedCtrl(currentUser);
 

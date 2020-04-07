@@ -56,7 +56,7 @@ public class PostLikeDAO {
     }
 
      /**
-     * delete post in database
+     * delete all the likes related to post in database
      * @param postId postId used to identify entry into database 
      */
     public static void deletePostLike(int postId) {
