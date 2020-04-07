@@ -26,7 +26,7 @@ public class UserProfileDAO {
             int xp = Integer.parseInt(results.get(0).get(5));
             int gold = Integer.parseInt(results.get(0).get(6));
 
-            Rank myRank =  new RankDAO().getMyRank(rank);
+            Rank myRank =  RankDAO.getMyRank(rank);
 
             user = new UserProfile(userId, fullName, username, password, myRank, xp, gold);
         }
@@ -52,11 +52,11 @@ public class UserProfileDAO {
             String fullName = results.get(0).get(1);
             String username = results.get(0).get(2);
             String password = results.get(0).get(3);
-            int rank = Integer.parseInt(results.get(0).get(4));
+            int rankId = Integer.parseInt(results.get(0).get(4));
             int xp = Integer.parseInt(results.get(0).get(5));
             int gold = Integer.parseInt(results.get(0).get(6));
 
-            Rank myRank =  new RankDAO().getMyRank(rank);
+            Rank myRank =  RankDAO.getMyRank(rankId);
 
             user = new UserProfile(userId, fullName, username, password, myRank, xp, gold);
         }
@@ -86,6 +86,63 @@ public class UserProfileDAO {
         // }
 
         return status;
+    }
+
+    public static void updateUserGold(UserProfile user, int goldChange){
+
+        int userId = user.getUserId();
+        int currentGold = user.getGold();
+
+        int newGold = currentGold + goldChange;
+
+        String stmt = "UPDATE USERPROFILE SET GOLD = " + newGold + " WHERE USERID = " + userId;
+
+        DataUtility.queryUpdate(stmt);
+    }
+
+    public static void updateUserXp(UserProfile user, int xpChange){
+
+        int userId = user.getUserId();
+        int currentXp = user.getXp();
+
+        int newXp = currentXp + xpChange;
+
+        String stmt = "UPDATE USERPROFILE SET XP = " + newXp + " WHERE USERID = " + userId;
+
+        DataUtility.queryUpdate(stmt);
+    }
+
+    public static void updateuserGoldAndXp(UserProfile user, int xpChange, int goldChange){
+
+        int userId = user.getUserId();
+        int currentXp = user.getXp();
+        int currentGold = user.getGold();
+
+        int newXp = currentXp + xpChange;
+        int newGold = currentGold + goldChange;
+
+        String stmt = "UPDATE USERPROFILE SET XP = " + newXp + ", GOLD = " + newGold + " WHERE USERID = " + userId;
+
+        DataUtility.queryUpdate(stmt);
+    }
+
+    /**
+     *  Use this method whenever there's a change in XP for a user
+     * @param user The userprofile in view
+     */
+    public static void checkIfRankUpdate(UserProfile user){
+        int currentExp = user.getXp();
+        int currentRankId = user.getRank().getRankID();
+
+        Rank nextRank = RankDAO.getNextRank(currentRankId);
+        int nextRankXpRequirement = nextRank.getXp();
+
+        if(currentExp >= nextRankXpRequirement){
+            int nextRankId = nextRank.getRankID();
+            int currentUserId = user.getUserId();
+            String stmt = "UPDATE USERPROFILE SET RANK = " + nextRankId + " WHERE USERID = " + currentUserId;
+            DataUtility.queryUpdate(stmt);
+        }
     }
 
 }

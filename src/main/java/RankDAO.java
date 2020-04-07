@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class RankDAO {
 
-    private ArrayList<Rank> allRanks = new ArrayList<Rank>();
+    private static ArrayList<Rank> allRanks = new ArrayList<Rank>();
 
     /**
      * Constructs rankDAO object
      */
     public RankDAO(){
 
-        this.allRanks = new ArrayList<Rank>();
+        allRanks = new ArrayList<Rank>();
 
         allRanks.add(new Rank(1, "Novice", 0, 5));
         allRanks.add(new Rank(2, "Apprentice", 1000, 6));
@@ -25,8 +25,12 @@ public class RankDAO {
      * @param id id of rank
      * @returns Rank object of rank
      */
-    public Rank getMyRank(int id){
+    public static Rank getMyRank(int id){
         return allRanks.get(id-1);
+    }
+
+    public static Rank getNextRank(int id){
+        return allRanks.get(id);
     }
 
 }

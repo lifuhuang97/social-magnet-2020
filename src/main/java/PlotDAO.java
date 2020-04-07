@@ -55,4 +55,34 @@ public class PlotDAO {
 
     }
 
+    public static void plantNewCrop(Plot plot, int cropId){
+        int plotId = plot.getPlotID();
+
+        String plantTime = new SMDate().toString();
+
+        String stmt = "UPDATE PLOT SET CROPID = " + cropId + ", plantTime = " + plantTime + " WHERE plotID = " + plotId;
+
+        DataUtility.queryUpdate(stmt);
+
+        //UPDATE PLOT SET cropID = 2, plantTime = "07/04/2020 04:20" WHERE plotID = 5;
+
+    }
+
+    public static void removeCrop(Plot plot){
+
+        int plotId = plot.getPlotID();
+
+        String stmt = "UPDATE PLOT SET CROPID = 0, plantTime = NULL WHERE plotID = " + plotId;
+        
+        DataUtility.queryUpdate(stmt);
+
+    }
+
+    // Use this method when a plot's yield hits 100%
+    public static void updatePlotExpectedYield(Plot plot){
+
+        
+
+    }
+
 }

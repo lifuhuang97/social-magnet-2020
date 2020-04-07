@@ -87,12 +87,4 @@ public class Crop {
         this.xp = xp;
     }
 
-    public void printPercentageGrowth(int minutesGrown){
-
-        String growth = "";
-
-        // double growthPercentage = minutesGrown/
-
-    }
-
 }

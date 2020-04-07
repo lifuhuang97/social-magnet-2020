@@ -6,7 +6,6 @@ package main.java;
 public class CropDAO {
 
 
-
     private static Crop[] cropData = {
         new Crop(1, "Papaya", 20, 30, 75, 100, 15, 8),
         new Crop(2, "Pumpkin", 30, 60, 5, 5, 200, 20),
