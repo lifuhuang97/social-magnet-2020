@@ -10,6 +10,8 @@ public class CityFarmerMenu {
 
     public static void displayFarmHeader(String type, UserProfile user){ // + add User object as arg
 
+        PlotDAO.checkIfPlotCountNeedsUpdating(user);
+
         String subMenu = null;
 
         if(!type.equals("main")){

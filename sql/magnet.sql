@@ -167,9 +167,9 @@ CREATE TABLE `INVENTORY` (
 DROP TABLE IF EXISTS `PLOT`;
 CREATE TABLE `PLOT` (
   `plotID` int(11) NOT NULL,
-  `cropID` int(11) DEFAULT NULL,
+  `cropID` int(11) DEFAULT 0,
   `plantTime` VARCHAR(16) DEFAULT NULL,
-  `produceAmt` int(11) DEFAULT NULL,
+  `produceAmt` int(11) DEFAULT 0,
   CONSTRAINT plot_pk primary key (plotID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -305,8 +305,8 @@ INSERT INTO `friends` VALUES (8,7);
 INSERT INTO `friends` VALUES (8,3);
 
 INSERT INTO `rank` (rankname, xp, plots) VALUES ("Novice", 0, 5);
-INSERT INTO `rank` (rankname, xp, plots) VALUES ("Journeyman", 2500, 7);
 INSERT INTO `rank` (rankname, xp, plots) VALUES ("Apprentice", 1000, 6);
+INSERT INTO `rank` (rankname, xp, plots) VALUES ("Journeyman", 2500, 7);
 INSERT INTO `rank` (rankname, xp, plots) VALUES ("Grandmaster", 5000, 8);
 INSERT INTO `rank` (rankname, xp, plots) VALUES ("Legendary", 12000, 9);
 
@@ -320,11 +320,6 @@ insert into `user_plot` (userID) VALUES (1);
 insert into `user_plot` (userID) VALUES (1);
 insert into `user_plot` (userID) VALUES (1);
 insert into `user_plot` (userID) VALUES (1);
-
-select * from user_plot;
-select * from plot, crop;
-select * from plot;
-select * from rank;
 
 insert into plot (plotID) VALUES (1);
 insert into plot (plotID, cropID, plantTime) VALUES (2, 1, "07/04/2020 18:50");

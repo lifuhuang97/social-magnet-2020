@@ -143,4 +143,45 @@ public class PlotDAO {
         return wilt;
     }
 
+    public static void checkIfPlotCountNeedsUpdating(UserProfile user){
+
+        int userId = user.getUserId();
+
+        String stmt = "SELECT * FROM USER_PLOT WHERE USERID = " + userId;
+
+        ArrayList<ArrayList<String>> result = DataUtility.querySelect(stmt);
+
+        ArrayList<Integer> existingPlotIds = new ArrayList<Integer>();
+
+
+        int supposedNumOfPlots = user.getRank().getPlots();
+        int actualNumOfPlots = result.size();
+
+        if(actualNumOfPlots > 0){
+            for(ArrayList<String> plot : result){
+                int plotId = Integer.parseInt(plot.get(1));
+                existingPlotIds.add(plotId);
+            }
+        }
+
+        int difference = supposedNumOfPlots - actualNumOfPlots;
+
+        for(int i=0;i<difference;i++){
+            String insertStmt = "INSERT INTO USER_PLOT (USERID) VALUES (" + userId + ")";
+            DataUtility.queryUpdate(insertStmt);
+        }
+
+        ArrayList<ArrayList<String>> newResult = DataUtility.querySelect(stmt);
+
+        for(ArrayList<String> plot : newResult){
+
+            int currentPlotId = Integer.parseInt(plot.get(1));
+
+            if(!existingPlotIds.contains(currentPlotId)){
+                String addNewPlotStmt = "INSERT INTO PLOT (PLOTID) VALUES (" + currentPlotId + ")";
+                DataUtility.queryUpdate(addNewPlotStmt);
+            }
+        }
+    }
+
 }

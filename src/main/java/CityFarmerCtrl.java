@@ -102,10 +102,28 @@ public class CityFarmerCtrl {
             crops = CropDAO.retrieveAll();
             for (int i = 0; i < crops.size(); i ++) {
                 Crop item = crops.get(i);
-                System.out.println("" + (i+1) + ". " + item.getName() + "   - " + item.getCost() + " gold");
-                System.out.println("Harvest in: " + item.getHarvestTime() + " mins");
-                System.out.println("XP Gained: " + item.getXp());
+                String name = item.getName();
+                int nameLength = name.length();
+
+                String gap = "";
+                for(int j=0;j<(10-nameLength);j++){
+                    gap += " ";
+                }
+                
+                System.out.println("" + (i+1) + "." + name + gap + " - " + item.getCost() + " gold");
+
+                int harvestTime = item.getHarvestTime();
+                String harvestTimeSuffix = " mins";
+
+                if(harvestTime > 60 && harvestTime % 60 == 0){
+                    harvestTime = harvestTime / 60;
+                    harvestTimeSuffix = " hours";
+                }
+
+                System.out.println("  Harvest in: " + harvestTime + harvestTimeSuffix);
+                System.out.println("  XP Gained: " + item.getXp());
             }
+            System.out.println();
             System.out.print("[M]ain | City [F]armers | ");
             System.out.print("Select choice > ");
 
@@ -508,6 +526,9 @@ public class CityFarmerCtrl {
             user = UserProfileDAO.getUserProfileByUserId(curUserId);
         }
         
+        // Check for rankup, add plot if yes
+        PlotDAO.checkIfPlotCountNeedsUpdating(user);
+
         // Empty plot to default state
         PlotDAO.removeCrop(selectedPlot);
 
