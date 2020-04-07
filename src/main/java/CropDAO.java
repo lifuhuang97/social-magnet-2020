@@ -1,5 +1,5 @@
 // package main.java;
-
+import java.util.*;
 
 // TODO: use this file if prof confirms that crop data can be hardcoded
 
@@ -67,4 +67,31 @@ public class CropDAO {
         return crop.getHarvestTime();
     }
 
+    public static ArrayList<Crop> retrieveAll () {
+        String stmt = "SELECT * FROM CROP";
+        ArrayList<Crop> result = new ArrayList<>();
+
+        ArrayList<ArrayList<String>> arrayResults = DataUtility.querySelect(stmt);
+
+        for (ArrayList<String> each : arrayResults) {
+            Crop item = new Crop(Integer.parseInt(each.get(0)), each.get(1), Integer.parseInt(each.get(2)), Integer.parseInt(each.get(3)),
+                Integer.parseInt(each.get(4)), Integer.parseInt(each.get(5)), Integer.parseInt(each.get(6)), Integer.parseInt(each.get(7)));
+            result.add(item);
+        }
+        
+        return result;
+    }
+
+    public static String retrieveName (int cropID) {
+        String stmt = "SELECT * FROM CROP WHERE CROPID = " + cropID;
+
+        ArrayList<ArrayList<String>> arrayResults = DataUtility.querySelect(stmt);
+
+        if (arrayResults == null || arrayResults.size() == 0) {
+            return "";
+        } else {
+            return arrayResults.get(0).get(1);
+        }
+    }
+    
 }

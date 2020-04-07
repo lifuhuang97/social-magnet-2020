@@ -13,12 +13,12 @@ public class DataUtility {
     public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
     // Macintosh
-    public static final String USERNAME = "root";
-    public static final String PASSWORD = "root";
+    // public static final String USERNAME = "root";
+    // public static final String PASSWORD = "root";
     
     // Windows 
-    // public static final String USERNAME = "root";
-    // public static final String PASSWORD = "";
+    public static final String USERNAME = "root";
+    public static final String PASSWORD = "";
 
     // Multiple update, insert, delete operations
     public static void multiQueryUpdate(ArrayList<String> submittedstatements) {

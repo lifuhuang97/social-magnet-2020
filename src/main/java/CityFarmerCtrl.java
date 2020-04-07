@@ -161,7 +161,32 @@ public class CityFarmerCtrl {
         
     }
 
-    
+    public static ArrayList<Crop> retrieveAllCrops () {
+        return CropDAO.retrieveAll();
+    }
+
+    public static String retrieveCropNameByCropID (int cropID) {
+        return CropDAO.retrieveName(cropID);
+    }
+
+    public static ArrayList<Inventory> retireveInventory (UserProfile userProfile) {
+        return InventoryDAO.retrieveByUserID(userProfile.getUserId());
+    }
+
+    public static boolean registerPurchase (Crop crop, int quantity, UserProfile userprofile) {
+        int cost = crop.getCost()*quantity;;
+        int newGold = userprofile.getGold() - cost;
+
+        if (newGold > 0) {
+            userprofile.setGold(newGold);
+            UserProfileDAO.updateUserGold(userprofile, -cost);
+            InventoryDAO.updateInventory(userprofile.getUserId(), crop.getCropID(), quantity);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
     
 
 
