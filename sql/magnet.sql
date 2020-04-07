@@ -3,7 +3,19 @@ SET time_zone = "+08:00";
 CREATE DATABASE IF NOT EXISTS `magnet` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `magnet`;
 
+DROP TABLE IF EXISTS `USER_WALL`;
+DROP TABLE IF EXISTS `USER_POST`;
+DROP TABLE IF EXISTS `POST_TAGS`;
+DROP TABLE IF EXISTS `POST_LIKE`;
+DROP TABLE IF EXISTS `POST_DISLIKE`;
+DROP TABLE IF EXISTS `USER_COMMENT`;
+DROP TABLE IF EXISTS `POST_COMMENT`;
+DROP TABLE IF EXISTS `FRIENDS`;
+DROP TABLE IF EXISTS `FRIEND_REQUESTS`;
+
+
 # MAIN
+DROP TABLE IF EXISTS `USERPROFILE`;
 CREATE TABLE `USERPROFILE` (
   `userID` int(3) NOT NULL AUTO_INCREMENT,
   `fullname` varchar(50) NOT NULL,
@@ -11,13 +23,12 @@ CREATE TABLE `USERPROFILE` (
   `password` varchar(25) NOT NULL,
   `rank` int(3) NOT NULL DEFAULT 1,
   `xp` int(10) NOT NULL DEFAULT 0, 
-  `gold` int(15) NOT NULL DEFAULT 0,
+  `gold` int(15) NOT NULL DEFAULT 50,
     CONSTRAINT userprofile_pk primary key(userID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# when creating account, use INSERT INTO USERPROFILE (fullname, username, password) VALUES (fullname, username, password)
-
 # SOCIAL MAGNET
+DROP TABLE IF EXISTS `POST`;
 CREATE TABLE `POST` (
   `postID` int(3) NOT NULL AUTO_INCREMENT,
   `content` varchar(300) NOT NULL,
@@ -27,6 +38,7 @@ CREATE TABLE `POST` (
 
 # SOCIAL MAGNET
 
+
 CREATE TABLE `USER_POST` (
   `userID` int(3) NOT NULL,
   `postID` int(3) NOT NULL,
@@ -34,6 +46,7 @@ CREATE TABLE `USER_POST` (
   CONSTRAINT user_post_fk1 foreign key(userID) references USERPROFILE(userID),
   CONSTRAINT user_post_fk2 foreign key(postID) references POST(postID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `USER_WALL` (
   `userID` int(3) NOT NULL,
@@ -43,7 +56,6 @@ CREATE TABLE `USER_WALL` (
   CONSTRAINT user_wall_fk2 foreign key(postID) references POST(postID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# POST CLASS - need a function to remove tag
 
 CREATE TABLE `POST_TAGS` (
   `postID` int(3) NOT NULL,
@@ -61,6 +73,7 @@ CREATE TABLE `POST_LIKE` (
     CONSTRAINT post_like_fk1 foreign key(userID) references USERPROFILE(userID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE `POST_DISLIKE` (
 	`postID` int(3) NOT NULL,
     `userID` int(3) NOT NULL,
@@ -69,12 +82,14 @@ CREATE TABLE `POST_DISLIKE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # SOCIAL MAGNET
+DROP TABLE IF EXISTS `COMMENT`;
 CREATE TABLE `COMMENT` (
   `commentID` int(3) NOT NULL AUTO_INCREMENT,
   `content` varchar(300) NOT NULL,
   `datetime` varchar(16) NOT NULL,
   CONSTRAINT comment_pk primary key (commentID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `USER_COMMENT` (
 	`userID` int(3) NOT NULL,
@@ -83,6 +98,7 @@ CREATE TABLE `USER_COMMENT` (
     CONSTRAINT user_comment_fk1 foreign key(userID) references USERPROFILE(userID),
     CONSTRAINT user_comment_fk2 foreign key(commentID) references COMMENT(commentID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `POST_COMMENT` (
   `postID` int(3) NOT NULL,
@@ -93,6 +109,7 @@ CREATE TABLE `POST_COMMENT` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #SOCIAL MAGNET
+
 CREATE TABLE `FRIENDS` (
   `userID` int(3) NOT NULL,
   `friendID` int(3) NOT NULL,
@@ -100,6 +117,7 @@ CREATE TABLE `FRIENDS` (
   CONSTRAINT friends_fk1 foreign key(userID) references USERPROFILE(userID),
   CONSTRAINT friends_fk2 foreign key(friendID) references USERPROFILE(userID)  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `FRIEND_REQUESTS` (
   `requesterID` int(3) NOT NULL,
@@ -111,7 +129,8 @@ CREATE TABLE `FRIEND_REQUESTS` (
 
 #--------------------------------------------------------------------------------------------
 -- # FARM
-CREATE TABLE `CROP` ( # ABSTRACT -- need a super name
+DROP TABLE IF EXISTS `CROP`;
+CREATE TABLE `CROP` ( 
   `cropID` int(3) NOT NULL AUTO_INCREMENT, # common
   `name` varchar(30) NOT NULL, # common
   `cost` int(4) NOT NULL,  # seed
@@ -124,6 +143,7 @@ CREATE TABLE `CROP` ( # ABSTRACT -- need a super name
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- # FARM
+DROP TABLE IF EXISTS `GIFT`;
 CREATE TABLE `GIFT` (
   `userID` int(3) NOT NULL,
   `friendID` int(3) NOT NULL,
@@ -134,6 +154,7 @@ CREATE TABLE `GIFT` (
 
 
 # FARM
+DROP TABLE IF EXISTS `INVENTORY`;
 CREATE TABLE `INVENTORY` (
   `userID` int(3) NOT NULL,
   `cropID` int(3) NOT NULL,
@@ -143,23 +164,25 @@ CREATE TABLE `INVENTORY` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # FARM
+DROP TABLE IF EXISTS `PLOT`;
 CREATE TABLE `PLOT` (
   `plotID` int(11) NOT NULL,
   `cropID` int(11) DEFAULT NULL,
   `plantTime` VARCHAR(16) DEFAULT NULL,
+  `produceAmt` int(11) DEFAULT NULL,
   CONSTRAINT plot_pk primary key (plotID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # PLOT SUPPORT TABLE
+DROP TABLE IF EXISTS `USER_PLOT`;
 CREATE TABLE `USER_PLOT` (
   `userID` int(11) NOT NULL,
-  `plotID` int(11) NOT NULL,
-  CONSTRAINT user_plot_pk primary key (userID, plotID),
-  CONSTRAINT user_plot_fk1 foreign key (plotID) references PLOT(plotID)
+  `plotID` int(11) NOT NULL AUTO_INCREMENT,
+  CONSTRAINT user_plot_pk primary key (plotID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # FARM 
-#d
+DROP TABLE IF EXISTS `RANK`;
 CREATE TABLE `RANK` (
 `rankID` int(2) NOT NULL AUTO_INCREMENT,
 `rankname` VARCHAR(15) NOT NULL,
@@ -292,10 +315,19 @@ INSERT INTO `crop` (name, cost, harvesttime, xp, minyield, maxyield, saleprice) 
 INSERT INTO `crop` (name, cost, harvesttime, xp, minyield, maxyield, saleprice) VALUES ("Sunflower", 40, 120, 20, 15, 20, 40);
 INSERT INTO `crop` (name, cost, harvesttime, xp, minyield, maxyield, saleprice) VALUES ("Watermelon", 50, 240, 1, 5, 800, 10);
 
-INSERT INTO `plot` (plotID, cropID, planttime) VALUES (1, 1, 1000);
-INSERT INTO `plot` (plotID, cropID, planttime) VALUES (2, 2, 1100);
-INSERT INTO `plot` (plotID, cropID, planttime) VALUES (3, 3, 1100);
+insert into `user_plot` (userID) VALUES (1);
+insert into `user_plot` (userID) VALUES (1);
+insert into `user_plot` (userID) VALUES (1);
+insert into `user_plot` (userID) VALUES (1);
+insert into `user_plot` (userID) VALUES (1);
 
-INSERT INTO `user_plot` (userID, plotID) VALUES (3,1);
-INSERT INTO `user_plot` (userID, plotID) VALUES (3,2);
-INSERT INTO `user_plot` (userID, plotID) VALUES (3,3);
+select * from user_plot;
+select * from plot, crop;
+select * from plot;
+select * from rank;
+
+insert into plot (plotID) VALUES (1);
+insert into plot (plotID, cropID, plantTime) VALUES (2, 1, "07/04/2020 18:50");
+insert into plot (plotID) VALUES (3);
+insert into plot (plotID, cropID, plantTime) VALUES (4, 4, "07/04/2020 06:00");
+insert into plot (plotID, cropID, plantTime) VALUES (5, 3, "07/04/2020 17:55");

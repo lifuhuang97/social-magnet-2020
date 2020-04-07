@@ -4,11 +4,13 @@ public class Plot {
     private int plotID;
     private int cropID;
     private SMDate plantedTime;
+    private Integer produceAmt;
 
-    public Plot(int plotID, int cropID, SMDate plantedTime) {
+    public Plot(int plotID, int cropID, SMDate plantedTime, Integer produceAmt) {
         this.plotID = plotID;
         this.cropID = cropID;
         this.plantedTime = plantedTime;
+        this.produceAmt = produceAmt;
     }
 
     public int getPlotID() {
@@ -33,5 +35,13 @@ public class Plot {
 
     public void setPlantedTime(SMDate plantedTime) {
         this.plantedTime = plantedTime;
+    }
+
+    public int getProductAmt(){
+        return produceAmt;
+    }
+
+    public void setProductAmt(Integer produceAmt){
+        this.produceAmt = produceAmt;
     }
 }

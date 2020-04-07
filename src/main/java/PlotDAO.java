@@ -19,7 +19,7 @@ public class PlotDAO {
 
             SMDate plantedTime = plot.getPlantedTime();
 
-            String thisCropGrowthPercentage = CropDAO.getCropGrowth(plantedTime, timeNeededToGrow);
+            String thisCropGrowthPercentage = CropDAO.getCropGrowth(cropInThisPlot,plantedTime, timeNeededToGrow);
         
             tbr += cropname + "\t" + thisCropGrowthPercentage;
         }else{
@@ -39,12 +39,32 @@ public class PlotDAO {
 
         for(ArrayList<String> myPlotId_DB : myPlotIds_DB){
 
-            String thisPlotId = myPlotId_DB.get(0);
+            String thisPlotId = myPlotId_DB.get(1);
+
+            // System.out.println("This is plot ID " + thisPlotId);
 
             ArrayList<String> thisPlotDetails = DataUtility.singleQuerySelect("SELECT * FROM PLOT WHERE PLOTID = " + thisPlotId);
 
+            // System.out.println(thisPlotDetails.toString());
+            // System.out.println("This is the plot details length" + thisPlotDetails.size());
+
+            // System.out.println("This is crop ID" + Integer.parseInt(thisPlotDetails.get(1)));
+
             if(Integer.parseInt(thisPlotDetails.get(1)) != 0){
-                Plot thisPlot = new Plot(Integer.parseInt(thisPlotDetails.get(0)), Integer.parseInt(thisPlotDetails.get(1)), new SMDate(thisPlotDetails.get(2)));
+
+                Plot thisPlot;
+
+                int plotId = Integer.parseInt(thisPlotDetails.get(0));
+                int cropId = Integer.parseInt(thisPlotDetails.get(1));
+                SMDate plantTime = new SMDate(thisPlotDetails.get(2));
+            
+                if(Integer.parseInt(thisPlotDetails.get(3)) != 0){
+                    int produce = Integer.parseInt(thisPlotDetails.get(3));
+                    thisPlot = new Plot(plotId,cropId,plantTime,produce);
+                }else{
+                    thisPlot = new Plot(plotId,cropId,plantTime,0);
+                }
+
                 allMyPlots.add(thisPlot);
             }else{
                 allMyPlots.add(null);
@@ -78,11 +98,28 @@ public class PlotDAO {
 
     }
 
-    // Use this method when a plot's yield hits 100%
-    public static void updatePlotExpectedYield(Plot plot){
-
+    public static boolean produceYieldAndWiltChecker(Plot plot){
         
+        boolean wilt = false;
 
+        if(plot.getProductAmt() == 0){
+            int produce = CropDAO.getProduceAmt(plot);
+            plot.setProductAmt(produce);
+
+            String stmt = "UPDATE PLOT SET PRODUCEAMT = " + produce + " WHERE plotID = " + plot.getPlotID();
+    
+            DataUtility.queryUpdate(stmt);
+        }else if(plot.getProductAmt() != 0){
+
+            int cropId = plot.getCropID();
+            SMDate plantedTime = plot.getPlantedTime();
+    
+            Crop crop = CropDAO.getCropById(cropId);
+    
+            wilt = crop.checkIfWilted(plantedTime);
+        }
+
+        return wilt;
     }
 
 }

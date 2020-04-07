@@ -1,5 +1,4 @@
 // package main.java;
-
 import java.util.*;
 
 public class Crop {
@@ -85,6 +84,27 @@ public class Crop {
 
     public void setXp(int xp) {
         this.xp = xp;
+    }
+
+    public int generateYield(){
+
+        int minMaxDiff = maxyield - minyield + 1;
+
+        int produce = minyield + new Random().nextInt(minMaxDiff);
+
+        return produce;
+    }
+
+    public boolean checkIfWilted(SMDate plantTime){
+
+        int GrowthDuration = SMDate.getTimeDifferenceInMinutes(plantTime);
+
+        if(GrowthDuration > (2 * harvestTime)){
+            return true;
+        }
+
+        return false;
+
     }
 
 }

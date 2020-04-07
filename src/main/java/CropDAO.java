@@ -14,19 +14,34 @@ public class CropDAO {
     };
 
 
-    public static Crop getCrop(int cropID){
+    public static Crop getCropById(int cropID){
         
-        return cropData[cropID -1];
+        String query = "SELECT * FROM CROP WHERE CROPID = " + cropID;
 
+        ArrayList<String> cropInfo= DataUtility.singleQuerySelect(query);
+
+        int cropId = Integer.parseInt(cropInfo.get(0));
+        String cropname = cropInfo.get(1);
+        int cropCost = Integer.parseInt(cropInfo.get(2));
+        int harvestTime = Integer.parseInt(cropInfo.get(3));
+        int minYield = Integer.parseInt(cropInfo.get(4));
+        int maxYield = Integer.parseInt(cropInfo.get(5));
+        int salePrice = Integer.parseInt(cropInfo.get(6));
+        int xp = Integer.parseInt(cropInfo.get(7));
+
+        Crop crop = new Crop(cropId,cropname,cropCost,harvestTime,minYield,maxYield,salePrice,xp);
+        return crop;
     }
 
     public static String getCropname(int cropID){
 
-        return cropData[cropID-1].getName();
+        Crop crop = getCropById(cropID);
+        
+        return crop.getName();
 
     }
 
-    public static String getCropGrowth(SMDate plantTime, double timeToGrowCrop){
+    public static String getCropGrowth(int cropID, SMDate plantTime, double timeToGrowCrop){
 
 
         String tbr = "[";
@@ -62,7 +77,7 @@ public class CropDAO {
 
     public static int getTimeToGrowThisCrop(int cropID){
 
-        Crop crop = getCrop(cropID);
+        Crop crop = getCropById(cropID);
 
         return crop.getHarvestTime();
     }
@@ -92,6 +107,18 @@ public class CropDAO {
         } else {
             return arrayResults.get(0).get(1);
         }
+    }
+
+    public static int getProduceAmt(Plot plot){
+
+        int plantedCropId = plot.getCropID();
+
+        Crop crop = CropDAO.getCropById(plantedCropId);
+
+        int generateProduce = crop.generateYield();
+
+        return generateProduce;
+
     }
     
 }

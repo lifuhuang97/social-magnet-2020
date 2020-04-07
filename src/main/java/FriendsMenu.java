@@ -94,7 +94,7 @@ public class FriendsMenu {
                     break;
  
                 case "A" :
-                    if (num > 0 && num >= to_check) {
+                    if (num > 0 && num >= to_check && num <= populatedList.size()) {
                         accept(currentUser, num, populatedList);
                     } else {
                         System.out.println("Invalid action!");
@@ -102,7 +102,7 @@ public class FriendsMenu {
                     break;
  
                 case "R" :
-                    if (num > 0 && num >= to_check) {
+                    if (num > 0 && num >= to_check && num <= populatedList.size()) {
                         reject(currentUser, num, populatedList);
                     } else {
                         System.out.println("Invalid action!");

@@ -6,14 +6,28 @@ public class CityFarmerCtrl {
 
     public static String readFarmlandOptions(UserProfile user){
 
+        HashMap<String,ArrayList<Integer>> status;
+
         Scanner sc = new Scanner(System.in);
         String choice;
 
         do{
             CityFarmerMenu.displayFarmHeader("case1", user);
-            displayPlots(user, 1);
+            status = displayPlots(user, 1);
             System.out.print("[M]ain | City [F]armers | [P]lant | [C]lear | [H]arvest > ");
             choice = sc.nextLine();
+            int num = 0;
+
+            if(choice.matches("^P[1-9]$")){
+                num = Integer.parseInt(choice.substring(1));
+                choice = "P";
+            }else if (choice.matches("^C[1-9]$")){
+                num = Integer.parseInt(choice.substring(1));
+                choice = "C";
+            }else if (choice.matches("^H[1-9]$")){
+                num = Integer.parseInt(choice.substring(1));
+                choice = "H";
+            }
 
             switch(choice) {
                 case "M" :
@@ -23,10 +37,28 @@ public class CityFarmerCtrl {
                     System.out.println();
                     return "farm";
                 case "P" :
+                    ArrayList<Integer> plantablePlots = status.get("empty");
+                    if(plantablePlots.contains(num)){
+                        //perform plant crop
+                    }else{
+                        System.out.println("Invalid action!");
+                    }
                     break;
                 case "C" :
+                    ArrayList<Integer> clearablePlots = status.get("wilted");
+                    if(clearablePlots.contains(num)){
+                        // perform clear plot
+                    }else{
+                        System.out.println("Invalid action!");
+                    }
                     break;
                 case "H" :
+                    ArrayList<Integer> harvestablePlots = status.get("grown");
+                    if(harvestablePlots.contains(num)){
+                        // perform harvest
+                    }else{
+                        System.out.println("Invalid action!");
+                    }
                     break;
                 
                     default :
@@ -139,7 +171,19 @@ public class CityFarmerCtrl {
     }
 
 
-    public static void displayPlots(UserProfile user, int version){
+    public static HashMap<String,ArrayList<Integer>> displayPlots(UserProfile user, int version){
+
+        HashMap<String,ArrayList<Integer>> result = new HashMap<String,ArrayList<Integer>>();
+
+        ArrayList<Integer> emptyPlotList = new ArrayList<Integer>();
+        ArrayList<Integer> growingList = new ArrayList<Integer>();
+        ArrayList<Integer> grownList = new ArrayList<Integer>();
+        ArrayList<Integer> wiltedList = new ArrayList<Integer>();
+
+        result.put("grown",grownList);
+        result.put("wilted", wiltedList);
+        result.put("empty", emptyPlotList);
+        result.put("growing",growingList);
 
         // version 1 is self, version 2 is friend
 
@@ -151,13 +195,40 @@ public class CityFarmerCtrl {
         }
 
         for (int i = 0; i < numberOfPlots; i++) {
-
+            boolean wiltChecker = false;
             int index = i+1;
 
             Plot plot = myPlots.get(i);
 
-            System.out.println(index + ". " + PlotDAO.printPlotDetails(plot));
+            String plotDetails = PlotDAO.printPlotDetails(plot);
+
+            String[] checkPlotGrowthRate = plotDetails.split("\t");
+            String plotGrowthChecker = checkPlotGrowthRate[checkPlotGrowthRate.length-1];
+
+            if(plotGrowthChecker.equals("[##########] 100%")){
+                wiltChecker = PlotDAO.produceYieldAndWiltChecker(plot);
+                if(!wiltChecker){
+                    grownList.add(index);
+                }else{
+                    wiltedList.add(index);
+                }
+            }else{
+                if(plotGrowthChecker.equals("<empty>")){
+                    emptyPlotList.add(index);
+                }else{
+                    growingList.add(index);
+                }
+            }
+
+            if(wiltChecker){
+                Crop crop = CropDAO.getCropById(plot.getCropID());
+                System.out.println(index + ". " + crop.getName() + "\t" + "[  wilted  ]");
+            }else{
+                System.out.println(index + ". " + PlotDAO.printPlotDetails(plot));
+            }
         }
+
+        return result;
         
     }
 
