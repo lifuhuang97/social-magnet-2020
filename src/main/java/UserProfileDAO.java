@@ -134,7 +134,7 @@ public class UserProfileDAO {
         int currentExp = user.getXp();
         int currentRankId = user.getRank().getRankID();
 
-        Rank nextRank = RankDAO.getNextRank(currentRankId);
+        Rank nextRank = new RankDAO().getNextRank(currentRankId);
         int nextRankXpRequirement = nextRank.getXp();
 
         if(currentExp >= nextRankXpRequirement){
