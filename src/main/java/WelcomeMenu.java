@@ -3,7 +3,7 @@
 import java.util.*;
 public class WelcomeMenu {
 
-     /**
+    /**
      * Displays welcome menu to user
      */
     public static void display() {
@@ -15,7 +15,7 @@ public class WelcomeMenu {
         System.out.print("Please enter your choice: ");
     }
 
-     /**
+    /**
      * Execute user's choice
      */
     public static void execute() {
@@ -44,7 +44,7 @@ public class WelcomeMenu {
         sc.close();
     }
 
-     /**
+    /**
      * Scan's user input for registration and calls register function from WelcomeMenuCtrl
      */
     public static void register() {
@@ -74,7 +74,7 @@ public class WelcomeMenu {
         System.out.println();
     }
 
-     /**
+    /**
      * Logs user in using WelcomeMenuCtrl login function 
      */
     public static void login() {

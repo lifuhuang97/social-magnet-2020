@@ -6,11 +6,11 @@ import java.util.LinkedHashSet;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class MyWallCtrl {
+public class WallCtrl {
 
     private UserProfile currentUser;
 
-    public MyWallCtrl(UserProfile currentUser) {
+    public WallCtrl(UserProfile currentUser) {
         this.currentUser = currentUser;
     }
 

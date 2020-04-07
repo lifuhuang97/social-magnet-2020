@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 
 public class MyWallMenu {
 
+
     public static void readOptions(UserProfile currentUser){
 
         String choice = null;
@@ -49,7 +50,7 @@ public class MyWallMenu {
 
     public static void display(UserProfile currentUser){
 
-        MyWallCtrl ctrl = new MyWallCtrl(currentUser);
+        WallCtrl ctrl = new WallCtrl(currentUser);
 
         System.out.println();
         System.out.println("== Social Magnet :: My Wall ==");
@@ -71,7 +72,7 @@ public class MyWallMenu {
 
     public static void displayPersonalInfo(UserProfile currentUser){
 
-        MyWallCtrl ctrl = new MyWallCtrl(currentUser);
+        WallCtrl ctrl = new WallCtrl(currentUser);
 
         String username = currentUser.getUsername();
         String fullname = currentUser.getFullName();
@@ -88,7 +89,7 @@ public class MyWallMenu {
     }
 
     public static void displayThread(UserProfile currentUser, int num){
-        MyWallCtrl ctrl = new MyWallCtrl(currentUser);
+        WallCtrl ctrl = new WallCtrl(currentUser);
 
         LinkedHashMap <Post, ArrayList<Comment>> wall = ctrl.retrieveWall();
 
@@ -99,12 +100,12 @@ public class MyWallMenu {
         } else {
             HashMap<Post, ArrayList<Comment>> thread = PostUtility.retrieveThread(wall, num);
             ViewThreadMenu.readOptions(currentUser, thread, num);
-        }
+        } 
 
     }
 
     public static void post(UserProfile currentUser) {
-        MyWallCtrl ctrl = new MyWallCtrl(currentUser);
+        WallCtrl ctrl = new WallCtrl(currentUser);
         Scanner sc = new Scanner(System.in);
         System.out.print("Post a message > ");
         String postContent = sc.nextLine();

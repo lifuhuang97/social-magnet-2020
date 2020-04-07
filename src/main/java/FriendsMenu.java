@@ -2,9 +2,15 @@
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class FriendsMenu {
 
+    /**
+     * Displays friend menu
+     * @param currentUser UserProfile object of current user
+     */
     public static void display(UserProfile currentUser) {
  
         System.out.println();
@@ -36,6 +42,10 @@ public class FriendsMenu {
         System.out.print("[M]ain | [U]nfriend | re[Q]uest | [A]ccept | [R]eject | [V]iew > ");
     }
  
+    /**
+     * process user's choice for friend menu
+     * @param currentUser UserProfile object of current user
+     */
     public static void readOptions(UserProfile currentUser) {
  
         String choice = null;
@@ -110,7 +120,13 @@ public class FriendsMenu {
         } while (choice != "M");
     }
  
-     public static void unfriend(UserProfile currentUser, int num, ArrayList<UserProfile> populatedList) {
+    /**
+     * Reads user's option to unfriend a specific user 
+     * @param currentUser UserProfile object of current user
+     * @param num number of friends that the user has 
+     * @param populatedList ArrayList of UserProfile objects (containing both friends and requesters)
+     */
+    public static void unfriend(UserProfile currentUser, int num, ArrayList<UserProfile> populatedList) {
 
         FriendsCtrl ctrl = new FriendsCtrl(currentUser);
 
@@ -119,69 +135,108 @@ public class FriendsMenu {
         ctrl.unfriend(friendToUnfriend);
 
         System.out.println("You have unfriended " + friendToUnfriend.getUsername());
+
+    }
  
-     }
- 
-     public static void request(UserProfile currentUser,ArrayList<UserProfile> populatedList) {
+    /**
+     * Reads user's option to send a friends request to a specific user 
+     * @param currentUser UserProfile object of current user
+     * @param populatedList ArrayList of UserProfile objects (containing both friends and requesters)
+     */
+    public static void request(UserProfile currentUser, ArrayList<UserProfile> populatedList) {
         FriendsCtrl ctrl = new FriendsCtrl(currentUser);
 
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the username > ");
         String username = sc.nextLine();
-        UserProfile friendProfile = UserProfileDAO.getUserProfileByUsername(username);
 
-        ArrayList<UserProfile> friendsList = ctrl.getFriendsList(currentUser.getUserId());
+        Pattern p = Pattern.compile("[^a-z0-9 !.,@&:()$]", Pattern.CASE_INSENSITIVE);    
+        Matcher m = p.matcher(username);
+        boolean hasSpecialCharacters = m.find();
 
-        // check if he is requesting from someone that he already is friends with 
-        boolean condition = false;
-        for (UserProfile friend : friendsList) {
-            if (friend.getUsername().equals(friendProfile.getUsername())) {
-                condition = true;
+        if (hasSpecialCharacters) {
+            System.out.println("Please ensure that your input only contains alphanumerics, whitespaces and the following special characters: !.,@&:()");
+        } else {
+            UserProfile friendProfile = UserProfileDAO.getUserProfileByUsername(username);
+
+            ArrayList<UserProfile> friendsList = ctrl.getFriendsList(currentUser.getUserId());
+
+            // check if he is requesting from someone that he already is friends with 
+            boolean condition = false;
+            for (UserProfile friend : friendsList) {
+                if (friend.getUsername().equals(friendProfile.getUsername())) {
+                    condition = true;
+                }
             }
-        }
- 
+    
             if (condition) {
                 System.out.println("You are already friends with " + friendProfile.getUsername() + "!");
             } else {
                 ctrl.request(friendProfile);
                 System.out.println("A friend request is sent to " + friendProfile.getUsername());
             }
-
         }
+    }
  
-        public static void accept(UserProfile currentUser, int num, ArrayList<UserProfile> populatedList) {
-            FriendsCtrl ctrl = new FriendsCtrl(currentUser);
+    /**
+     * Reads user's option to accept a friend request from a specific user 
+     * @param currentUser UserProfile object of current user
+     * @param num number of friends that the user has 
+     * @param populatedList ArrayList of UserProfile objects (containing both friends and requesters)
+     */
+    public static void accept(UserProfile currentUser, int num, ArrayList<UserProfile> populatedList) {
+        FriendsCtrl ctrl = new FriendsCtrl(currentUser);
 
-            UserProfile friendToAccept = populatedList.get(num - 1);
+        UserProfile friendToAccept = populatedList.get(num - 1);
 
-            ctrl.accept(friendToAccept);
+        ctrl.accept(friendToAccept);
 
-            System.out.println(friendToAccept.getUsername() + " is now your friend.");
-        }
- 
-        public static void reject(UserProfile currentUser, int num, ArrayList<UserProfile> populatedList) {
-            FriendsCtrl ctrl = new FriendsCtrl(currentUser);
-            
-            UserProfile requestToReject = populatedList.get(num - 1);
+        System.out.println(friendToAccept.getUsername() + " is now your friend.");
+    }
 
-            ctrl.reject(requestToReject);
+    /**
+     * Reads user's option to reject a specific user's friend request
+     * @param currentUser UserProfile object of current user
+     * @param num number of friends that the user has 
+     * @param populatedList ArrayList of UserProfile objects (containing both friends and requesters)
+     */
+    public static void reject(UserProfile currentUser, int num, ArrayList<UserProfile> populatedList) {
+        FriendsCtrl ctrl = new FriendsCtrl(currentUser);
+        
+        UserProfile requestToReject = populatedList.get(num - 1);
 
-            System.out.println("You have rejected a friend request from " + requestToReject.getUsername());
-        }
+        ctrl.reject(requestToReject);
 
-        public static void view(UserProfile currentUser) {
-            FriendsCtrl ctrl = new FriendsCtrl(currentUser);
+        System.out.println("You have rejected a friend request from " + requestToReject.getUsername());
+    }
 
-            Scanner sc = new Scanner(System.in);
-            System.out.print("Who's wall would you like to view? (Enter their username) > ");
+    /**
+     * Reads user's option to view a specific friend's wall 
+     * @param currentUser UserProfile object of current user
+     */
+    public static void view(UserProfile currentUser) {
+        FriendsCtrl ctrl = new FriendsCtrl(currentUser);
 
-            String username = sc.nextLine();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Who's wall would you like to view? (Enter their username) > ");
+
+        String username = sc.nextLine();
+
+        Pattern p = Pattern.compile("[^a-z0-9 !.,@&:()$]", Pattern.CASE_INSENSITIVE);    
+        Matcher m = p.matcher(username);
+        boolean hasSpecialCharacters = m.find();
+
+        if (hasSpecialCharacters) {
+            System.out.println("Please ensure that your input only contains alphanumerics, whitespaces and the following special characters: !.,@&:()");
+        } else {
             UserProfile retrievedUser = ctrl.getUser(username);
             
             if (retrievedUser == null) {
                 System.out.println("No such user!");
             } else {
                 FriendsWallMenu.readOptions(currentUser, retrievedUser);
+
+            }
         }
     }
 }

@@ -4,13 +4,20 @@ import java.util.Scanner;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class FriendsWallMenu {
+
+    /**
+     * process user's choice for friend's wall menu
+     * @param currentUser UserProfile object of current user
+     * @param viewedUser UserProfile object of user being viewed
+     */
     public static void readOptions(UserProfile currentUser, UserProfile viewedUser){
 
         String choice = null;
         Scanner sc = new Scanner(System.in);
-        MyWallCtrl ctrl = new MyWallCtrl(viewedUser);
+        WallCtrl ctrl = new WallCtrl(viewedUser);
         
         do {
             display(currentUser, viewedUser);
@@ -29,7 +36,7 @@ public class FriendsWallMenu {
                 case "T":
                     if (ctrl.isFriends(currentUser, viewedUser)) {
                         if (num > 0) {
-                            // displayThread(currentUser, num);
+                            displayThread(currentUser, viewedUser, num);
                         } else {
                             System.out.println("Please indicate the specific Thread ID that you would like to view!");
                         }
@@ -39,11 +46,7 @@ public class FriendsWallMenu {
                     break;
                 case "P":
                     if (ctrl.isFriends(currentUser, viewedUser)) {
-                        if (num > 0) {
-                            post(currentUser, viewedUser);
-                        } else {
-                            System.out.println("Please indicate the specific Thread ID that you would like to view!");
-                        }
+                        post(currentUser, viewedUser);
                     } else {
                         System.out.println("Invalid action");
                     }
@@ -57,9 +60,14 @@ public class FriendsWallMenu {
         sc.close();
     }
 
+    /**
+     * Displays friends wall menu
+     * @param currentUser UserProfile object of current user
+     * @param viewedUser UserProfile object of user being viewed
+     */
     public static void display(UserProfile currentUser, UserProfile viewedUser){
 
-        MyWallCtrl ctrl = new MyWallCtrl(viewedUser);
+        WallCtrl ctrl = new WallCtrl(viewedUser);
 
         System.out.println();
         System.out.println("== Social Magnet :: " + viewedUser.getUsername() + "'s Wall ==");
@@ -114,9 +122,13 @@ public class FriendsWallMenu {
 
     }
 
+    /**
+     * Displays the personal info section of friend's wall menu
+     * @param viewedUser UserProfile object of user being viewed
+     */
     public static void displayPersonalInfo(UserProfile viewedUser){
 
-        MyWallCtrl ctrl = new MyWallCtrl(viewedUser);
+        WallCtrl ctrl = new WallCtrl(viewedUser);
 
         String username = viewedUser.getUsername();
         String fullname = viewedUser.getFullName();
@@ -132,8 +144,13 @@ public class FriendsWallMenu {
         System.out.println();
     }
 
+    /**
+     * Post on friends wall 
+     * @param currentUser UserProfile object of current user
+     * @param friendProfile UserProfile object of user who's wall is to be posted on
+     */
     public static void post(UserProfile currentUser, UserProfile friendProfile) {
-        MyWallCtrl ctrl = new MyWallCtrl(currentUser);
+        WallCtrl ctrl = new WallCtrl(currentUser);
         Scanner sc = new Scanner(System.in);
         System.out.print("Post a message > ");
         String postContent = sc.nextLine();
@@ -148,5 +165,21 @@ public class FriendsWallMenu {
         } else {
             ctrl.post(postContent, friendProfile);
         }
+    }
+
+    public static void displayThread(UserProfile currentUser, UserProfile userToView, int num){
+        WallCtrl ctrl = new WallCtrl(userToView);
+
+        LinkedHashMap <Post, ArrayList<Comment>> wall = ctrl.retrieveWall();
+
+        if (wall.size() == 0) {
+            System.out.println("No threads to view!");
+        } else if (num > wall.size()) {
+            System.out.println("The thread that you have specified does not exist.");
+        } else {
+            HashMap<Post, ArrayList<Comment>> thread = PostUtility.retrieveThread(wall, num);
+            ViewThreadMenu.readOptions(currentUser, thread, num);
+        }
+
     }
 }

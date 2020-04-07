@@ -2,7 +2,7 @@
 
 public class WelcomeMenuCtrl {
     
-     /**
+    /**
      * Registers a new user
      * @param username the Username of the User
      * @param fullName  the Full Name of the User
@@ -26,7 +26,6 @@ public class WelcomeMenuCtrl {
         } else {
 
             UserProfileDAO.createUser(username, fullName, password);
-            // TODO: Might need to catch DB error 
             
         }
 
