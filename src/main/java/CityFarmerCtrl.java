@@ -1,10 +1,17 @@
 // // package main.java;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 public class CityFarmerCtrl {
 
-    public static String readFarmlandOptions(UserProfile user){
+    private UserProfile user;
+
+    public CityFarmerCtrl(UserProfile user){
+        this.user = user;
+    }
+
+    public String readFarmlandOptions(){
 
         HashMap<String,HashMap<Integer,Integer>> status;
 
@@ -53,7 +60,7 @@ public class CityFarmerCtrl {
                     Set<Integer> clearableIndexes = clearablePlots.keySet();
 
                     if(clearableIndexes.contains(num)){
-                        //perform clear crop
+                        clearPlot(clearablePlots.get(num), num);
                     }else{
                         System.out.println("Invalid action!");
                     }
@@ -80,7 +87,111 @@ public class CityFarmerCtrl {
         
     }
 
-    public static String readFriendMenuOptions(UserProfile user){
+    public String readFarmStoreOptions(){
+
+        String choice;
+        String secondChoice;
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Crop> crops;
+
+        do{
+            int itemChoice = 0;
+            int quantityChoice = 0;
+            CityFarmerMenu.displayFarmHeader("case2", user);
+            System.out.println("Seeds Available:");
+            crops = CropDAO.retrieveAll();
+            for (int i = 0; i < crops.size(); i ++) {
+                Crop item = crops.get(i);
+                System.out.println("" + (i+1) + ". " + item.getName() + "   - " + item.getCost() + " gold");
+                System.out.println("Harvest in: " + item.getHarvestTime() + " mins");
+                System.out.println("XP Gained: " + item.getXp());
+            }
+            System.out.print("[M]ain | City [F]armers | ");
+            System.out.print("Select choice > ");
+
+            choice = sc.nextLine();
+
+            if(choice.equals("M")){
+                return "main";
+            }else if(choice.equals("F")){
+                return "farm";
+            }
+
+            try{
+                itemChoice = Integer.parseInt(choice);
+
+                if(itemChoice <= crops.size()){
+                    choice = "Y";
+                }else{
+                    choice = "N";
+                }
+            }catch(NumberFormatException e){
+                choice = "N";
+            }
+
+            switch(choice){
+                case "Y" :
+                    System.out.print("Enter quantity > ");
+                    String qtyStr = sc.nextLine();
+
+                    try{
+                        quantityChoice = Integer.parseInt(qtyStr);
+                        secondChoice = "Y";
+                    }catch(NumberFormatException e){
+                        secondChoice = "N";
+                    }
+
+                    switch(secondChoice){
+                        case "Y":
+                            Crop cropChoice = crops.get(itemChoice-1);
+                            user = registerPurchase(cropChoice, quantityChoice, user);
+                            break;
+                        case "N":
+                            System.out.println("Invalid action!");
+                            break;
+                        default:
+                            System.out.println("Invalid action!");
+                    }
+                    break;
+                case "N" :
+                    System.out.println("Invalid action!");
+                    break;
+                default :
+                    System.out.println("Invalid action!");
+            }
+
+        }while(choice.charAt(0) != 'M' | choice.charAt(0) != 'F');
+
+        return "";
+    }
+
+    public String readFarmInventoryOptions(){
+
+        ArrayList<Inventory> items = retrieveInventory();
+        Scanner sc= new Scanner(System.in);
+
+        while (true) {
+            CityFarmerMenu.displayFarmHeader("case3", user);
+            for (int i = 0; i < items.size(); i ++) {
+                System.out.println( "" + (i+1) + ". " + items.get(i).getQuantity() + " Bags of " + 
+                retrieveCropNameByCropID(items.get(i).getCropID()) );
+            }
+            System.out.print("[M]ain | City [F]armers | ");
+            System.out.print("select choice > ");
+
+            String choice = sc.nextLine();
+
+            if (choice.equals("M")) {
+                return "main";
+            } else if (choice.equals("F")) {
+                return "farm";
+            } else {
+                System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    public String readFriendMenuOptions(){
 
         Scanner sc = new Scanner(System.in);
         String choice;
@@ -135,19 +246,25 @@ public class CityFarmerCtrl {
         
     }
 
-    public static String readFriendFarmMenuOptions(String friendUsername){
+    public String readFriendFarmMenuOptions(String friendUsername){
 
         String returnWhere = "";
         String choice;
         Scanner sc = new Scanner(System.in);
+        
 
         UserProfile friend = UserProfileDAO.getUserProfileByUsername(friendUsername);
 
         do{
             System.out.println();
             displayFriendFarmDetails(friend);
+            HashMap<Integer,Integer> stealable = displayPlots(friend, 2).get("grown");
             System.out.print("[M]ain | City [F]armers | [S]teal > ");
             choice = sc.nextLine();
+            int num = 0;
+
+            
+
 
             switch(choice){
                 case "M":
@@ -169,21 +286,27 @@ public class CityFarmerCtrl {
 
     }
 
+    public String readGiftOptions(){
 
-    public static void displayFriendFarmDetails(UserProfile friend){
+        //TODO
+
+        return "";
+    }
+
+
+
+    public void displayFriendFarmDetails(UserProfile friend){
 
         System.out.println("Name: " + friend.getFullName());
         System.out.println("Title: " + friend.getRank().getRankName());
         System.out.println("Gold: " + friend.getGold());
-        displayPlots(friend, 2);
+        
         
     }
 
-
-    public static HashMap<String,HashMap<Integer,Integer>> displayPlots(UserProfile user, int version){
+    public HashMap<String,HashMap<Integer,Integer>> displayPlots(UserProfile user, int version){
 
         HashMap<String,HashMap<Integer,Integer>> result = new HashMap<String,HashMap<Integer,Integer>>();
-
         HashMap<Integer,Integer> emptyPlotList = new HashMap<Integer,Integer>();
         HashMap<Integer,Integer> growingList = new HashMap<Integer,Integer>();
         HashMap<Integer,Integer> grownList = new HashMap<Integer,Integer>();
@@ -247,34 +370,30 @@ public class CityFarmerCtrl {
         
     }
 
-    public static ArrayList<Crop> retrieveAllCrops () {
-        return CropDAO.retrieveAll();
-    }
-
-    public static String retrieveCropNameByCropID (int cropID) {
+    public String retrieveCropNameByCropID (int cropID) {
         return CropDAO.retrieveName(cropID);
     }
 
-    public static ArrayList<Inventory> retireveInventory (UserProfile userProfile) {
-        return InventoryDAO.retrieveByUserID(userProfile.getUserId());
+    public ArrayList<Inventory> retrieveInventory () {
+        return InventoryDAO.retrieveByUserID(user.getUserId());
     }
 
-    public static boolean registerPurchase (Crop crop, int quantity, UserProfile userprofile) {
-        int cost = crop.getCost()*quantity;;
-        int newGold = userprofile.getGold() - cost;
+    public UserProfile registerPurchase (Crop crop, int quantity, UserProfile userprofile) {
+        int cost = crop.getCost()*quantity*(-1);
+        int newGold = userprofile.getGold() + cost;
 
-        if (newGold > 0) {
-            userprofile.setGold(newGold);
-            UserProfileDAO.updateUserGold(userprofile, -cost);
-            InventoryDAO.updateInventory(userprofile.getUserId(), crop.getCropID(), quantity);
-            return true;
+        if (newGold >= 0) {
+            UserProfile updatedUser = UserProfileDAO.updateUserGoldAndXp(userprofile, 0, cost);
+            System.out.println("" + quantity + " bags of seeds purchased for " + (cost*-1) + " gold.");
+            InventoryDAO.updateInventory(updatedUser.getUserId(), crop.getCropID(), quantity);
+            return updatedUser;
         } else {
-            return false;
+            System.out.println("Insufficient gold.");
+            return userprofile;
         }
-
     }
 
-    public static String plantPlot(int plotId, int choiceId){
+    public String plantPlot(int plotId, int choiceId){
 
         Scanner sc = new Scanner(System.in);
 
@@ -358,12 +477,17 @@ public class CityFarmerCtrl {
         return "";
     }
 
-    public static void clearPlot(int plotId){
+    public void clearPlot(int plotId, int choiceId){
         // reset plot's cropId and planted time
+        Plot selectedPlot = PlotDAO.getPlotById(plotId);
+
+        PlotDAO.removeCrop(selectedPlot);
+
+        System.out.println("Plot " + choiceId + " has been cleared.");
 
     }
 
-    public static UserProfile harvestPlot(int plotId, UserProfile user){
+    public UserProfile harvestPlot(int plotId, UserProfile user){
         
         Plot selectedPlot = PlotDAO.getPlotById(plotId);
         int curUserId = user.getUserId();

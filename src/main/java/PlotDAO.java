@@ -131,15 +131,14 @@ public class PlotDAO {
             String stmt = "UPDATE PLOT SET PRODUCEAMT = " + produce + " WHERE plotID = " + plot.getPlotID();
     
             DataUtility.queryUpdate(stmt);
-        }else if(plot.getProductAmt() != 0){
-
-            int cropId = plot.getCropID();
-            SMDate plantedTime = plot.getPlantedTime();
-    
-            Crop crop = CropDAO.getCropById(cropId);
-    
-            wilt = crop.checkIfWilted(plantedTime);
         }
+
+        int cropId = plot.getCropID();
+        SMDate plantedTime = plot.getPlantedTime();
+
+        Crop crop = CropDAO.getCropById(cropId);
+
+        wilt = crop.checkIfWilted(plantedTime);
 
         return wilt;
     }

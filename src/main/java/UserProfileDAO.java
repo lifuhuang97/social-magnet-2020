@@ -88,29 +88,6 @@ public class UserProfileDAO {
         return status;
     }
 
-    public static void updateUserGold(UserProfile user, int goldChange){
-
-        int userId = user.getUserId();
-        int currentGold = user.getGold();
-
-        int newGold = currentGold + goldChange;
-
-        String stmt = "UPDATE USERPROFILE SET GOLD = " + newGold + " WHERE USERID = " + userId;
-
-        DataUtility.queryUpdate(stmt);
-    }
-
-    public static void updateUserXp(UserProfile user, int xpChange){
-
-        int userId = user.getUserId();
-        int currentXp = user.getXp();
-
-        int newXp = currentXp + xpChange;
-
-        String stmt = "UPDATE USERPROFILE SET XP = " + newXp + " WHERE USERID = " + userId;
-
-        DataUtility.queryUpdate(stmt);
-    }
 
     public static UserProfile updateUserGoldAndXp(UserProfile user, int xpChange, int goldChange){
 
