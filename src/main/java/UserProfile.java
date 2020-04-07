@@ -1,6 +1,6 @@
-package main.java;
+// package main.java;
 
-public class UserProfile {
+public class UserProfile implements Comparable<UserProfile> {
     private int userId;
     private String fullName;
     private String username;
@@ -139,5 +139,13 @@ public class UserProfile {
      */
     public void setGold(int gold) {
         this.gold = gold;
+    }
+
+    /**
+     * Overrides the compareTo method in Comparable to enable sorting based on username
+     * @param another the UserProfile object representing the other user to compare with 
+     */
+    public int compareTo(UserProfile another) {
+        return username.compareTo(another.getUsername());
     }
 }

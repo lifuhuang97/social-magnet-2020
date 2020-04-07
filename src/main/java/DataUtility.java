@@ -1,4 +1,4 @@
-package main.java;
+// package main.java;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,10 +9,10 @@ public class DataUtility {
     public static final String DB_NAME = "magnet";
     // modify port, username and password to ur db
 
-    // // LIFU CHANGE
-    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:8889/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    // LIFU CHANGE
+    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
-    // // Macintosh
+    // Macintosh
     public static final String USERNAME = "root";
     public static final String PASSWORD = "root";
     

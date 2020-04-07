@@ -1,4 +1,4 @@
-package main.java;
+// // package main.java;
 
 import java.util.*;
 
@@ -50,7 +50,7 @@ public class CityFarmerCtrl {
 
             int count = 1;
 
-            ArrayList<UserProfile> friendsList = FriendsMenu.getFriendsList(user);
+            ArrayList<UserProfile> friendsList = FriendsDAO.getFriendsByUserId(user.getUserId());
     
             System.out.println("My Friends: ");
             for(UserProfile friend: friendsList){

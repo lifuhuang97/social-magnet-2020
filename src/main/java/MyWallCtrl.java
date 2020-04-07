@@ -1,9 +1,10 @@
-package main.java;
+// package main.java;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class MyWallCtrl {
 
@@ -77,9 +78,27 @@ public class MyWallCtrl {
         return wall;
     }
 
-    public void post(String postContent) {
+    public void post(String postContent, UserProfile wallPostedTo) {
         // get a list of friends
         ArrayList<UserProfile> friends = FriendsDAO.getFriendsByUserId(currentUser.getUserId());
+
+        // include a list of friends of the wall that you are posting to 
+        ArrayList<UserProfile> wallFriends = FriendsDAO.getFriendsByUserId(wallPostedTo.getUserId());
+
+        ArrayList<UserProfile> commonFriends = new ArrayList<>();
+
+        for (UserProfile wallFriend : wallFriends) {
+            boolean to_add = false;
+            for (UserProfile friend : friends) {
+                if (wallFriend.getUsername().equals(friend.getUsername())) {
+                    to_add = true;
+                }
+            }
+            
+            if (to_add) {
+                commonFriends.add(wallFriend);
+            }
+        }
 
         // find tags
         String findStr = "@";
@@ -109,16 +128,14 @@ public class MyWallCtrl {
             username = "";
         }
 
-        System.out.println(usernames);
-
         ArrayList<Integer> userIds = new ArrayList<>();
 
         for (String username : usernames) {
             boolean found = false;
-            for (UserProfile friend : friends) {
-                if (friend.getUsername().equals(username)) {
+            for (UserProfile commonFriend : commonFriends) {
+                if (commonFriend.getUsername().equals(username)) {
                     found = true;
-                    userIds.add(friend.getUserId());
+                    userIds.add(commonFriend.getUserId());
                 }
             }
 
@@ -137,10 +154,77 @@ public class MyWallCtrl {
         }
 
         // add user_wall
-        UserWallDAO.addUserWallPost(currentUser.getUserId(), postId);
+        UserWallDAO.addUserWallPost(wallPostedTo.getUserId(), postId);
 
         // add user_post
         UserPostDAO.addUserPost(currentUser.getUserId(), postId);
+
+        System.out.println("Message posted successfully!");
+    }
+
+    // ====================================================
+    public boolean isFriends(UserProfile currentUser, UserProfile otherUser) {
+        return FriendsDAO.isFriends(currentUser.getUserId(),otherUser.getUserId());
+    }
+
+    public ArrayList<UserProfile> getCommonFriends(UserProfile toCompare) {
+        // display friends (common first)
+        ArrayList<UserProfile> friends = FriendsDAO.getFriendsByUserId(currentUser.getUserId());
+
+        ArrayList<UserProfile> viewedFriends = FriendsDAO.getFriendsByUserId(toCompare.getUserId());
+
+        ArrayList<UserProfile> commonList = new ArrayList<>();
+
+        for (UserProfile friend : friends) {
+            boolean common = false;
+            for (UserProfile viewedFriend : viewedFriends) {
+                if (viewedFriend.getUsername().equals(friend.getUsername())) {
+                    common = true;
+                }
+            }
+
+            if (common) {
+                commonList.add(friend);
+            }
+        }
+
+        return commonList;
+    }
+
+    public ArrayList<UserProfile> getFriendsList() {
+        return FriendsDAO.getFriendsByUserId(currentUser.getUserId());
+    }
+
+    public ArrayList<UserProfile> getUnqiueFriends(ArrayList<UserProfile> friendList, ArrayList<UserProfile> commonList) {
+        ArrayList<UserProfile> uniqueFriendList = new ArrayList<>();
+
+        for (UserProfile friend : friendList) {
+            boolean to_add = true;
+            for (UserProfile exist : commonList) {
+                if (friend.getUsername().equals(exist.getUsername())) {
+                    to_add = false;
+                }
+            }
+
+            if (to_add) {
+                uniqueFriendList.add(friend);
+            }
+        }
+
+        return uniqueFriendList;
+    }
+
+    public ArrayList<UserProfile> removeCurrentUser(ArrayList<UserProfile> commonList, UserProfile toRemove) {
+        Iterator<UserProfile> iter = commonList.iterator();
+
+        while (iter.hasNext()) {
+            UserProfile pointer = iter.next();
+            if (pointer.getUsername().equals(toRemove.getUsername())) {
+                iter.remove();
+            }
+        }
+
+        return commonList;
     }
 
 }

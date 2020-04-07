@@ -1,4 +1,4 @@
-package main.java;
+// package main.java;
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -117,7 +117,7 @@ public class MyWallMenu {
         if (count > 300) {
             System.out.println("Your message was too long! ;)");
         } else {
-            ctrl.post(postContent);
+            ctrl.post(postContent, currentUser);
         }
     }
 

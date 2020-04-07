@@ -1,5 +1,152 @@
-package main.java;
+// package main.java;
+
+import java.util.Scanner;
+import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class FriendsWallMenu {
-    
+    public static void readOptions(UserProfile currentUser, UserProfile viewedUser){
+
+        String choice = null;
+        Scanner sc = new Scanner(System.in);
+        MyWallCtrl ctrl = new MyWallCtrl(viewedUser);
+        
+        do {
+            display(currentUser, viewedUser);
+            choice = sc.nextLine();
+            int num = 0;
+
+            if (choice.matches("^T[1-5]$")) {
+                num = Integer.parseInt(choice.substring(1));
+                choice = "T";
+            }
+
+            switch(choice){
+                case "M":
+                    System.out.println();
+                    return;
+                case "T":
+                    if (ctrl.isFriends(currentUser, viewedUser)) {
+                        if (num > 0) {
+                            // displayThread(currentUser, num);
+                        } else {
+                            System.out.println("Please indicate the specific Thread ID that you would like to view!");
+                        }
+                    } else {
+                        System.out.println("Invalid action");
+                    }
+                    break;
+                case "P":
+                    if (ctrl.isFriends(currentUser, viewedUser)) {
+                        if (num > 0) {
+                            post(currentUser, viewedUser);
+                        } else {
+                            System.out.println("Please indicate the specific Thread ID that you would like to view!");
+                        }
+                    } else {
+                        System.out.println("Invalid action");
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid choice, please try again.");
+            }
+
+        } while(choice != "M");
+
+        sc.close();
+    }
+
+    public static void display(UserProfile currentUser, UserProfile viewedUser){
+
+        MyWallCtrl ctrl = new MyWallCtrl(viewedUser);
+
+        System.out.println();
+        System.out.println("== Social Magnet :: " + viewedUser.getUsername() + "'s Wall ==");
+        System.out.println("Welcome, " + currentUser.getFullName());
+        System.out.println();
+        displayPersonalInfo(viewedUser); // prints name, full name, rank, wealth ranking
+        System.out.println();
+
+        // check if they are friends before displaying their wall 
+        boolean isFriends = ctrl.isFriends(currentUser, viewedUser);
+
+        if (isFriends) {
+            LinkedHashMap <Post, ArrayList<Comment>> wall = ctrl.retrieveWall();
+
+            if (wall.size() == 0) {
+                System.out.println("No threads to view!");
+                System.out.println();
+            }
+
+            PostUtility.display(wall, 1);
+
+            ArrayList<UserProfile> commonList = ctrl.getCommonFriends(currentUser);
+            Collections.sort(commonList);
+
+            int numOfCommon = commonList.size();
+
+            ArrayList<UserProfile> friendList = ctrl.getFriendsList();
+            
+            ArrayList<UserProfile> uniqueFriendList = ctrl.getUnqiueFriends(friendList, commonList);
+
+            Collections.sort(uniqueFriendList);
+
+            commonList.addAll(uniqueFriendList);
+
+            commonList = ctrl.removeCurrentUser(commonList, currentUser);
+
+            int counter = 1;
+            for (int i = 0; i < commonList.size(); i++) {
+                if (i < numOfCommon) {
+                    System.out.println(counter + ". " + commonList.get(i).getFullName() + " (Common Friend)");
+                } else {
+                    System.out.println(counter + ". " + commonList.get(i).getFullName());
+                }
+            }
+
+            System.out.println();
+
+            System.out.print("[M]ain | [T]hread | [P]ost > ");
+        } else {
+            System.out.print("[M]ain > ");
+        }
+
+    }
+
+    public static void displayPersonalInfo(UserProfile viewedUser){
+
+        MyWallCtrl ctrl = new MyWallCtrl(viewedUser);
+
+        String username = viewedUser.getUsername();
+        String fullname = viewedUser.getFullName();
+        Rank rank = viewedUser.getRank();
+        String rankDesc = rank.getRankName();
+
+        System.out.println("About " + username);
+        System.out.println("Full Name: " + fullname);
+
+        String wealthRank = ctrl.WealthRanking();
+        System.out.print(rankDesc + " Farmer, ");
+        System.out.print(wealthRank + " richest");
+        System.out.println();
+    }
+
+    public static void post(UserProfile currentUser, UserProfile friendProfile) {
+        MyWallCtrl ctrl = new MyWallCtrl(currentUser);
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Post a message > ");
+        String postContent = sc.nextLine();
+
+        int count = 0;
+        for (int i = 0; i < postContent.length(); i++) {
+            count++;
+        }
+
+        if (count > 300) {
+            System.out.println("Your message was too long! ;)");
+        } else {
+            ctrl.post(postContent, friendProfile);
+        }
+    }
 }

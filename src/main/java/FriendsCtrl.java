@@ -1,33 +1,62 @@
-package main.java;
+// package main.java;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class FriendsCtrl {
 
-    public ArrayList<UserProfile> getFriendsList (UserProfile userProfile) {
-        ArrayList<UserProfile> result = new ArrayList<>();
-        int userID = userProfile.getUserId();
-        result = FriendsDAO.getFriendsByUserId(userID);
-        return result;
+    private UserProfile currentUser;
+
+    public FriendsCtrl(UserProfile currentUser) {
+        this.currentUser = currentUser;
     }
 
-    public boolean unfriend (UserProfile userProfile, UserProfile friend) {
-        boolean result = false;
-
-        return result;
+    public ArrayList<UserProfile> getFriendsList(int userId) {
+        return FriendsDAO.getFriendsByUserId(userId);
     }
 
-    public void request (UserProfile userProfile, String username) {
-        int userID = userProfile.getUserId();
-        int friendID = UserProfileDAO.getUserProfileByUsername(username).getUserId();
-        FriendsDAO.addRequest(userID, friendID);
+    public int getNumOfFriends(int userId) {
+        return (FriendsDAO.getFriendsByUserId(userId).size() > 3) ? 3 : FriendsDAO.getFriendsByUserId(userId).size();
     }
 
-    public boolean accept (UserProfile userProfile, UserProfile friend) {
-        boolean result = false;
-        int userID = userProfile.getUserId();
-        int friendID = friend.getUserId();
-        FriendsDAO.accept(userID, friendID);
-        return result;
+    public ArrayList<UserProfile> populateList(int userId) {
+        ArrayList<UserProfile> friends = getFriendsList(userId);
+        Collections.sort(friends);
+
+        ArrayList<UserProfile> requesters = FriendRequestsDAO.getFriendRequestsByUserId(userId);
+        Collections.sort(requesters);
+
+        friends.addAll(requesters);
+        return friends;
+    }
+
+    public void unfriend (UserProfile friend) {
+        FriendsDAO.unfriend(currentUser.getUserId(), friend.getUserId());
+    }
+
+    public void request (UserProfile friend) {
+
+        FriendRequestsDAO.addRequest(currentUser.getUserId(), friend.getUserId());
+
+    }
+
+    public void accept (UserProfile friend) {
+        
+        // delete request from friend_requests db 
+        reject(friend);
+
+        // add into friends db 
+        FriendsDAO.addFriend(currentUser.getUserId(), friend.getUserId());
+        FriendsDAO.addFriend(friend.getUserId(), currentUser.getUserId());
+        
+    }
+
+    public void reject (UserProfile friend) {
+        // delete request from friend_requests db 
+        FriendRequestsDAO.removeRequest(friend.getUserId(),currentUser.getUserId());
+    }
+
+    public UserProfile getUser(String username) {
+        return UserProfileDAO.getUserProfileByUsername(username);    
     }
 }
