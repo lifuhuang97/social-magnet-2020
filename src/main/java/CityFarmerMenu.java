@@ -252,9 +252,5 @@ public class CityFarmerMenu {
     //     break;
     // }
 
-    // public void returnToMagnet(){
-    //     // Calls social magnet menu screen
-    //     break;
-    // }
 
 }

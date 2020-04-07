@@ -112,7 +112,7 @@ public class UserProfileDAO {
         DataUtility.queryUpdate(stmt);
     }
 
-    public static void updateuserGoldAndXp(UserProfile user, int xpChange, int goldChange){
+    public static UserProfile updateUserGoldAndXp(UserProfile user, int xpChange, int goldChange){
 
         int userId = user.getUserId();
         int currentXp = user.getXp();
@@ -124,17 +124,25 @@ public class UserProfileDAO {
         String stmt = "UPDATE USERPROFILE SET XP = " + newXp + ", GOLD = " + newGold + " WHERE USERID = " + userId;
 
         DataUtility.queryUpdate(stmt);
+
+        String stmt2 = "SELECT * FROM USERPROFILE WHERE USERID = " + user.getUserId();
+        ArrayList<String> result = DataUtility.singleQuerySelect(stmt2);
+
+        UserProfile updatedUser = new UserProfile(Integer.parseInt(result.get(0)), result.get(1), result.get(2), result.get(3), 
+                                                  RankDAO.getMyRank(Integer.parseInt(result.get(4))), Integer.parseInt(result.get(5)), 
+                                                  Integer.parseInt(result.get(6)));
+        return updatedUser;
     }
 
     /**
      *  Use this method whenever there's a change in XP for a user
      * @param user The userprofile in view
      */
-    public static void checkIfRankUpdate(UserProfile user){
+    public static boolean checkIfRankUpdate(UserProfile user){
         int currentExp = user.getXp();
         int currentRankId = user.getRank().getRankID();
 
-        Rank nextRank = new RankDAO().getNextRank(currentRankId);
+        Rank nextRank = RankDAO.getNextRank(currentRankId);
         int nextRankXpRequirement = nextRank.getXp();
 
         if(currentExp >= nextRankXpRequirement){
@@ -142,6 +150,9 @@ public class UserProfileDAO {
             int currentUserId = user.getUserId();
             String stmt = "UPDATE USERPROFILE SET RANK = " + nextRankId + " WHERE USERID = " + currentUserId;
             DataUtility.queryUpdate(stmt);
+            return true;
+        }else{
+            return false;
         }
     }
 

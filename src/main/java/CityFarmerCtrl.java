@@ -6,7 +6,7 @@ public class CityFarmerCtrl {
 
     public static String readFarmlandOptions(UserProfile user){
 
-        HashMap<String,ArrayList<Integer>> status;
+        HashMap<String,HashMap<Integer,Integer>> status;
 
         Scanner sc = new Scanner(System.in);
         String choice;
@@ -37,31 +37,40 @@ public class CityFarmerCtrl {
                     System.out.println();
                     return "farm";
                 case "P" :
-                    ArrayList<Integer> plantablePlots = status.get("empty");
-                    if(plantablePlots.contains(num)){
-                        //perform plant crop
+                    HashMap<Integer,Integer> plantablePlots = status.get("empty");
+
+                    Set<Integer> plantableIndexes = plantablePlots.keySet();
+
+                    if(plantableIndexes.contains(num)){
+                        plantPlot(plantablePlots.get(num), num);
                     }else{
                         System.out.println("Invalid action!");
                     }
                     break;
                 case "C" :
-                    ArrayList<Integer> clearablePlots = status.get("wilted");
-                    if(clearablePlots.contains(num)){
-                        // perform clear plot
+                    HashMap<Integer,Integer> clearablePlots = status.get("wilted");
+
+                    Set<Integer> clearableIndexes = clearablePlots.keySet();
+
+                    if(clearableIndexes.contains(num)){
+                        //perform clear crop
                     }else{
                         System.out.println("Invalid action!");
                     }
                     break;
                 case "H" :
-                    ArrayList<Integer> harvestablePlots = status.get("grown");
-                    if(harvestablePlots.contains(num)){
-                        // perform harvest
+                    HashMap<Integer,Integer> harvestablePlots = status.get("grown");
+
+                    Set<Integer> harvestableIndexes = harvestablePlots.keySet();
+                    
+                    if(harvestableIndexes.contains(num)){
+                        user = harvestPlot(harvestablePlots.get(num), user);
                     }else{
                         System.out.println("Invalid action!");
                     }
                     break;
                 
-                    default :
+                default :
                     System.out.println("Invalid choice, please try again");
             }
         }while (choice != "M" || choice != "F");
@@ -171,14 +180,14 @@ public class CityFarmerCtrl {
     }
 
 
-    public static HashMap<String,ArrayList<Integer>> displayPlots(UserProfile user, int version){
+    public static HashMap<String,HashMap<Integer,Integer>> displayPlots(UserProfile user, int version){
 
-        HashMap<String,ArrayList<Integer>> result = new HashMap<String,ArrayList<Integer>>();
+        HashMap<String,HashMap<Integer,Integer>> result = new HashMap<String,HashMap<Integer,Integer>>();
 
-        ArrayList<Integer> emptyPlotList = new ArrayList<Integer>();
-        ArrayList<Integer> growingList = new ArrayList<Integer>();
-        ArrayList<Integer> grownList = new ArrayList<Integer>();
-        ArrayList<Integer> wiltedList = new ArrayList<Integer>();
+        HashMap<Integer,Integer> emptyPlotList = new HashMap<Integer,Integer>();
+        HashMap<Integer,Integer> growingList = new HashMap<Integer,Integer>();
+        HashMap<Integer,Integer> grownList = new HashMap<Integer,Integer>();
+        HashMap<Integer,Integer> wiltedList = new HashMap<Integer,Integer>();
 
         result.put("grown",grownList);
         result.put("wilted", wiltedList);
@@ -188,11 +197,14 @@ public class CityFarmerCtrl {
         // version 1 is self, version 2 is friend
 
         ArrayList<Plot> myPlots = PlotDAO.getMyPlots(user);
+
+        // System.out.println("these are my plots" + myPlots.toString());
         int numberOfPlots = myPlots.size();
 
         if(version == 1){
             System.out.println("You have " + numberOfPlots + " plots of land.");
         }
+
 
         for (int i = 0; i < numberOfPlots; i++) {
             boolean wiltChecker = false;
@@ -200,7 +212,10 @@ public class CityFarmerCtrl {
 
             Plot plot = myPlots.get(i);
 
+            int plotId = plot.getPlotID();
+
             String plotDetails = PlotDAO.printPlotDetails(plot);
+
 
             String[] checkPlotGrowthRate = plotDetails.split("\t");
             String plotGrowthChecker = checkPlotGrowthRate[checkPlotGrowthRate.length-1];
@@ -208,15 +223,15 @@ public class CityFarmerCtrl {
             if(plotGrowthChecker.equals("[##########] 100%")){
                 wiltChecker = PlotDAO.produceYieldAndWiltChecker(plot);
                 if(!wiltChecker){
-                    grownList.add(index);
+                    grownList.put(index,plotId);
                 }else{
-                    wiltedList.add(index);
+                    wiltedList.put(index,plotId);
                 }
             }else{
                 if(plotGrowthChecker.equals("<empty>")){
-                    emptyPlotList.add(index);
+                    emptyPlotList.put(index,plotId);
                 }else{
-                    growingList.add(index);
+                    growingList.put(index,plotId);
                 }
             }
 
@@ -258,7 +273,125 @@ public class CityFarmerCtrl {
         }
 
     }
-    
 
+    public static String plantPlot(int plotId, int choiceId){
+
+        Scanner sc = new Scanner(System.in);
+
+        // get inventory of items
+        int userId = PlotDAO.retrievePlotOwner(plotId);
+        ArrayList<Inventory> inventory = InventoryDAO.retrieveByUserID(userId);
+
+        ArrayList<String> cropsThatIHave;
+        ArrayList<Crop> cropThatIHaveToBeProcessed = new ArrayList<Crop>();
+
+        String choice;
+        int choiceIndex = 0;
+
+        do{
+
+            cropsThatIHave = new ArrayList<String>();
+
+            int index = 1;
+            System.out.println();
+            System.out.println("Select the crop:");
+
+            for(Inventory inv : inventory){
+
+                Crop currentCrop = CropDAO.getCropById(inv.getCropID());
+                String currentCropName = currentCrop.getName();
+
+                cropThatIHaveToBeProcessed.add(currentCrop);
+                cropsThatIHave.add(currentCropName);
+                
+                System.out.println(index + ". " + currentCropName);
+                index++;
+            }
+
+            System.out.print("[M]ain | City [F]armers | Select Choice > ");
+
+            choice = sc.nextLine();
+
+            if(!choice.equals("F") || !choice.equals("M")){
+                int length = choice.length();
+                boolean isNumber = Character.isDigit(choice.charAt(0));
+
+                if(length == 1 && isNumber){
+                    choiceIndex = Integer.parseInt(choice);
+                    if(choiceIndex <= (cropsThatIHave.size())){
+                        choice = "Y";
+                    }else{
+                        choice = "N";
+                    }
+                }else{
+                    choice = "N";
+                }
+            }
+
+            switch(choice){
+                case "M":
+                    return "main";
+                case "F":
+                    return "farm";
+                case "Y":
+                    break;
+                default:
+                    System.out.println("You did not enter a valid option.");
+            }
+        }while (choice.charAt(0) != 'Y');
+
+
+        Inventory inventoryUsed = inventory.get(choiceIndex -1);
+
+        Crop chosenToPlant = cropThatIHaveToBeProcessed.get(choiceIndex-1);
+
+        int chosenToPlantId = inventoryUsed.getCropID();
+
+        InventoryDAO.updateInventory(userId,chosenToPlantId , inventoryUsed.getQuantity()-1);   
+
+        Plot utilizedPlot = PlotDAO.getPlotById(plotId);
+
+        PlotDAO.plantNewCrop(utilizedPlot, chosenToPlantId);
+
+        System.out.println(chosenToPlant.getName() + " planted on plot " + choiceId);
+
+        return "";
+    }
+
+    public static void clearPlot(int plotId){
+        // reset plot's cropId and planted time
+
+    }
+
+    public static UserProfile harvestPlot(int plotId, UserProfile user){
+        
+        Plot selectedPlot = PlotDAO.getPlotById(plotId);
+        int curUserId = user.getUserId();
+
+        int harvestedQty = selectedPlot.getProductAmt();
+
+        Crop cropThatsGrowingHere = CropDAO.getCropById(selectedPlot.getCropID());
+
+        int cropExp = cropThatsGrowingHere.getXp();
+        int cropGold = cropThatsGrowingHere.getSaleprice();
+
+        int earnedXp = harvestedQty * cropExp;
+        int earnedGold = harvestedQty * cropGold;
+
+        // Update user's gold and xp
+        user = UserProfileDAO.updateUserGoldAndXp(user, earnedXp, earnedGold);
+        if(UserProfileDAO.checkIfRankUpdate(user)){
+            user = UserProfileDAO.getUserProfileByUserId(curUserId);
+        }
+        
+        // Empty plot to default state
+        PlotDAO.removeCrop(selectedPlot);
+
+        System.out.println("You have harvested " + harvestedQty + " " + cropThatsGrowingHere.getName() 
+                           + " for " + earnedXp + " XP and " + earnedGold + " gold.");
+
+        return user;
+    }
+    
 
 }

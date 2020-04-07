@@ -4,12 +4,38 @@ import java.util.*;
 
 public class PlotDAO {
 
+    public static Plot getPlotById(int plotId){
+
+        Plot tbr;
+        String stmt = "SELECT * from PLOT WHERE PLOTID = " + plotId;
+
+        ArrayList<String> result = DataUtility.singleQuerySelect(stmt);
+
+        if(Integer.parseInt(result.get(1)) != 0){
+
+            tbr = new Plot(Integer.parseInt(result.get(0)), Integer.parseInt(result.get(1)), new SMDate(result.get(2)), Integer.parseInt(result.get(3)));
+        }else{
+            tbr = new Plot(Integer.parseInt(result.get(0)), 0, null, 0);
+        }
+        return tbr;
+    }
+
+    public static int retrievePlotOwner(int plotId){
+
+        String stmt = "SELECT userID from USER_PLOT WHERE PLOTID = " + plotId;
+
+        ArrayList<String> result = DataUtility.singleQuerySelect(stmt);
+
+        int userId = Integer.parseInt(result.get(0));
+
+        return userId;
+    }
 
     public static String printPlotDetails(Plot plot){
 
         String tbr = "";
 
-        if(plot != null){
+        if(plot.getPlantedTime() != null){
 
             int cropInThisPlot = plot.getCropID();
 
@@ -45,11 +71,6 @@ public class PlotDAO {
 
             ArrayList<String> thisPlotDetails = DataUtility.singleQuerySelect("SELECT * FROM PLOT WHERE PLOTID = " + thisPlotId);
 
-            // System.out.println(thisPlotDetails.toString());
-            // System.out.println("This is the plot details length" + thisPlotDetails.size());
-
-            // System.out.println("This is crop ID" + Integer.parseInt(thisPlotDetails.get(1)));
-
             if(Integer.parseInt(thisPlotDetails.get(1)) != 0){
 
                 Plot thisPlot;
@@ -67,10 +88,11 @@ public class PlotDAO {
 
                 allMyPlots.add(thisPlot);
             }else{
-                allMyPlots.add(null);
+                int plotId = Integer.parseInt(thisPlotDetails.get(0));
+                allMyPlots.add(new Plot(plotId, 0, null, 0));
             }
         }
-
+        
         return allMyPlots;
 
     }
@@ -80,7 +102,7 @@ public class PlotDAO {
 
         String plantTime = new SMDate().toString();
 
-        String stmt = "UPDATE PLOT SET CROPID = " + cropId + ", plantTime = " + plantTime + " WHERE plotID = " + plotId;
+        String stmt = "UPDATE PLOT SET CROPID = " + cropId + ", plantTime = '" + plantTime + "' WHERE plotID = " + plotId;
 
         DataUtility.queryUpdate(stmt);
 
@@ -92,7 +114,7 @@ public class PlotDAO {
 
         int plotId = plot.getPlotID();
 
-        String stmt = "UPDATE PLOT SET CROPID = 0, plantTime = NULL WHERE plotID = " + plotId;
+        String stmt = "UPDATE PLOT SET CROPID = 0, plantTime = NULL, produceAmt = 0 WHERE plotID = " + plotId;
         
         DataUtility.queryUpdate(stmt);
 
