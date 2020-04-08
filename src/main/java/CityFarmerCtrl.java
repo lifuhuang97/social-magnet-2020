@@ -609,7 +609,18 @@ public class CityFarmerCtrl {
         return result;        
     }
 
-
+    /** This method registers purchases that the user make at the shop screen. It will
+     *  update the user's gold in this method and return the userprofile so that the
+     *  change in gold can be updated immediately.
+     *  <p>
+     *  The user's gold and inventory are updated in the database in this method.
+     * 
+     * 
+     * @param crop Crop object that's bought
+     * @param quantity quantity of the crop bought
+     * @param userprofile the user who made the purchase
+     * @return updated userprofile of the purchasing user (reflects change in gold)
+     */
     private UserProfile registerPurchase (Crop crop, int quantity, UserProfile userprofile) {
         int cost = crop.getCost()*quantity*(-1);
         int newGold = userprofile.getGold() + cost;
@@ -625,6 +636,17 @@ public class CityFarmerCtrl {
         }
     }
 
+    /** The user has to select from the seeds that he owns
+     *  to plant a crop on the selected plot.
+     *  <p>
+     *  This method plants the seed in the selected plot.
+     *  This method can only be called on an empty plot.
+     * 
+     * @param plotId selected plot ID
+     * @param choiceId selected crop ID within the method
+     * @return 'main', 'farm' or '' to direct the farmlandMenu
+     *  to the supposed to reach page
+     */
     private String plantPlot(int plotId, int choiceId){
 
         Scanner sc = new Scanner(System.in);
@@ -709,6 +731,14 @@ public class CityFarmerCtrl {
         return "";
     }
 
+    /** This method clears the plot of wilted crops and 
+     *  updates the database accordingly. This method can
+     *  only be called when the plot has wilted crops.
+     * 
+     * 
+     * @param plotId   ID of the plot to clear
+     * @param choiceId Index number selected at the menu
+     */
     private void clearPlot(int plotId, int choiceId){
         // reset plot's cropId and planted time
         Plot selectedPlot = PlotDAO.getPlotById(plotId);
@@ -719,6 +749,16 @@ public class CityFarmerCtrl {
 
     }
 
+    /** This method harvests a plot that is fully grown.
+     *  This method can only be called on a fully grown plot.
+     *  <p>
+     *  This method returns the updated userprofile after
+     *  updating the user's XP and GOLD from harvest in the database.
+     * 
+     * @param plotId ID of plot to harvest from
+     * @param user UserProfile object of the user
+     * @return
+     */
     private UserProfile harvestPlot(int plotId, UserProfile user){
         
         Plot selectedPlot = PlotDAO.getPlotById(plotId);
@@ -752,22 +792,25 @@ public class CityFarmerCtrl {
         return user;
     }
 
-    /**
-     * 1. Check if there's a record of u stealing from this plot already. If no, continue
+    /** This method processes a steal after secondary validations.
+     *  This method can only be reached if the selected friend has fully grown plots.
+     *  <p>
+     *  This method validates whether
+     *  1) The user has already stolen from this friend
+     *  2) The plot has already been stolen by more than 20%
+     *  3) The user is stealing more than 5% in this current heist session
+     *  
      * 
-     // TODO: FOR EACH PLOT
+     * @param friend the friend UserProfile object that is chosen to steal from
+     * @param stealable A hashmap of indexIds to plotIds of stealable plots
      * 
-     * FLOW: 2. Check stealable percentage of current plot, get produce stealable by * percentage
-     * get lowest value.
-     * 
-     * 3. Tabulate stolen info into XP and gold tally.
-     * 4. Update friend's plot details in DB
-     * 5. Add a record into UserSteal
-     * 
-     * 
-     * @param friend
-     * @param stealable
+     * @return an ArrayList of Strings to help redirect the previous screen. The
+     *  arraylist includes three elements:
+     * 1) Direction: either "main", "farm" or "". Works the same as abovementioned
+     * 2) Any XP change. Either a string value of XP Gained, or "".
+     * 3) Any Gold change. Either a string value of Gold gained, or "".
      */
+
 
     private ArrayList<String> processSteal(UserProfile friend, HashMap<Integer,Integer> stealable){
 
