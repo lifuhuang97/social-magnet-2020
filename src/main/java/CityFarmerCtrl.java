@@ -273,6 +273,8 @@ public class CityFarmerCtrl {
 
         ArrayList<String> returnWhere = new ArrayList<String>();
         returnWhere.add("");
+        returnWhere.add("0");
+        returnWhere.add("0");
         String choice;
         Scanner sc = new Scanner(System.in);
         
@@ -300,7 +302,10 @@ public class CityFarmerCtrl {
                 case "S":
                     if(!stealable.isEmpty()){
                         ArrayList<String> result = processSteal(friend,stealable);
-                        returnWhere.addAll(result);
+                        if(!result.isEmpty()){
+                            returnWhere.set(1,result.get(0));
+                            returnWhere.set(2,result.get(1));
+                        }
                     }else{
                         System.out.println("There isn't any produce for you to steal.");
                     }
@@ -718,49 +723,50 @@ public class CityFarmerCtrl {
                 int cropGold = currentCropGrown.getSaleprice();
 
                 if(currentPlot.getStolen() < 20){
+                    if(totalStolenPercentage < 5){
 
-                    int existingProduce = currentPlot.getProductAmt();
-                    int currentStolen = currentPlot.getStolen();
+                        double existingProduce = (double) currentPlot.getProductAmt();
+                        double currentStolen = (double) currentPlot.getStolen();
 
-                    double percentageStealable = (20 - currentStolen) * 0.01;
-                    double temp = existingProduce * percentageStealable;
-                    double availableToSteal = (int) Math.floor(temp);
+                        double percentageStealable = (20 - currentStolen) / 100;
+                        double temp = existingProduce * percentageStealable;
 
-                    double randomPercentage = (1 + (new Random().nextInt(5))) * 0.01;
-                    double randomedStealAmt = randomPercentage * existingProduce;
-                    if(randomedStealAmt < 1){
-                        randomedStealAmt = 1;
+                        double availableToSteal = Math.floor(temp);
+
+                        double randomPercentage = (1 + (new Random().nextInt(5-totalStolenPercentage))) * 0.01;
+
+                        double randomedStealAmt = randomPercentage * existingProduce;
+
+                        if(randomedStealAmt < 1){
+                            randomedStealAmt = 1;
+                        }
+
+                        double finalStolen = Math.min(availableToSteal, randomedStealAmt);
+
+                        double stolenPercentage = finalStolen / existingProduce * 100;
+
+                        double finalStolenPercentage = Math.floor(stolenPercentage);
+
+
+                        tallyXp += finalStolen * cropXp;
+                        tallyGold += finalStolen * cropGold;
+
+                        double newStolen = finalStolenPercentage + currentStolen;
+
+                        double newProduce = existingProduce - finalStolen;
+
+                        PlotDAO.updatePlotStolenAmt(plotId, (int)finalStolenPercentage, (int)newProduce);
+                        UserStealDAO.addStealRecord(myUserId, plotId);
+
+                        if(stolenRecords.computeIfPresent(currentCropName,(k,v)->v+(int)finalStolen) == null){
+                            stolenRecords.put(currentCropName,(int)finalStolen);
+                        }
+
+                        totalStolenPercentage += (int) finalStolenPercentage;
                     }
-
-                    int finalStolen = (int) Math.min(availableToSteal, randomedStealAmt);
-
-
-                    double stolenPercentage = finalStolen / existingProduce;
-                    int finalStolenPercentage = (int) Math.floor(stolenPercentage);
-
-
-                    tallyXp += finalStolen * cropXp;
-                    tallyGold += finalStolen * cropGold;
-
-                    int newStolen = finalStolenPercentage + currentStolen;
-
-                    System.out.println("This is final stolen percentage" + finalStolenPercentage);
-                    System.out.println("this is current stolen " + currentStolen);
-
-                    int newProduce = existingProduce - finalStolen;
-
-                    System.out.println("This is new stolen" + newStolen);
-                    System.out.println("this is new produce" + newProduce);
-
-                    PlotDAO.updatePlotStolenAmt(plotId, newStolen, newProduce);
-                    UserStealDAO.addStealRecord(myUserId, plotId);
-
-                    if(stolenRecords.computeIfPresent(currentCropName,(k,v)->v+finalStolen) == null){
-                        stolenRecords.put(currentCropName,finalStolen);
-                    }
-
-                    
-
+                }else{
+                    System.out.println("This user cannot be stolen from anymore.");
+                    return result;
                 }
             }else{
                 System.out.println("You have already stolen from this user.");
@@ -770,9 +776,6 @@ public class CityFarmerCtrl {
 
         result.set(0,Integer.toString(tallyXp));
         result.set(1,Integer.toString(tallyGold));
-
-        // UserProfileDAO.updateUserGoldAndXp(this.user, tallyXp, tallyGold);
-        // this.user = UserProfileDAO.getUserProfileByUserId(myUserId);
         
         for(Map.Entry<String,Integer> entry : stolenRecords.entrySet()){
             String plural = "";
@@ -781,7 +784,7 @@ public class CityFarmerCtrl {
                 plural = "s";
             }
 
-            finalStatement += "" + entry.getValue() + " " + entry.getKey() + plural + ",";
+        finalStatement += "" + entry.getValue() + " " + entry.getKey() + plural + ",";
 
         }
 
@@ -791,8 +794,5 @@ public class CityFarmerCtrl {
         System.out.println(finalStmtCut);
         return result;
     }
-
-    
-    
 
 }

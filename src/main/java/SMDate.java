@@ -140,24 +140,19 @@ public class SMDate extends Date{
 
     public static int getTimeDifferenceInMinutes(SMDate date){
 
-        SimpleDateFormat defaultDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        SimpleDateFormat defaultDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date plantedDate;
         Date currentTime = new Date();
+
+
+
 
         try{
             plantedDate = defaultDateFormat.parse(date.toString());
 
-            // System.out.println("This is current datetime" + currentTime.getTime());
-
-            // System.out.println("This is plantedDateTime" + plantedDate.getTime());
-
             long duration = currentTime.getTime() - plantedDate.getTime();
-
-            // System.out.println("This is duration: " + duration);
     
             long differenceInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration);
-    
-            // System.out.println("This is diff in minutes " + differenceInMinutes);
     
             return (int)differenceInMinutes;
 
