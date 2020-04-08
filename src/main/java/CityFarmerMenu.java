@@ -159,6 +159,10 @@ public class CityFarmerMenu {
 
         CityFarmerCtrl ctrl = new CityFarmerCtrl(user);
         
+        UserProfile friendUser = UserProfileDAO.getUserProfileByUsername(friendUsername);
+
+        PlotDAO.checkIfPlotCountNeedsUpdating(friendUser);
+
         ArrayList<String> returnWhere = ctrl.readFriendFarmMenuOptions(friendUsername);
 
         System.out.println(returnWhere.toString());
