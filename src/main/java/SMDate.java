@@ -7,23 +7,27 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
-// All SMDATE follows a format of DD/MM/YYYY HH:MM
-
+/** The official formatted date object 
+ *  of the app.
+ * 
+ *  All dates in Social Magnet follows the
+ *  format of dd/MM/yyyy HH:mm
+ */
 public class SMDate extends Date{
+    
     private Date dateTime;
 
     /**
-     * Constructs a SMDate object
+     * Constructs a SMDate object of the current time
      */
     public SMDate() {
         this.dateTime = new Date();
     }
 
     /**
-     * Constructs a SMDate object with the current date and time
-     * @param dateInput
+     * Constructs a SMDate object with the input date and time
+     * @param dateInput String of date time to be converted to a SMDate object
      */
-    //TODO check if description is correct
     public SMDate(final String dateInput) {
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
@@ -79,25 +83,6 @@ public class SMDate extends Date{
     }
 
     /**
-     * Increment current date by a given amount
-     * @param amount amount to be increased by
-     * @returns SMDate of incremeneted date
-     */
-    public SMDate computeDate(final int amount) {
-        final GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.setTime(this.dateTime);
-        try {
-            gregorianCalendar.add(11, amount);
-        }
-        catch (IllegalArgumentException ex) {
-            ex.printStackTrace();
-        }
-        final SMDate smDate = new SMDate();
-        smDate.setDateTime(gregorianCalendar.getTime());
-        return smDate;
-    }
-
-    /**
      * Converts date to string
      * @returns string format of current date
      */
@@ -106,10 +91,14 @@ public class SMDate extends Date{
         return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(this.dateTime);
     }
 
-    /**
-     * Converts planted time from SMDate format to int format
+    /** Converts plantedDateTime to number of minutes of
+     *  how long it has been since the crop is planted
+     * 
      * @param plantedDateTime SMDate format of planted time
-     * @returns int format of planted time representing minutes
+     * @return number of minutes since it has been planted
+     * 
+     *  Used to calculate growth percentage and whether crop
+     *  should wilt
      */
     public int getPlantedTime (SMDate plantedDateTime){
 
@@ -138,6 +127,13 @@ public class SMDate extends Date{
 
     }
 
+    /** This method is used to generate the number of minutes
+     *  that the current time is from the input datetime.
+     * 
+     * 
+     * @param date input datetime to compare against
+     * @return the number of minutes since the input datetime
+     */
     public static int getTimeDifferenceInMinutes(SMDate date){
 
         SimpleDateFormat defaultDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -161,6 +157,12 @@ public class SMDate extends Date{
         return -1;
     }
 
+    /** This method is made especially for gifts, to check whether
+     *  24 hours has passed from the input date time
+     * 
+     * @param date input datetime to check
+     * @return true / false of whether it has been 24 hours
+     */
     public static boolean checkIfSentWithinOneDay(SMDate date){
 
         int difference = getTimeDifferenceInMinutes(date);

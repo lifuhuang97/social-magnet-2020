@@ -35,6 +35,8 @@ public class UserStealDAO {
 
     /**
      * Delete steal records for a plot
+     * Used when the plot owner harvests / clears the plot.
+     * 
      * @param plotID plotID associated with plot
      */
     public static void deleteStealRecords(int plotID){

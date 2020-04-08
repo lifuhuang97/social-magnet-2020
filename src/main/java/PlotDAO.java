@@ -188,7 +188,11 @@ public class PlotDAO {
     }
 
     /**
-     * Check if the crop planted on a plot has wilted
+     * Check if the crop planted on a plot should have any produce.
+     * If yes, call a method to generate its produce and update in DB.
+     * 
+     * Also checks if the method should have wilted via a different method and returns that result.
+     * 
      * @param Plot object to check 
      * @return whether the crop on plot has wilted
      */
@@ -216,8 +220,9 @@ public class PlotDAO {
     }
 
     /**
-     * Checks if Plot count needs updating
-     * @param user UserProfile owning the Plot object
+     * Checks if Plot count needs updating and update his plots if it does.
+     * 
+     * @param user UserProfile who needs to be checked
      */
     public static void checkIfPlotCountNeedsUpdating(UserProfile user){
 

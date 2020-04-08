@@ -17,7 +17,6 @@ public class UserProfileDAO {
 
         if(results.size() == 0) {
             return user;
-            // TODO: Throw error
         } else {
             int userId = Integer.parseInt(results.get(0).get(0));
             String fullName = results.get(0).get(1);
@@ -47,7 +46,6 @@ public class UserProfileDAO {
 
         if(results.size() == 0) {
             return user;
-            // TODO: Throw error
         } else {
             String fullName = results.get(0).get(1);
             String username = results.get(0).get(2);
@@ -78,17 +76,17 @@ public class UserProfileDAO {
 
         DataUtility.multiQueryUpdate(stmts);
 
-        // TODO: Handle DB errors
-        // try {
-        //     DataUtility.multiQueryUpdate(stmts);
-        // } catch (SQLException e) {
-        //     status = false;
-        // }
-
         return status;
     }
 
 
+    /** This method is used to update a user's gold and xp in the db
+     * 
+     * @param user selected user to update
+     * @param xpChange xp change (gain or loss)
+     * @param goldChange gold change (gain or loss)
+     * @return updated userprofile object for caller to use
+     */
     public static UserProfile updateUserGoldAndXp(UserProfile user, int xpChange, int goldChange){
 
         int userId = user.getUserId();
@@ -111,9 +109,11 @@ public class UserProfileDAO {
         return updatedUser;
     }
 
-    /**
-     *  Use this method whenever there's a change in XP for a user
-     * @param user The userprofile in view
+    /** Use this method whenever the user's xp changed to see if ranked up
+     * 
+     * 
+     * @param user user to check
+     * @return true if ranked up, false if no
      */
     public static boolean checkIfRankUpdate(UserProfile user){
         int currentExp = user.getXp();

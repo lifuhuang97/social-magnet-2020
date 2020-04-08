@@ -24,6 +24,13 @@ public class RankDAO {
         return rank;
     }
 
+    /** Retrieves the next rank from this current rank.
+     * 
+     * @param currentRankId id of current rank
+     * @return Rank object of the next rank
+     * 
+     * Used to check whether a user should have ranked up
+     */
     public static Rank getNextRank(int currentRankId){
 
         int nextRankId = currentRankId + 1;
