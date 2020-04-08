@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.lang.Math;
 
 public class CityFarmerCtrl {
 
@@ -268,9 +269,10 @@ public class CityFarmerCtrl {
         
     }
 
-    public String readFriendFarmMenuOptions(String friendUsername){
+    public ArrayList<String> readFriendFarmMenuOptions(String friendUsername){
 
-        String returnWhere = "";
+        ArrayList<String> returnWhere = new ArrayList<String>();
+        returnWhere.add("");
         String choice;
         Scanner sc = new Scanner(System.in);
         
@@ -281,22 +283,27 @@ public class CityFarmerCtrl {
             System.out.println();
             displayFriendFarmDetails(friend);
             HashMap<Integer,Integer> stealable = displayPlots(friend, 2).get("grown");
+
+            int rangeLimit = stealable.size();
+            
             System.out.print("[M]ain | City [F]armers | [S]teal > ");
             choice = sc.nextLine();
             int num = 0;
 
-            
-
-
             switch(choice){
                 case "M":
-                    System.out.println();
-                    return "main";
+                    returnWhere.set(0,"main");
+                    return returnWhere;
                 case "F":
-                    System.out.println();
+                    returnWhere.set(0,"farm");
                     return returnWhere;
                 case "S":
-                // steal something
+                    if(!stealable.isEmpty()){
+                        ArrayList<String> result = processSteal(friend,stealable);
+                        returnWhere.addAll(result);
+                    }else{
+                        System.out.println("There isn't any produce for you to steal.");
+                    }
                     break;
                 default:
                     System.out.println("You did not enter a valid option.");
@@ -313,6 +320,7 @@ public class CityFarmerCtrl {
         String returnWhere = "";
         String choice;
         Scanner sc = new Scanner(System.in);
+        int giftChoice = 0;
 
         do{
             CityFarmerMenu.displayFarmHeader("case5", user);
@@ -331,9 +339,9 @@ public class CityFarmerCtrl {
             }
 
             try{
-                int choiceInt = Integer.parseInt(choice);
+                giftChoice = Integer.parseInt(choice);
 
-                if(choiceInt > 0 && choiceInt < 5){
+                if(giftChoice > 0 && giftChoice < 5){
                     choice = "Y";
                 }else{
                     choice = "N";
@@ -399,7 +407,7 @@ public class CityFarmerCtrl {
 
                     if(ValidToProceed){
                         for(UserProfile friend : validFriends){
-                            processGiftSending(friend);
+                            processGiftSending(friend, giftChoice);
                         }
                         System.out.println("Gift posted to your friends' wall");
                         break;
@@ -416,12 +424,22 @@ public class CityFarmerCtrl {
     }
 
 
-    public void processGiftSending(UserProfile user){
+    public void processGiftSending(UserProfile friend, int giftChoice){
 
+        // giftchoice 1 is papaya, 2 is pumpkin, 3 is sunfloewr, 4 is watermelon (same as cropID)
 
+        WallCtrl userWallCtrl = new WallCtrl(this.user);
 
+        Crop selectedGift = CropDAO.getCropById(giftChoice);
+        String cropName = selectedGift.getName();
 
+        String postMessage = "Here is a bag " + cropName + " seeds for you. - City Farmers";
 
+        // Create new post on friend wall and get post ID
+        String postID = userWallCtrl.post(postMessage, friend, 2);
+
+        // Create new gift in DB thats linked to postID
+        GiftDAO.createNewGift(this.user.getUserId(), friend.getUserId(), postID, giftChoice);
 
     }
 
@@ -650,6 +668,131 @@ public class CityFarmerCtrl {
 
         return user;
     }
+
+    /**
+     * 1. Check if there's a record of u stealing from this plot already. If no, continue
+     * 
+     // TODO: FOR EACH PLOT
+     * 
+     * FLOW: 2. Check stealable percentage of current plot, get produce stealable by * percentage
+     * get lowest value.
+     * 
+     * 3. Tabulate stolen info into XP and gold tally.
+     * 4. Update friend's plot details in DB
+     * 5. Add a record into UserSteal
+     * 
+     * 
+     * @param friend
+     * @param stealable
+     */
+
+    public ArrayList<String> processSteal(UserProfile friend, HashMap<Integer,Integer> stealable){
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add("");
+        result.add("");
+
+        int myUserId = this.user.getUserId();
+        // Note: stealable is a hashmap of hisPlotIndex -> plotId
+        int totalStolenPercentage = 0;
+
+        String finalStatement = "You have successfully stolen ";
+
+        Map<String,Integer> stolenRecords = new HashMap<String,Integer>();
+
+        int tallyXp = 0;
+        int tallyGold = 0;
+
+        Collection<Integer> plotIdsThatICanStealFrom = stealable.values();
+
+        for(Integer plotId : plotIdsThatICanStealFrom){
+
+            // Check if already stolen
+            if(!UserStealDAO.checkIfAlreadyStole(myUserId, plotId)){
+
+                Plot currentPlot = PlotDAO.getPlotWithStealableById(plotId);
+                Crop currentCropGrown = CropDAO.getCropById(currentPlot.getCropID());
+                String currentCropName = currentCropGrown.getName();
+
+                int cropXp = currentCropGrown.getXp();
+                int cropGold = currentCropGrown.getSaleprice();
+
+                if(currentPlot.getStolen() < 20){
+
+                    int existingProduce = currentPlot.getProductAmt();
+                    int currentStolen = currentPlot.getStolen();
+
+                    double percentageStealable = (20 - currentStolen) * 0.01;
+                    double temp = existingProduce * percentageStealable;
+                    double availableToSteal = (int) Math.floor(temp);
+
+                    double randomPercentage = (1 + (new Random().nextInt(5))) * 0.01;
+                    double randomedStealAmt = randomPercentage * existingProduce;
+                    if(randomedStealAmt < 1){
+                        randomedStealAmt = 1;
+                    }
+
+                    int finalStolen = (int) Math.min(availableToSteal, randomedStealAmt);
+
+
+                    double stolenPercentage = finalStolen / existingProduce;
+                    int finalStolenPercentage = (int) Math.floor(stolenPercentage);
+
+
+                    tallyXp += finalStolen * cropXp;
+                    tallyGold += finalStolen * cropGold;
+
+                    int newStolen = finalStolenPercentage + currentStolen;
+
+                    System.out.println("This is final stolen percentage" + finalStolenPercentage);
+                    System.out.println("this is current stolen " + currentStolen);
+
+                    int newProduce = existingProduce - finalStolen;
+
+                    System.out.println("This is new stolen" + newStolen);
+                    System.out.println("this is new produce" + newProduce);
+
+                    PlotDAO.updatePlotStolenAmt(plotId, newStolen, newProduce);
+                    UserStealDAO.addStealRecord(myUserId, plotId);
+
+                    if(stolenRecords.computeIfPresent(currentCropName,(k,v)->v+finalStolen) == null){
+                        stolenRecords.put(currentCropName,finalStolen);
+                    }
+
+                    
+
+                }
+            }else{
+                System.out.println("You have already stolen from this user.");
+                return result;
+            }
+        }
+
+        result.set(0,Integer.toString(tallyXp));
+        result.set(1,Integer.toString(tallyGold));
+
+        // UserProfileDAO.updateUserGoldAndXp(this.user, tallyXp, tallyGold);
+        // this.user = UserProfileDAO.getUserProfileByUserId(myUserId);
+        
+        for(Map.Entry<String,Integer> entry : stolenRecords.entrySet()){
+            String plural = "";
+
+            if(entry.getValue() > 1){
+                plural = "s";
+            }
+
+            finalStatement += "" + entry.getValue() + " " + entry.getKey() + plural + ",";
+
+        }
+
+        String finalStmtCut = finalStatement.substring(0, finalStatement.length()-1);
+        finalStmtCut += " for " + tallyXp + "XP, and " + tallyGold + " gold.";
+
+        System.out.println(finalStmtCut);
+        return result;
+    }
+
+    
     
 
 }

@@ -20,6 +20,30 @@ public class PlotDAO {
         return tbr;
     }
 
+    public static Plot getPlotWithStealableById(int plotId){
+
+        Plot tbr;
+        String stmt = "SELECT * from PLOT WHERE PLOTID = " + plotId;
+
+        ArrayList<String> result = DataUtility.singleQuerySelect(stmt);
+
+        if(Integer.parseInt(result.get(1)) != 0){
+
+            tbr = new Plot(Integer.parseInt(result.get(0)), Integer.parseInt(result.get(1)), new SMDate(result.get(2)), Integer.parseInt(result.get(3)), Integer.parseInt(result.get(4)));
+        }else{
+            tbr = new Plot(Integer.parseInt(result.get(0)), 0, null, 0);
+        }
+        return tbr;
+    }    
+
+    public static void updatePlotStolenAmt(int plotId, int newStolen, int newProduce){
+
+        String stmt = "UPDATE PLOT SET PRODUCEAMT = " + newProduce + ", STOLEN = " + newStolen + " WHERE PLOTID = " + plotId;
+
+        DataUtility.queryUpdate(stmt);
+    }
+
+
     public static int retrievePlotOwner(int plotId){
 
         String stmt = "SELECT userID from USER_PLOT WHERE PLOTID = " + plotId;
@@ -63,13 +87,14 @@ public class PlotDAO {
 
         ArrayList<ArrayList<String>> myPlotIds_DB = DataUtility.querySelect("SELECT * FROM USER_PLOT WHERE USERID = " + currentUserId);
 
+
         for(ArrayList<String> myPlotId_DB : myPlotIds_DB){
 
             String thisPlotId = myPlotId_DB.get(1);
 
-            // System.out.println("This is plot ID " + thisPlotId);
-
             ArrayList<String> thisPlotDetails = DataUtility.singleQuerySelect("SELECT * FROM PLOT WHERE PLOTID = " + thisPlotId);
+
+            
 
             if(Integer.parseInt(thisPlotDetails.get(1)) != 0){
 
@@ -114,7 +139,9 @@ public class PlotDAO {
 
         int plotId = plot.getPlotID();
 
-        String stmt = "UPDATE PLOT SET CROPID = 0, plantTime = NULL, produceAmt = 0 WHERE plotID = " + plotId;
+        UserStealDAO.deleteStealRecords(plotId);
+
+        String stmt = "UPDATE PLOT SET CROPID = 0, plantTime = NULL, produceAmt = 0, stolen = 0 WHERE plotID = " + plotId;
         
         DataUtility.queryUpdate(stmt);
 

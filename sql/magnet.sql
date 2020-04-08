@@ -145,10 +145,10 @@ CREATE TABLE `CROP` (
 -- # FARM
 DROP TABLE IF EXISTS `GIFT`;
 CREATE TABLE `GIFT` (
-  `userID` int(3) NOT NULL,
-  `friendID` int(3) NOT NULL,
-  `timesent` varchar(16) NOT NULL,
-  `cropID` int(3) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `friendID` int(11) NOT NULL,
+  `postID` int(11) NOT NULL,
+  `cropID` int(11) NOT NULL,
   CONSTRAINT gift_pk primary key(userID, friendID, timesent)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -156,8 +156,8 @@ CREATE TABLE `GIFT` (
 # FARM
 DROP TABLE IF EXISTS `INVENTORY`;
 CREATE TABLE `INVENTORY` (
-  `userID` int(3) NOT NULL,
-  `cropID` int(3) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `cropID` int(11) NOT NULL,
   `quantity` int(10) NOT NULL,
   CONSTRAINT crop_pk primary key (userID, cropID)
   # + FK1,2 for userID, crop ID
@@ -170,6 +170,7 @@ CREATE TABLE `PLOT` (
   `cropID` int(11) DEFAULT 0,
   `plantTime` VARCHAR(16) DEFAULT NULL,
   `produceAmt` int(11) DEFAULT 0,
+  `stolen` int(2) DEFAULT 0,
   CONSTRAINT plot_pk primary key (plotID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -184,11 +185,18 @@ CREATE TABLE `USER_PLOT` (
 # FARM 
 DROP TABLE IF EXISTS `RANK`;
 CREATE TABLE `RANK` (
-`rankID` int(2) NOT NULL AUTO_INCREMENT,
+`rankID` int(3) NOT NULL AUTO_INCREMENT,
 `rankname` VARCHAR(15) NOT NULL,
 `xp` int(10) NOT NULL,
-`plots` int(2) NOT NULL,
+`plots` int(5) NOT NULL,
 CONSTRAINT rank_pk primary key (rankID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `USER_STEAL`;
+CREATE TABLE `USER_STEAL` (
+`userID` int(11) NOT NULL,
+`plotID` int(11) NOT NULL,
+CONSTRAINT user_steal_pk primary key (userID,plotID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

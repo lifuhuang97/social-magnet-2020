@@ -97,6 +97,7 @@ public class CityFarmerMenu {
                         break;
                     }else{
                         String anotherReturnWhere = accessFriendFarmMenu(user, returnWhere);
+                        user = UserProfileDAO.getUserProfileByUserId(user.getUserId());
                         if(anotherReturnWhere.equals("main")){
                             return;
                         }else{
@@ -158,8 +159,18 @@ public class CityFarmerMenu {
 
         CityFarmerCtrl ctrl = new CityFarmerCtrl(user);
         
-        String returnWhere = ctrl.readFriendFarmMenuOptions(friendUsername);
-        return returnWhere;
+        ArrayList<String> returnWhere = ctrl.readFriendFarmMenuOptions(friendUsername);
+
+        System.out.println(returnWhere.toString());
+
+        if(!returnWhere.get(1).equals("")){
+            UserProfileDAO.updateUserGoldAndXp(user, Integer.parseInt(returnWhere.get(1)), Integer.parseInt(returnWhere.get(2)));
+        }
+        UserProfile updatedUser = UserProfileDAO.getUserProfileByUserId(user.getUserId());
+
+        user = updatedUser;
+
+        return returnWhere.get(0);
     }
 
     public static String accessGiftMenu(UserProfile user){

@@ -85,4 +85,14 @@ public class GiftDAO {
 
     }
 
+    
+    public static void createNewGift(int userId, int friendId, String postId, int cropId){
+
+        String stmt = "INSERT INTO GIFT (USERID, FRIENDID, POSTID, CROPID) VALUES (" + 
+                       userId + ", " + friendId + ", " + postId + ", " + cropId + ")";
+
+        DataUtility.queryUpdate(stmt);
+
+    }
+
 }

@@ -5,12 +5,19 @@ public class Plot {
     private int cropID;
     private SMDate plantedTime;
     private Integer produceAmt;
+    private Integer stolen;
 
     public Plot(int plotID, int cropID, SMDate plantedTime, Integer produceAmt) {
         this.plotID = plotID;
         this.cropID = cropID;
         this.plantedTime = plantedTime;
         this.produceAmt = produceAmt;
+        this.stolen = 0;
+    }
+
+    public Plot(int plotID, int cropID, SMDate plantedTime, Integer produceAmt, Integer stolen){
+        this(plotID, cropID, plantedTime, produceAmt);
+        this.stolen = stolen;
     }
 
     public int getPlotID() {
@@ -43,5 +50,13 @@ public class Plot {
 
     public void setProductAmt(Integer produceAmt){
         this.produceAmt = produceAmt;
+    }
+
+    public int getStolen(){
+        return stolen;
+    }
+
+    public void setStolen(Integer stolen){
+        this.stolen = stolen;
     }
 }
