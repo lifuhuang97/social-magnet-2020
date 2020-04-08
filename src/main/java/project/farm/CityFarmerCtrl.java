@@ -1,7 +1,7 @@
 package project.farm;
 
 import project.utilities.*;
-import project.magnet.userWallCtrl;
+import project.magnet.WallCtrl;
 import project.magnet.UserProfile;
 
 import java.text.NumberFormat;

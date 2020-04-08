@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import project.utilities.*;
+import project.farm.Rank;
 
 public class FriendsWallMenu {
 

@@ -1,4 +1,4 @@
-// package main.java;
+package project.exception;
 
 public class KillThreadException extends RuntimeException {
     /**

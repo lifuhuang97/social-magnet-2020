@@ -2,7 +2,7 @@ package project.utilities;
 
 import project.farm.Gift;
 import project.magnet.UserProfile;
-
+import project.magnet.Post;
 
 import java.util.ArrayList;
 public class GiftDAO {

@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import project.utilities.*;
+import project.farm.Rank;
+import project.farm.Gift;
 
 public class MyWallMenu {
 
