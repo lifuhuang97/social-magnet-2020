@@ -180,7 +180,7 @@ public class FriendsWallMenu {
             if (count > 300) {
                 System.out.println("Your message was too long! ;)");
             } else {
-                ctrl.post(postContent, friendProfile);
+                System.out.println(ctrl.post(postContent, friendProfile, 1));;
             }
         }
     }

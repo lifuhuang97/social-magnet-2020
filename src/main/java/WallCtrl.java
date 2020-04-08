@@ -102,7 +102,7 @@ public class WallCtrl {
      * @param postContent content to post
      * @param wallPostedTo the userId of the wall that the post is to be posted on
      */
-    public void post(String postContent, UserProfile wallPostedTo) {
+    public void post(String postContent, UserProfile wallPostedTo, int version) {
         // get a list of friends
         ArrayList<UserProfile> friends = FriendsDAO.getFriendsByUserId(currentUser.getUserId());
 
@@ -183,7 +183,12 @@ public class WallCtrl {
         // add user_post
         UserPostDAO.addUserPost(currentUser.getUserId(), postId);
 
-        System.out.println("Message posted successfully!");
+        if (version == 1) {
+            return "Message posted successfully!";
+        } else {
+            return "" + postId;
+        }
+        
     }
 
     /**

@@ -158,7 +158,7 @@ public class MyWallMenu {
             if (count > 300) {
                 System.out.println("Your message was too long! ;)");
             } else {
-                ctrl.post(postContent, currentUser);
+                System.out.println(ctrl.post(postContent, currentUser,1));;
             }
         }
     }
