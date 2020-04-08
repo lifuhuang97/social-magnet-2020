@@ -1,5 +1,4 @@
-// package main.java;
-
+package project.utilities;
 import java.util.ArrayList;
 
 public class PostTagDAO {

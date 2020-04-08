@@ -1,6 +1,7 @@
-// package main.java;
+package project.utilities;
 
 import java.util.*;
+import project.magnet.Post;
 
 public class PostDAO {
     /**

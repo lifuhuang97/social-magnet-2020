@@ -1,6 +1,8 @@
-// package main.java;
+package project.utilities;
 
 import java.util.ArrayList;
+import project.magnet.UserProfile;
+import project.farm.Rank;
 
 public class UserProfileDAO {
 

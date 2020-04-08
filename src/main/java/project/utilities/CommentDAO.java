@@ -1,5 +1,6 @@
-// package main.java;
+package project.utilities;
 
+import project.magnet.Comment;
 import java.util.*;
 
 public class CommentDAO {

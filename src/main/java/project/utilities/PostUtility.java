@@ -1,6 +1,10 @@
-// package main.java;
+package project.utilities;
 
 import java.util.*;
+import project.magnet.Post;
+import project.magnet.Comment;
+import project.farm.Gift;
+import project.exception.*;
 
 public class PostUtility {
     /**

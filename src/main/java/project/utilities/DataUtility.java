@@ -1,4 +1,4 @@
-// package main.java;
+package project.utilities;
 
 import java.sql.*;
 import java.util.ArrayList;
