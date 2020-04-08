@@ -4,6 +4,10 @@ import project.farm.Rank;
 
 import java.util.*;
 
+/**
+ * This is the RankDAO that connects to the Rank Database 
+ */
+
 public class RankDAO {
 
     /**

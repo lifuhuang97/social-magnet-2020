@@ -2,6 +2,10 @@ package project.farm;
 
 import java.util.*;
 
+/**
+ * This is the Inventory class
+ */
+
 public class Inventory {
     private int userID;
     private int cropID;

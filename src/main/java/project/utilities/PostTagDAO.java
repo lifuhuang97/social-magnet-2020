@@ -1,6 +1,10 @@
 package project.utilities;
 import java.util.ArrayList;
 
+/**
+ * This is the PostTagDAO that connects to the PostTag Database 
+ */
+
 public class PostTagDAO {
     /**
      * retrieve postsIds from tagId

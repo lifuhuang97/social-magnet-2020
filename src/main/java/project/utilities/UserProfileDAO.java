@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import project.magnet.UserProfile;
 import project.farm.Rank;
 
+/**
+ * This is the UserProfileDAO that connects to the UserProfile Database 
+ */
+
 public class UserProfileDAO {
 
     /**

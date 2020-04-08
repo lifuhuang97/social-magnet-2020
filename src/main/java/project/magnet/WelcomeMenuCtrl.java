@@ -3,6 +3,10 @@ package project.magnet;
 import project.utilities.*;
 import project.exception.*;
 
+/**
+ * This is the central control for the Welcome Menu
+ */
+
 public class WelcomeMenuCtrl {
     
     /**

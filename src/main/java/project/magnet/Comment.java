@@ -2,6 +2,10 @@ package project.magnet;
 
 import project.utilities.*;
 
+/**
+ * This is the Comment class
+ */
+
 public class Comment {
     private int commentId;
     private String content;

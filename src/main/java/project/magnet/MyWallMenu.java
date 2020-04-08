@@ -10,6 +10,10 @@ import project.utilities.*;
 import project.farm.Rank;
 import project.farm.Gift;
 
+/**
+ * This is the MyWallMenu
+ */
+
 public class MyWallMenu {
 
     /**

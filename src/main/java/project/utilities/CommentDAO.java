@@ -3,6 +3,10 @@ package project.utilities;
 import project.magnet.Comment;
 import java.util.*;
 
+/**
+ * This is the CommentDAO that connects to the Comment Database 
+ */
+
 public class CommentDAO {
 
     /**

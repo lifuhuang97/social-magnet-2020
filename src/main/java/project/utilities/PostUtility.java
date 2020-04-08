@@ -6,6 +6,10 @@ import project.magnet.Comment;
 import project.farm.Gift;
 import project.exception.*;
 
+/**
+ * This is the PostUtility that contains methods that are used across multiple files for post-related actions
+ */
+
 public class PostUtility {
     /**
      * Retreive all the Post and Comments objects made by an ArrayList of userIds 

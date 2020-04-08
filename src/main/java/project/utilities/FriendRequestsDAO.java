@@ -3,6 +3,10 @@ package project.utilities;
 import java.util.*;
 import project.magnet.UserProfile;
 
+/**
+ * This is the FriendRequestsDAO that connects to the FriendRequests Database 
+ */
+
 public class FriendRequestsDAO {
 
     /**

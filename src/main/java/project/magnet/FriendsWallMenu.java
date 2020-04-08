@@ -10,6 +10,10 @@ import java.util.regex.Matcher;
 import project.utilities.*;
 import project.farm.Rank;
 
+/**
+ * This is the Friends Wall Menu
+ */
+
 public class FriendsWallMenu {
 
     /**

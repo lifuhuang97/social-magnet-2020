@@ -1,6 +1,10 @@
 package project.utilities;
 import java.util.ArrayList;
 
+/**
+ * This is the UserStealDAO that connects to the UserSteal Database 
+ */
+
 public class UserStealDAO {
 
     /**

@@ -6,6 +6,10 @@ import java.util.regex.Matcher;
 import project.utilities.*;
 import project.exception.*;
 
+/**
+ * This is the Welcome Menu
+ */
+
 public class WelcomeMenu {
 
     /**

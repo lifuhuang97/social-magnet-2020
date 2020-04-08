@@ -2,6 +2,10 @@ package project.farm;
 
 import java.util.*;
 
+/**
+ * This is the Gift class
+ */
+
 public class Gift {
     private int userId;
     private int friendId;

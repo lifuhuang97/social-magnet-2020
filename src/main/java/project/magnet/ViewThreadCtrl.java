@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import project.utilities.*;
 
+/**
+ * This is the central control for ViewThreadMenu
+ */
+
 public class ViewThreadCtrl {
     private UserProfile currentUser;
 

@@ -1,6 +1,10 @@
 package project.magnet;
 import project.utilities.*;
 
+/**
+ * This is the Post class
+ */
+
 public class Post {
     public int postId;
     public SMDate dateTime;

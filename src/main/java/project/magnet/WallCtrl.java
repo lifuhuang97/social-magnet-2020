@@ -10,6 +10,10 @@ import java.util.Map;
 import project.utilities.*;
 import project.farm.Gift;
 
+/**
+ * This is the central control for Wall Menus
+ */
+
 public class WallCtrl {
 
     private UserProfile currentUser;
