@@ -2,7 +2,7 @@ IS442 - G1T12 - OOP Project - Setup README
 
 Step 1. Run deploy.sql on your machine
 
-Step 2. Go to src/main/java
+Step 2. Go to src/main/java/project/utilities
 
 Step 3. Open DataUtility.java
 
