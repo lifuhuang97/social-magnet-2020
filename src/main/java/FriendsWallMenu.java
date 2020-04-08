@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class FriendsWallMenu {
 
@@ -155,15 +157,24 @@ public class FriendsWallMenu {
         System.out.print("Post a message > ");
         String postContent = sc.nextLine();
 
-        int count = 0;
-        for (int i = 0; i < postContent.length(); i++) {
-            count++;
-        }
+        Pattern p = Pattern.compile("[^a-z0-9 !.,@&:()$]", Pattern.CASE_INSENSITIVE);    
+        Matcher m = p.matcher(postContent);
+        boolean checkPostContent = m.find();
 
-        if (count > 300) {
-            System.out.println("Your message was too long! ;)");
+        if (checkPostContent) {
+            System.out.println("Please ensure that your input only contains alphanumerics, whitespaces and the following special characters: !.,@&:()");
+            System.out.println();
         } else {
-            ctrl.post(postContent, friendProfile);
+            int count = 0;
+            for (int i = 0; i < postContent.length(); i++) {
+                count++;
+            }
+
+            if (count > 300) {
+                System.out.println("Your message was too long! ;)");
+            } else {
+                ctrl.post(postContent, friendProfile);
+            }
         }
     }
 
