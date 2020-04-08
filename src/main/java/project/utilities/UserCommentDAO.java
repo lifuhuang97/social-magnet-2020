@@ -2,6 +2,10 @@ package project.utilities;
 
 import java.util.*;
 
+/**
+ * This is the UserCommentDAO that connects to the UserComment Database 
+ */
+
 public class UserCommentDAO {
     /**
      * Retrieves user who made the comment

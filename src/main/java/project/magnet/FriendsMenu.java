@@ -6,6 +6,10 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import project.utilities.*;
 
+/**
+ * This is the Friends Menu file
+ */
+
 public class FriendsMenu {
 
     /**

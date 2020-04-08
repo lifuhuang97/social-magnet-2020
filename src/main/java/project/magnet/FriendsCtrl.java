@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import project.utilities.*;
 
+/**
+ * This is the central control for the FriendsMenu
+ */
+
 public class FriendsCtrl {
 
     private UserProfile currentUser;

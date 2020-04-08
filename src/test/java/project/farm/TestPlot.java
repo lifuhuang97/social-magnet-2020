@@ -21,7 +21,7 @@ public class TestPlot {
     private CityFarmerMenu farmMenu = new CityFarmerMenu();
 
     @BeforeAll
-    public void resetUser(){
+    public void createTestUser(){
 
         UserProfile checkIfExist = UserProfileDAO.getUserProfileByUsername("plottest");
 
@@ -53,16 +53,37 @@ public class TestPlot {
     public void testIfAutomaticGeneratePlotWhenFirstEnterFarm(){
         CityFarmerCtrl ctrl = new CityFarmCtrl(testUser);
 
+        PlotDAO.checkIfPlotCountNeedsUpdating(testUser);
+
         ArrayList<Plot> myPlots = PlotDAO.getMyPlots(testUser);
 
-        if()
+        int expectedPlotSize = 5;
 
+        assertEquals(expectedPlotSize, myPlots.size());
+    }
 
+    @Test
+    public void testIfLevelUpIncreasesPlot(){
+
+        DataUtility.queryUpdate("UPDATE USERPROFILE SET XP = 13000 WHERE USERNAME = 'plottest'");
+
+        UserProfile rankedUpUser = UserProfileDAO.getUserProfileByUsername("plottest");
+
+        UserProfileDAO.checkIfRankUpdate(rankedUpUser);
+
+        PlotDAO.checkIfPlotCountNeedsUpdating(rankedUpUser);
+
+        int expectedPlotSize = 9;
+
+        ArrayList<Plot> myPlots = PlotDAO.getMyPlots(rankedUpUser);
+
+        assertEquals(expectedPlotSize, myPlots.size());
 
     }
 
-
-
-
+    @AfterAll
+    public void deleteTestUser(){
+        DataUtility.queryUpdate("DELETE FROM USERPROFILE WHERE USERNAME = 'plottest'");
+    }
     
 }

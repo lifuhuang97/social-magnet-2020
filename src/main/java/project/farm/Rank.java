@@ -1,5 +1,8 @@
 package project.farm;
 
+/**
+ * This is the Rank class
+ */
 
 public class Rank {
 

@@ -18,7 +18,7 @@ public class TestAddFriend {
         FriendsCtrl ctrl = new FriendsCtrl(user);
         UserProfile friend = WelcomeMenuCtrl.login("mikeross", "bigbrainmike");
         ctrl.accept(friend);
-        Assertions.assertEquals("the", ctrl.add());
+        Assertions.assertEquals(true, FriendsDAO.isFriends(user.getUserId(), friend.getUserId()));
     }
 
 }

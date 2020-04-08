@@ -2,6 +2,10 @@ package project.utilities;
 
 import java.util.ArrayList;
 
+/**
+ * This is the UserWallDAO that connects to the UserWall Database 
+ */
+
 public class UserWallDAO {
 
     /**

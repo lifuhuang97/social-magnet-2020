@@ -2,6 +2,10 @@ package project.magnet;
 
 import project.farm.Rank;
 
+/**
+ * This is the UserProfile class
+ */
+
 
 public class UserProfile implements Comparable<UserProfile> {
     private int userId;

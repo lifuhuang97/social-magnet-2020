@@ -2,6 +2,10 @@ package project.utilities;
 
 import java.util.*;
 
+/**
+ * This is the PostLikeDAO that connects to the PostLike Database 
+ */
+
 public class PostLikeDAO {
 
     /**

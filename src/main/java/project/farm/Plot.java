@@ -2,6 +2,10 @@ package project.farm;
 
 import project.utilities.SMDate;
 
+/**
+ * This is the Plot class
+ */
+
 public class Plot {
     private int plotID;
     private int cropID;

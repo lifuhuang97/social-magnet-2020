@@ -2,6 +2,10 @@ package project.utilities;
 
 import java.util.*;
 
+/**
+ * This is the PostCommentDAO that connects to the PostComment Database 
+ */
+
 public class PostCommentDAO {
 
     /**

@@ -5,6 +5,10 @@ import project.farm.Plot;
 
 import java.util.*;
 
+/**
+ * This is the CropDAO that connects to the Crop Database 
+ */
+
 public class CropDAO {
 
     /**

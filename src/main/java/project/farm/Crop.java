@@ -4,6 +4,10 @@ import project.utilities.SMDate;
 
 import java.util.*;
 
+/**
+ * This is the Crop class
+ */
+
 public class Crop {
     private int cropID;
     private String name;

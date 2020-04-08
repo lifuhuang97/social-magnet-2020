@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import project.utilities.*;
 
+/**
+ * This is the NewsFeed Menu
+ */
+
 public class NewsFeedMenu {
 
     /**

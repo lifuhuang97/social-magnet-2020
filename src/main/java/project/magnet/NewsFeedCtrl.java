@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import project.utilities.*;
 
+/**
+ * This is the central control for the NewsFeed Menu
+ */
+
 public class NewsFeedCtrl {
     private UserProfile currentUser;
 

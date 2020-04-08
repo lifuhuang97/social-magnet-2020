@@ -3,6 +3,10 @@ package project.utilities;
 import java.util.*;
 import project.magnet.Post;
 
+/**
+ * This is the PostDAO that connects to the Post Database 
+ */
+
 public class PostDAO {
     /**
      * Retrieve Post objects made by an ArrayList of users

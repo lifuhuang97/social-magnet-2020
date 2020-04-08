@@ -4,6 +4,10 @@ import project.farm.Inventory;
 
 import java.util.*;
 
+/**
+ * This is the InventoryDAO that connects to the Inventory Database 
+ */
+
 public class InventoryDAO {
 
     /**

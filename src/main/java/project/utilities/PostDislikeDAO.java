@@ -1,6 +1,10 @@
 package project.utilities;
 import java.util.*;
 
+/**
+ * This is the PostDislikeDAO that connects to the PostDislike Database 
+ */
+
 public class PostDislikeDAO {
 
     /**

@@ -2,6 +2,10 @@ package project.utilities;
 
 import java.util.*;
 
+/**
+ * This is the UserPostDAO that connects to the UserPost Database 
+ */
+
 public class UserPostDAO {
     /**
      * Retrieves Posts made by user

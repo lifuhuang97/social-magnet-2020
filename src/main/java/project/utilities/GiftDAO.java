@@ -4,6 +4,10 @@ import project.farm.Gift;
 import project.magnet.UserProfile;
 import project.magnet.Post;
 
+/**
+ * This is the GiftDAO that connects to the Gift Database 
+ */
+
 import java.util.ArrayList;
 public class GiftDAO {
     /**

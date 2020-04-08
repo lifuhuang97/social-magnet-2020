@@ -6,6 +6,10 @@ import project.farm.Crop;
 
 import java.util.*;
 
+/**
+ * This is the PlotDAO that connects to the Plot Database 
+ */
+
 public class PlotDAO {
 
     /**
