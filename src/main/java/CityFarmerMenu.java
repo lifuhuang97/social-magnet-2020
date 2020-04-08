@@ -6,8 +6,18 @@
 
 import java.util.*;
 
+/**
+ * A class with static methods that can be called from social magnet menu
+ * to display farm options.
+ */
 public class CityFarmerMenu {
 
+    /** This is a static helper method to help display the standard starting interface of any farm sub
+     *  screens. 
+     * 
+     * @param type Type of sub screen, goes by "case" + 1-5, or "main"
+     * @param user the user object thats currently using the application
+     */
     public static void displayFarmHeader(String type, UserProfile user){ // + add User object as arg
 
         PlotDAO.checkIfPlotCountNeedsUpdating(user);
@@ -49,6 +59,16 @@ public class CityFarmerMenu {
         System.out.println();
     }
 
+    /** This is a static method that displays the farm main menu.
+     *  Called from ProfileMenu only.
+     *  <p>
+     *  This is the primary screen of City Farmer. This method redirects
+     *  requests to any sub screens in City Farmer by calling the associated
+     *  methods.
+     * 
+     * 
+     * @param user UserProfile object of current user
+     */
     public static void readOptions(UserProfile user){
 
         String returnWhere;
@@ -122,6 +142,14 @@ public class CityFarmerMenu {
         sc.close();
     }
 
+    /** This method creates a ctrl of the current user object and
+     *  displays his farmland.
+     * 
+     * @param user UserProfile object of current user
+     * @return Redirection string with the value of
+     * 'main' / 'farm' / ''. If 'main', returns from this screen
+     *  and displays ProfileMenu. Else, stays in this screen.
+     */
     public static String viewFarmMenu(UserProfile user){
 
         CityFarmerCtrl ctrl = new CityFarmerCtrl(user);
@@ -130,6 +158,14 @@ public class CityFarmerMenu {
         return returnWhere;
     }
 
+    /** This method creates a ctrl of the current user object and
+     *  displays his farmland.
+     * 
+     * @param user UserProfile object of current user
+     * @return Redirection string with the value of
+     * 'main' / 'farm' / ''. If 'main', returns from this screen
+     *  and displays ProfileMenu. Else, stays in this screen.
+     */
     public static String accessStore(UserProfile user){
 
         CityFarmerCtrl ctrl = new CityFarmerCtrl(user);
@@ -138,15 +174,31 @@ public class CityFarmerMenu {
         return returnWhere;
     }
 
+    /** This method creates a ctrl of the current user object and
+     *  displays his inventory.
+     * 
+     * @param user UserProfile object of current user
+     * @return Redirection string with the value of
+     * 'main' / 'farm' / ''. If 'main', returns from this screen
+     *  and displays ProfileMenu. Else, stays in this screen.
+     */
     public static String accessMyInventory(UserProfile user){
 
         CityFarmerCtrl ctrl = new CityFarmerCtrl(user);
         
         String returnWhere = ctrl.readFarmInventoryOptions();
         return returnWhere;
-
     }
 
+    /** This method creates a ctrl of the current user object and
+     *  displays his friends.
+     * 
+     * @param user UserProfile object of current user
+     * @return Redirection string with the value of
+     * either a friend's username or an empty screen.
+     * 
+     * Helps to redirect the next method to the correct farm screen.
+     */
     public static String accessFriendMenu(UserProfile user){
 
         CityFarmerCtrl ctrl = new CityFarmerCtrl(user);
@@ -155,6 +207,15 @@ public class CityFarmerMenu {
         return returnWhere;
     }
 
+    /** This method creates a ctrl of the current user object and
+     *  displays the selected friend's farm.
+     * 
+     * @param user UserProfile object of current user
+     * @param friendUsername the username of the friend whose farm should be displayed
+     * @return Redirection string with the value of
+     * 'main' / 'farm' / ''. If 'main', returns from this screen
+     *  and displays ProfileMenu. Else, stays in this screen.
+     */
     public static String accessFriendFarmMenu(UserProfile user, String friendUsername){
 
         CityFarmerCtrl ctrl = new CityFarmerCtrl(user);
