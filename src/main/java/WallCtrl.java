@@ -72,7 +72,7 @@ public class WallCtrl {
 
         String tobeprintedRanking = ordinal(ranking);
 
-        if (tobeprintedRanking.equals("1st")) {
+        if (tobeprintedRanking.equals("1st") || tobeprintedRanking.equals("0st")) {
             return "the";
         } else {
             return tobeprintedRanking;

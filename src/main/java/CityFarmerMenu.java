@@ -104,8 +104,12 @@ public class CityFarmerMenu {
                         }
                     }
                 case "5":
-                    // sendGift();
-                    break;
+                    returnWhere = accessGiftMenu(user);
+                    if(returnWhere.equals("main")){
+                        return;
+                    }else{
+                        break;
+                    }
                 case "M":
                     System.out.println();
                     return;
@@ -165,6 +169,5 @@ public class CityFarmerMenu {
         String returnWhere = ctrl.readGiftOptions();
         return returnWhere;
     }
-
 
 }

@@ -168,4 +168,18 @@ public class SMDate extends Date{
         return -1;
     }
 
+    public static boolean checkIfSentWithinOneDay(SMDate date){
+
+        int difference = getTimeDifferenceInMinutes(date);
+
+        int NumberOfMinutesInADay = 60 * 24;
+
+        if(difference > NumberOfMinutesInADay){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
 }

@@ -74,5 +74,8 @@ public class FriendsDAO {
         String stmt = "INSERT INTO FRIENDS (`userID`, `friendID`) VALUES ('" + userId + "', '" + friendId + "');";
 
         DataUtility.queryUpdate(stmt);
+
+        String bidirectionalStmt = "INSERT INTO FRIENDS (`friendID`,`userID`) VALUES ('" + userId + "', '" + friendId + "');";
+        DataUtility.queryUpdate(bidirectionalStmt);
     }
 }

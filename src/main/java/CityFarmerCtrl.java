@@ -2,6 +2,8 @@
 
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class CityFarmerCtrl {
 
@@ -130,8 +132,10 @@ public class CityFarmerCtrl {
             choice = sc.nextLine();
 
             if(choice.equals("M")){
+                System.out.println();
                 return "main";
             }else if(choice.equals("F")){
+                System.out.println();
                 return "farm";
             }
 
@@ -306,11 +310,120 @@ public class CityFarmerCtrl {
 
     public String readGiftOptions(){
 
-        //TODO
+        String returnWhere = "";
+        String choice;
+        Scanner sc = new Scanner(System.in);
 
-        return "";
+        do{
+            CityFarmerMenu.displayFarmHeader("case5", user);
+            System.out.println("Gifts Available:");
+            System.out.println("1. 1 Bag of Papaya Seeds");
+            System.out.println("2. 1 Bag of Pumpkin Seeds");
+            System.out.println("3. 1 Bag of Sunflower Seeds");
+            System.out.println("4. 1 Bag of Watermelon Seeds");
+            System.out.print("[R]eturn to main | Select choice > ");
+            
+            choice = sc.nextLine();
+
+            if(choice.equals("R")){
+                System.out.println();
+                return "main";
+            }
+
+            try{
+                int choiceInt = Integer.parseInt(choice);
+
+                if(choiceInt > 0 && choiceInt < 5){
+                    choice = "Y";
+                }else{
+                    choice = "N";
+                }
+            }catch(InputMismatchException | NumberFormatException e){
+                choice = "N";
+            }
+
+            switch(choice){
+                case "Y":
+                    System.out.print("Send to> ");
+                    String sendToString = sc.nextLine();
+
+                    String[] inputUsernames = sendToString.split(",");
+
+                    Pattern p = Pattern.compile("[^a-z0-9 !.,@&:()$]", Pattern.CASE_INSENSITIVE);    
+
+                    ArrayList<UserProfile> validFriends = new ArrayList<UserProfile>();
+
+                    //Validity check
+                    for(String username : inputUsernames){
+                        Matcher m = p.matcher(username);
+                        boolean hasSpecialCharacters = m.find();
+
+                        if(hasSpecialCharacters){
+                            System.out.println("Invalid username input, please try again");
+                            break;
+                        }else{
+                            // check if is valid userprofile
+                            UserProfile friendProfile = UserProfileDAO.getUserProfileByUsername(username);
+                            if(friendProfile != null){
+                                int friendId = friendProfile.getUserId();
+                                // check if is a friend
+                                if(FriendsDAO.isFriends(this.user.getUserId(),friendId)){
+                                    validFriends.add(friendProfile);
+                                }else{
+                                    System.out.println(username + " is not your friend.");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    boolean ValidToProceed = true;
+
+                    if(validFriends.size() == inputUsernames.length){
+
+                        // check if already sent a gift to any of the friends in the past 24hr
+                        for(UserProfile friend : validFriends){
+
+                            String friendUsername = friend.getUsername();
+
+                            if(GiftDAO.checkIfSentGift(this.user, friend)){
+                                System.out.println(friendUsername + " has already received a gift from you in the past 24 hours.");
+                                ValidToProceed = false;
+                                break;
+                            }
+                        }
+                    }else{
+                        System.out.println("Invalid friends' username input, please try again.");
+                        break;
+                    }
+
+                    if(ValidToProceed){
+                        for(UserProfile friend : validFriends){
+                            processGiftSending(friend);
+                        }
+                        System.out.println("Gift posted to your friends' wall");
+                        break;
+                    }
+
+                case "N":
+                    System.out.println("Invalid choice!");
+                    break;
+                }
+                System.out.println();
+            }while(choice.charAt(0) != 'R');
+        
+        return returnWhere;
     }
 
+
+    public void processGiftSending(UserProfile user){
+
+
+
+
+
+
+    }
 
 
     public void displayFriendFarmDetails(UserProfile friend){
