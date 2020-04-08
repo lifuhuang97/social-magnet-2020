@@ -8,6 +8,13 @@ public class Gift {
     private int postId;
     private int cropId;
 
+    /**
+     * Constructs a specified Gift object
+     * @param commentId the userId of the user sending the gift
+     * @param content  the userId of the receiver of the gift
+     * @param date the postId generated in response to gift sent 
+     * @param date the cropId sent as the gift
+     */
     public Gift(int userId, int friendId, int postId, int cropId) {
         this.userId = userId;
         this.friendId = friendId;
@@ -15,34 +22,66 @@ public class Gift {
         this.cropId = cropId;
     }
 
+    /**
+     * Gets the userId
+     * @return the userId
+     */
     public int getUserId() {
         return userId;
     }
 
+    /**
+     * Sets the userId
+     * @param the userId
+     */
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
+    /**
+     * Gets the friendId
+     * @return the friendId
+     */
     public int getFriendId() {
         return friendId;
     }
 
+    /**
+     * Sets the friendId
+     * @param the friendId
+     */
     public void setFriendId(int friendId) {
         this.friendId = friendId;
     }
 
+    /**
+     * Gets the postId
+     * @return the postId
+     */
     public int getPostId() {
         return postId;
     }
 
+    /**
+     * Sets the postId
+     * @param the postId
+     */
     public void setPostId(int postId) {
         this.postId = postId;
     }
 
+    /**
+     * Gets the cropId
+     * @return the cropId
+     */
     public int getCropId() {
         return cropId;
     }
 
+    /**
+     * Sets the cropId
+     * @param the cropId
+     */
     public void setCropId(int cropId) {
         this.cropId = cropId;
     }

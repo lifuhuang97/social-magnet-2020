@@ -12,6 +12,7 @@ public class MyWallMenu {
     /**
      * Read user option for my wall menu
      * @param currentUser userProfile object current user
+     * @return string to indicated when to return to main
      */
     public static String readOptions(UserProfile currentUser){
         String returnWhere;

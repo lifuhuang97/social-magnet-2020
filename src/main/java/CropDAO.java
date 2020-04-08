@@ -1,19 +1,13 @@
 // package main.java;
 import java.util.*;
 
-// TODO: use this file if prof confirms that crop data can be hardcoded
-
 public class CropDAO {
 
-
-    private static Crop[] cropData = {
-        new Crop(1, "Papaya", 20, 30, 75, 100, 15, 8),
-        new Crop(2, "Pumpkin", 30, 60, 5, 5, 200, 20),
-        new Crop(3, "Sunflower", 40, 120, 20, 15, 20, 40),
-        new Crop(4, "Watermelon", 50, 240, 1, 5, 800, 10)
-    };
-
-
+    /**
+     * Retrieve Crop object based on its cropID
+     * @param cropId cropID of the Crop object
+     * @return Crop object retrieved
+     */
     public static Crop getCropById(int cropID){
         
         String query = "SELECT * FROM CROP WHERE CROPID = " + cropID;
@@ -33,6 +27,11 @@ public class CropDAO {
         return crop;
     }
 
+    /**
+     * Retrieve name of the Crop object based on cropID
+     * @param cropID cropID associated with Crop object
+     * @return name of the Crop object 
+     */
     public static String getCropname(int cropID){
 
         Crop crop = getCropById(cropID);
@@ -41,14 +40,19 @@ public class CropDAO {
 
     }
 
+    /**
+     * Get the growth of the crop for display
+     * @param cropID the cropID associated with crop
+     * @param plantTime datetime in which Crop was planted
+     * @param timeToGrowCrop the amount of time needed for crop to grow
+     * @return growth rate in #
+     */
     public static String getCropGrowth(int cropID, SMDate plantTime, double timeToGrowCrop){
 
 
         String tbr = "[";
 
         double growthTime = SMDate.getTimeDifferenceInMinutes(plantTime);
-
-        // System.out.println("This is growth time" + growthTime);
     
         double percentageGrowth = growthTime / timeToGrowCrop * 100;
 
@@ -75,6 +79,11 @@ public class CropDAO {
 
     }
 
+    /**
+     * Retrieve the amount of time needed to grow a Crop
+     * @param cropID cropID associated with Crop
+     * @return amount of time needed to grow the crop
+     */
     public static int getTimeToGrowThisCrop(int cropID){
 
         Crop crop = getCropById(cropID);
@@ -97,6 +106,11 @@ public class CropDAO {
         return result;
     }
 
+    /**
+     * Retrieve the name of the Crop
+     * @param cropID cropID associated with Crop
+     * @return name of the Crop
+     */
     public static String retrieveName (int cropID) {
         String stmt = "SELECT * FROM CROP WHERE CROPID = " + cropID;
 
@@ -109,6 +123,11 @@ public class CropDAO {
         }
     }
 
+    /**
+     * Retrieve the produce amount of the Crop 
+     * @param plot Plot object that crop is growing on
+     * @return produce amount of crop
+     */
     public static int getProduceAmt(Plot plot){
 
         int plantedCropId = plot.getCropID();

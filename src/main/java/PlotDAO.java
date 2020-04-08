@@ -4,6 +4,11 @@ import java.util.*;
 
 public class PlotDAO {
 
+    /**
+     * Retrieve Plot object associated plotId
+     * @param plotId plotId associated with Plot
+     * @return Plot object assciated with plotId
+     */
     public static Plot getPlotById(int plotId){
 
         Plot tbr;
@@ -20,6 +25,11 @@ public class PlotDAO {
         return tbr;
     }
 
+    /**
+     * Retrieve stealable Plot objects associated plotId 
+     * @param plotId plotId associated with stealable Plot object
+     * @return stealable Plot object assciated with plotId
+     */
     public static Plot getPlotWithStealableById(int plotId){
 
         Plot tbr;
@@ -36,6 +46,12 @@ public class PlotDAO {
         return tbr;
     }    
 
+    /**
+     * Update Plot on the stolen amount
+     * @param plotId the plotId of Plot object
+     * @param newStolen the stolen amount
+     * @param newProduce the new produce
+     */
     public static void updatePlotStolenAmt(int plotId, int newStolen, int newProduce){
 
         String stmt = "UPDATE PLOT SET PRODUCEAMT = " + newProduce + ", STOLEN = " + newStolen + " WHERE PLOTID = " + plotId;
@@ -44,6 +60,11 @@ public class PlotDAO {
     }
 
 
+    /**
+     * Retrieve the userId of the Plot 
+     * @param plotId plotId
+     * @return userId that owns the Plot
+     */
     public static int retrievePlotOwner(int plotId){
 
         String stmt = "SELECT userID from USER_PLOT WHERE PLOTID = " + plotId;
@@ -55,6 +76,11 @@ public class PlotDAO {
         return userId;
     }
 
+    /**
+     * Print the the details of the plot
+     * @param Plot Plot object to be printed
+     * @return tbr a String describing the Plot
+     */
     public static String printPlotDetails(Plot plot){
 
         String tbr = "";
@@ -80,6 +106,11 @@ public class PlotDAO {
 
     }
 
+    /**
+     * Retrieve an ArrayList of Plot objects own by a user
+     * @param user UserProfile object of user
+     * @return ArrayList of Plot objects
+     */
     public static ArrayList<Plot> getMyPlots(UserProfile user){
 
         ArrayList<Plot> allMyPlots = new ArrayList<Plot>();
@@ -122,6 +153,11 @@ public class PlotDAO {
 
     }
 
+    /**
+     * Plant a new crop on specified Plot 
+     * @param plotId of the Plot to be planted on
+     * @param cropId of the Crop to be planted 
+     */
     public static void plantNewCrop(Plot plot, int cropId){
         int plotId = plot.getPlotID();
 
@@ -135,6 +171,10 @@ public class PlotDAO {
 
     }
 
+    /**
+     * Remove a crop from plot
+     * @param Plot object to have crop removed from
+     */
     public static void removeCrop(Plot plot){
 
         int plotId = plot.getPlotID();
@@ -147,6 +187,11 @@ public class PlotDAO {
 
     }
 
+    /**
+     * Check if the crop planted on a plot has wilted
+     * @param Plot object to check 
+     * @return whether the crop on plot has wilted
+     */
     public static boolean produceYieldAndWiltChecker(Plot plot){
         
         boolean wilt = false;
@@ -170,6 +215,10 @@ public class PlotDAO {
         return wilt;
     }
 
+    /**
+     * Checks if Plot count needs updating
+     * @param user UserProfile owning the Plot object
+     */
     public static void checkIfPlotCountNeedsUpdating(UserProfile user){
 
         int userId = user.getUserId();
