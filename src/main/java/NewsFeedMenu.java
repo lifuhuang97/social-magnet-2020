@@ -10,6 +10,7 @@ public class NewsFeedMenu {
     /**
      * Read user option for news feed menu
      * @param currentUser userProfile object current user
+     * @return string to indicate when to return to main
      */
     public static String readOptions(UserProfile currentUser){
         String returnWhere;

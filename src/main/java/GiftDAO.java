@@ -61,7 +61,7 @@ public class GiftDAO {
     }
 
     /**
-     * Cgeck if a gift has been successfully sent
+     * Check if a gift has been successfully sent
      * @param sender UserProfile object of the sender
      * @param friend UserProfile object of the receiver
      */
@@ -85,7 +85,13 @@ public class GiftDAO {
 
     }
 
-    
+    /**
+     * Create a new gift 
+     * @param userId userId of the sender
+     * @param friend userId of the receiver
+     * @param postId postId of the generated post 
+     * @param cropId cropId sent as a gift
+     */
     public static void createNewGift(int userId, int friendId, String postId, int cropId){
 
         String stmt = "INSERT INTO GIFT (USERID, FRIENDID, POSTID, CROPID) VALUES (" + 

@@ -14,6 +14,7 @@ public class FriendsWallMenu {
      * process user's choice for friend's wall menu
      * @param currentUser UserProfile object of current user
      * @param viewedUser UserProfile object of user being viewed
+     * @return string to indicate when to return to main
      */
     public static String readOptions(UserProfile currentUser, UserProfile viewedUser){
 
