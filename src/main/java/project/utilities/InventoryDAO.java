@@ -39,7 +39,8 @@ public class InventoryDAO {
             String stmts = "INSERT INTO INVENTORY (userID, cropID, quantity) VALUES ('" + userID + "', '" + cropID + "', '" + quantity + "');";
             DataUtility.queryUpdate(stmts);
         } else {
-            String stmts = "UPDATE INVENTORY SET QUANTITY = " + quantity + " WHERE USERID = " + userID + " AND CROPID = " + cropID;
+            int newQuantity = Integer.parseInt(arrayResults.get(0).get(2)) + quantity;
+            String stmts = "UPDATE INVENTORY SET QUANTITY = " + newQuantity + " WHERE USERID = " + userID + " AND CROPID = " + cropID;
             DataUtility.queryUpdate(stmts);
         }
 

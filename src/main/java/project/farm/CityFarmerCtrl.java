@@ -724,7 +724,7 @@ public class CityFarmerCtrl {
 
         int chosenToPlantId = inventoryUsed.getCropID();
 
-        InventoryDAO.updateInventory(userId,chosenToPlantId , inventoryUsed.getQuantity()-1);   
+        InventoryDAO.updateInventory(userId,chosenToPlantId , -1);   
 
         Plot utilizedPlot = PlotDAO.getPlotById(plotId);
 
