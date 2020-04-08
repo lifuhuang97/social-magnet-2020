@@ -38,6 +38,7 @@ public class MyWallMenu {
                     }
                     break;
                 case "A":
+                    acceptGifts(currentUser);
                     break;
                 case "P":
                     post(currentUser);
@@ -139,6 +140,17 @@ public class MyWallMenu {
             System.out.println("Your message was too long! ;)");
         } else {
             ctrl.post(postContent, currentUser);
+        }
+    }
+
+    public static void acceptGifts(UserProfile currentUser) {
+        WallCtrl ctrl = new WallCtrl(currentUser);
+
+        if (ctrl.hasGifts()) {
+            ArrayList<Gift> gifts = ctrl.acceptGifts();
+            // TODO: proceed to add to farm 
+        } else {
+            System.out.println("No gifts to accept!");
         }
     }
 

@@ -1,50 +1,49 @@
 // package main.java;
 
-
 import java.util.*;
 
 public class Gift {
-    private int userID;
-    private int friendID;
-    private SMDate timeSent;
-    private int cropID;
+    private int userId;
+    private int friendId;
+    private int postId;
+    private int cropId;
 
-    public Gift(int userID, int friendID, SMDate timeSent, int cropID) {
-        this.userID = userID;
-        this.friendID = friendID;
-        this.timeSent = timeSent;
-        this.cropID = cropID;
+    public Gift(int userId, int friendId, int postId, int cropId) {
+        this.userId = userId;
+        this.friendId = friendId;
+        this.postId = postId;
+        this.cropId = cropId;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getFriendID() {
-        return friendID;
+    public int getFriendId() {
+        return friendId;
     }
 
-    public void setFriendID(int friendID) {
-        this.friendID = friendID;
+    public void setFriendId(int friendId) {
+        this.friendId = friendId;
     }
 
-    public SMDate getTimeSent() {
-        return timeSent;
+    public int getPostId() {
+        return postId;
     }
 
-    public void setTimeSent(SMDate timeSent) {
-        this.timeSent = timeSent;
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
-    public int getCropID() {
-        return cropID;
+    public int getCropId() {
+        return cropId;
     }
 
-    public void setCropID(int cropID) {
-        this.cropID = cropID;
+    public void setCropId(int cropId) {
+        this.cropId = cropId;
     }
 }

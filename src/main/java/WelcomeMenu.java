@@ -1,6 +1,9 @@
 // package main.java;
 
 import java.util.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 public class WelcomeMenu {
 
     /**
@@ -64,14 +67,28 @@ public class WelcomeMenu {
         System.out.print("Confirm your password > ");
         String confirmedPassword = sc.nextLine();
 
-        try {
-            WelcomeMenuCtrl.register(username, fullName, password, confirmedPassword);
-            System.out.println(username + " your account is successfully created!");
-        } catch (RegisterException e) {
-            System.out.println(e.getMessage());
-        }
+        Pattern p = Pattern.compile("[^a-z0-9 !.,@&:()$]", Pattern.CASE_INSENSITIVE);    
+        Matcher m1 = p.matcher(username);
+        Matcher m2 = p.matcher(fullName);
+        Matcher m3 = p.matcher(password);
+        boolean checkUsername = m1.find();
+        boolean checkName = m2.find();
+        boolean checkPassword = m3.find();
 
-        System.out.println();
+        if (checkUsername || checkName || checkPassword) {
+            System.out.println("Please ensure that your input only contains alphanumerics, whitespaces and the following special characters: !.,@&:()");
+            System.out.println();
+        } else {
+
+            try {
+                WelcomeMenuCtrl.register(username, fullName, password, confirmedPassword);
+                System.out.println(username + " your account is successfully created!");
+            } catch (RegisterException e) {
+                System.out.println(e.getMessage());
+            }
+
+            System.out.println();
+        }
     }
 
     /**
@@ -88,17 +105,28 @@ public class WelcomeMenu {
         System.out.print("Enter your password > ");
 
         String password = sc.nextLine();
-        
-        UserProfile retrievedUser = WelcomeMenuCtrl.login(username, password);
 
-        if (retrievedUser == null) {
-            System.out.println("Incorrect Username/Password");
-        } else {
+        Pattern p = Pattern.compile("[^a-z0-9 !.,@&:()$]", Pattern.CASE_INSENSITIVE);    
+        Matcher m1 = p.matcher(username);
+        Matcher m2 = p.matcher(password);
+        boolean checkUsername = m1.find();
+        boolean checkPassword = m2.find();
+
+        if (checkUsername || checkPassword) {
+            System.out.println("Please ensure that your input only contains alphanumerics, whitespaces and the following special characters: !.,@&:()");
             System.out.println();
-            ProfileMenu.readOptions(retrievedUser);
-        }
+        } else {
+            UserProfile retrievedUser = WelcomeMenuCtrl.login(username, password);
 
-        System.out.println();
+            if (retrievedUser == null) {
+                System.out.println("Incorrect Username/Password");
+            } else {
+                System.out.println();
+                ProfileMenu.readOptions(retrievedUser);
+            }
+
+            System.out.println();
+        }
 
     }
 }

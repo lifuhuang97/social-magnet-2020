@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WallCtrl {
 
@@ -182,6 +184,47 @@ public class WallCtrl {
         UserPostDAO.addUserPost(currentUser.getUserId(), postId);
 
         System.out.println("Message posted successfully!");
+    }
+
+    /**
+     * Checks if user has gifts to claim
+     * @return return true/false whether user has gifts to claim
+     */
+    public boolean hasGifts() {
+        return (GiftDAO.retrieveGiftsByUserId(currentUser.getUserId()).size()) == 0 ? false : true;
+    }
+
+    /**
+     * Accept the gifts given to the user by removing thread posts 
+     * @return an ArrayList of gifts 
+     */
+    public ArrayList<Gift> acceptGifts() {
+        ArrayList<Gift> gifts = GiftDAO.retrieveGiftsByUserId(currentUser.getUserId());
+
+        // find all the posts generated from giving gifts
+        HashMap<Post, ArrayList<Comment>> threads = new HashMap<>();
+
+        for (Gift gift : gifts) {
+            Post post = PostDAO.retrievePostByPostId(gift.getPostId());
+            ArrayList<Integer> commentIds = PostCommentDAO.getCommentIdsByPostId(gift.getPostId());
+            ArrayList<Comment> comments = new ArrayList<>();
+
+            for (int commentId : commentIds) {
+                comments.add(CommentDAO.retrieveCommentById(commentId));
+            }
+
+            threads.put(post, comments);
+        }
+
+        for(Map.Entry<Post, ArrayList<Comment>> thread : threads.entrySet()) {
+            Post key = thread.getKey();
+            ArrayList<Comment> value = thread.getValue();
+            HashMap<Post, ArrayList<Comment>> retrieved = new HashMap<>();
+            retrieved.put(key, value);
+            PostUtility.canKill(retrieved, currentUser.getUserId());
+        }
+
+        return gifts;
     }
 
     // ====================================================

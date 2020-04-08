@@ -62,16 +62,16 @@ public class FriendsMenu {
             int to_check = ctrl.getNumOfFriends(currentUser.getUserId());
             ArrayList<UserProfile> populatedList = ctrl.populateList(currentUser.getUserId());
  
-            if (choice.matches("^U[1-6]$")) {
+            if (choice.matches("^U[0-9]+$")) {
                 num = Integer.parseInt(choice.substring(1));
                 choice = "U";
-            } else if (choice.matches("^Q[1-6]$")) {
+            } else if (choice.matches("^Q[0-9]+$")) {
                 num = Integer.parseInt(choice.substring(1));
                 choice = "Q";
-            } else if (choice.matches("^A[1-6]$")) {
+            } else if (choice.matches("^A[0-9]+$")) {
                 num = Integer.parseInt(choice.substring(1));
                 choice = "A";
-            } else if (choice.matches("^R[1-6]$")) {
+            } else if (choice.matches("^R[0-9]+$")) {
                 num = Integer.parseInt(choice.substring(1));
                 choice = "R";
             } 

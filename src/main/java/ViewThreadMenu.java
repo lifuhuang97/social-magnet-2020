@@ -124,10 +124,11 @@ public  class ViewThreadMenu {
     public static void kill(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread) {
         ViewThreadCtrl ctrl = new ViewThreadCtrl(currentUser);
         try {
-            ctrl.canKill(thread, currentUser.getUserId());
+            PostUtility.canKill(thread, currentUser.getUserId());
         } catch (KillThreadException e) {
             System.out.println(e.getMessage());
         }
-        
     }
+
+    
 }

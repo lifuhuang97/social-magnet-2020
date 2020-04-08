@@ -32,7 +32,7 @@ public class FriendsCtrl {
      * @return ArrayList of UserProfile objects
      */
     public int getNumOfFriends(int userId) {
-        return (FriendsDAO.getFriendsByUserId(userId).size() > 3) ? 3 : FriendsDAO.getFriendsByUserId(userId).size();
+        return FriendsDAO.getFriendsByUserId(userId).size();
     }
 
     /**
