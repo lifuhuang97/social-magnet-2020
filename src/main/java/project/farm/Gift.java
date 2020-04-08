@@ -1,4 +1,4 @@
-// package main.java;
+package project.farm;
 
 import java.util.*;
 
@@ -10,10 +10,10 @@ public class Gift {
 
     /**
      * Constructs a specified Gift object
-     * @param commentId the userId of the user sending the gift
-     * @param content  the userId of the receiver of the gift
-     * @param date the postId generated in response to gift sent 
-     * @param date the cropId sent as the gift
+     * @param userId the userId of the user sending the gift
+     * @param friendId  the userId of the receiver of the gift
+     * @param postId the postId generated in response to gift sent 
+     * @param cropId the cropId sent as the gift
      */
     public Gift(int userId, int friendId, int postId, int cropId) {
         this.userId = userId;
@@ -32,7 +32,7 @@ public class Gift {
 
     /**
      * Sets the userId
-     * @param the userId
+     * @param userId userId
      */
     public void setUserId(int userId) {
         this.userId = userId;
@@ -48,7 +48,7 @@ public class Gift {
 
     /**
      * Sets the friendId
-     * @param the friendId
+     * @param friendId friendId
      */
     public void setFriendId(int friendId) {
         this.friendId = friendId;
@@ -64,7 +64,7 @@ public class Gift {
 
     /**
      * Sets the postId
-     * @param the postId
+     * @param postId postId
      */
     public void setPostId(int postId) {
         this.postId = postId;
@@ -80,7 +80,7 @@ public class Gift {
 
     /**
      * Sets the cropId
-     * @param the cropId
+     * @param cropId cropId
      */
     public void setCropId(int cropId) {
         this.cropId = cropId;
