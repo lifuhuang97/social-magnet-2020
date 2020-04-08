@@ -18,6 +18,7 @@ public class FriendsWallMenu {
     public static String readOptions(UserProfile currentUser, UserProfile viewedUser){
 
         String choice = null;
+        String returnWhere;
         Scanner sc = new Scanner(System.in);
         WallCtrl ctrl = new WallCtrl(viewedUser);
         
@@ -38,7 +39,12 @@ public class FriendsWallMenu {
                 case "T":
                     if (ctrl.isFriends(currentUser, viewedUser)) {
                         if (num > 0) {
-                            displayThread(currentUser, viewedUser, num);
+                            returnWhere = displayThread(currentUser, viewedUser, num);
+                            if (returnWhere.equals("main")) {
+                                return "main";
+                            } else {
+                                break;
+                            }
                         } else {
                             System.out.println("Please indicate the specific Thread ID that you would like to view!");
                         }
@@ -179,7 +185,7 @@ public class FriendsWallMenu {
         }
     }
 
-    public static void displayThread(UserProfile currentUser, UserProfile userToView, int num){
+    public static String displayThread(UserProfile currentUser, UserProfile userToView, int num){
         WallCtrl ctrl = new WallCtrl(userToView);
 
         LinkedHashMap <Post, ArrayList<Comment>> wall = ctrl.retrieveWall();
@@ -190,8 +196,10 @@ public class FriendsWallMenu {
             System.out.println("The thread that you have specified does not exist.");
         } else {
             HashMap<Post, ArrayList<Comment>> thread = PostUtility.retrieveThread(wall, num);
-            ViewThreadMenu.readOptions(currentUser, thread, num);
+            return ViewThreadMenu.readOptions(currentUser, thread, num);
         }
+        
+        return "";
 
     }
 }

@@ -11,8 +11,8 @@ public class NewsFeedMenu {
      * Read user option for news feed menu
      * @param currentUser userProfile object current user
      */
-    public static void readOptions(UserProfile currentUser){
-
+    public static String readOptions(UserProfile currentUser){
+        String returnWhere;
         String choice = null;
         Scanner sc = new Scanner(System.in);
         
@@ -29,10 +29,15 @@ public class NewsFeedMenu {
             switch (choice) {
                 case "M":
                     System.out.println();
-                    return;
+                    return "";
                 case "T":
                     if (num > 0) {
-                        displayThread(currentUser, num);
+                        returnWhere = displayThread(currentUser, num);
+                        if (returnWhere.equals("main")) {
+                            return "main";
+                        } else {
+                            break;
+                        }
                     } else {
                         System.out.println("Please indicate the specific Thread ID that you would like to view!");
                     }
@@ -41,6 +46,7 @@ public class NewsFeedMenu {
                     System.out.println("Invalid choice, please try again.");
             }
         } while (choice != "M");
+        return "";
     }
 
     /**
@@ -98,7 +104,7 @@ public class NewsFeedMenu {
      * @param currentUser userProfile object current user
      * @param num thread number of interest
      */
-    public static void displayThread(UserProfile currentUser, int num){
+    public static String displayThread(UserProfile currentUser, int num){
         NewsFeedCtrl ctrl = new NewsFeedCtrl(currentUser);
 
         LinkedHashMap <Post, ArrayList<Comment>> newsfeed = ctrl.retrieveNewsFeed();
@@ -109,8 +115,10 @@ public class NewsFeedMenu {
             System.out.println("The thread that you have specified does not exist.");
         } else {
             HashMap<Post, ArrayList<Comment>> thread = PostUtility.retrieveThread(newsfeed, num);
-            ViewThreadMenu.readOptions(currentUser, thread, num);
+            return ViewThreadMenu.readOptions(currentUser, thread, num);
         }
+
+        return "";
 
     }
 

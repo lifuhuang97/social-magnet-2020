@@ -12,7 +12,7 @@ public  class ViewThreadMenu {
      * @param thread thread user wants to view
      * @param num counter to begin the outer thread numbering
      */
-    public static void readOptions(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread, int num){
+    public static String readOptions(UserProfile currentUser, HashMap<Post, ArrayList<Comment>> thread, int num){
         String choice = null;
         Scanner sc = new Scanner(System.in);
         
@@ -23,13 +23,13 @@ public  class ViewThreadMenu {
             switch (choice) {
                 case "M":
                     System.out.println();
-                    return;
+                    return "main";
                 case "K":
                     kill(currentUser, thread);
-                    return;
+                    return "";
                 case "R":
                     reply(currentUser, thread);
-                    return;
+                    return "";
                 case "L":
                     like(currentUser, thread);
                     break;
@@ -40,6 +40,7 @@ public  class ViewThreadMenu {
                     System.out.println("Invalid choice, please try again.");
             }
         } while (choice != "M");
+        return "";
     }
 
     /**

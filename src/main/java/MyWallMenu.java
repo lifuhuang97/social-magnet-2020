@@ -13,8 +13,8 @@ public class MyWallMenu {
      * Read user option for my wall menu
      * @param currentUser userProfile object current user
      */
-    public static void readOptions(UserProfile currentUser){
-
+    public static String readOptions(UserProfile currentUser){
+        String returnWhere;
         String choice = null;
         Scanner sc = new Scanner(System.in);
         
@@ -31,10 +31,15 @@ public class MyWallMenu {
             switch(choice){
                 case "M":
                     System.out.println();
-                    return;
+                    return "";
                 case "T":
                     if (num > 0) {
-                        displayThread(currentUser, num);
+                        returnWhere = displayThread(currentUser, num);
+                        if (returnWhere.equals("main")) {
+                            return "main";
+                        } else {
+                            break;
+                        }
                     } else {
                         System.out.println("Please indicate the specific Thread ID that you would like to view!");
                     }
@@ -52,6 +57,7 @@ public class MyWallMenu {
         } while(choice != "M");
 
         sc.close();
+        return "";
     }
 
     /**
@@ -107,7 +113,7 @@ public class MyWallMenu {
      * @param currentUser userProfile object current user
      * @param num thread number to be displayed
      */
-    public static void displayThread(UserProfile currentUser, int num){
+    public static String displayThread(UserProfile currentUser, int num){
         WallCtrl ctrl = new WallCtrl(currentUser);
 
         LinkedHashMap <Post, ArrayList<Comment>> wall = ctrl.retrieveWall();
@@ -118,8 +124,10 @@ public class MyWallMenu {
             System.out.println("The thread that you have specified does not exist.");
         } else {
             HashMap<Post, ArrayList<Comment>> thread = PostUtility.retrieveThread(wall, num);
-            ViewThreadMenu.readOptions(currentUser, thread, num);
+            return ViewThreadMenu.readOptions(currentUser, thread, num);
         } 
+
+        return "";
 
     }
 
