@@ -164,16 +164,30 @@ public class MyWallMenu {
         }
     }
 
+    /** This method accepts gifts posted onto currentUser's wall
+     *  and adds them to the inventory database. 
+     * 
+     *  The associated posts and gift records are also deleted from
+     *  the database.
+     * 
+     * @param currentUser The user accepting the gifts
+     */
     public static void acceptGifts(UserProfile currentUser) {
         WallCtrl ctrl = new WallCtrl(currentUser);
+        int currentUserId = currentUser.getUserId();
 
         if (ctrl.hasGifts()) {
             ArrayList<Gift> gifts = ctrl.acceptGifts();
-            // TODO: proceed to add to farm 
+            
+            for(Gift gift : gifts){
+                int cropId = gift.getCropId();
+                InventoryDAO.updateInventory(currentUserId, cropId, 1);
+            }
+            System.out.println("Gifts collected successfully");
+
         } else {
             System.out.println("No gifts to accept!");
         }
     }
-
     
 }

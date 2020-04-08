@@ -3,14 +3,17 @@
 import java.sql.*;
 import java.util.ArrayList;
 
+
+/** This class contains all the methods that
+ *  accesses the established database "magnet"
+ */
 public class DataUtility {
 
     // Set constants for connection
     public static final String DB_NAME = "magnet";
-    // modify port, username and password to ur db
 
-    // LIFU CHANGE
-    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    // modify port, username and password to ur db
+    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:8889/" + DB_NAME + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
     // Macintosh
     public static final String USERNAME = "root";
@@ -20,7 +23,13 @@ public class DataUtility {
     // public static final String USERNAME = "root";
     // public static final String PASSWORD = "";
 
-    // Multiple update, insert, delete operations
+
+    
+    /** This method helps one to execute more than one insert/update/delete 
+     * statements to change multiple records in the database at once.
+     * 
+     * @param submittedstatements An arraylist of statements to be executed
+     */
     public static void multiQueryUpdate(ArrayList<String> submittedstatements) {
         Connection conn = null;
         try {
@@ -54,7 +63,11 @@ public class DataUtility {
         }
     }
 
-    // Single update, insert, delete operations
+    /** This method helps one to execute a single insert/update/delete statement
+     * to change one record in the database.
+     * 
+     * @param statement The statement to be executed
+     */
     public static void queryUpdate(String statement){
         Connection conn = null;
         try{
@@ -77,8 +90,13 @@ public class DataUtility {
             }
         }
     }
-
-    // Used when you create a new row in the database and require the newly created object id for other insertions
+ 
+    /** This method is used when you need the auto_incremented table ID after 
+     *  inserting a data. Used especially for posts & comments.
+     * 
+     * @param querystatement The statement to be executed
+     * @return the unique ID thats generated from the database.
+     */
     public static int queryUpdateRetrieveID (String querystatement){
         Connection conn = null;
         int queryInfo = 0;
@@ -110,29 +128,14 @@ public class DataUtility {
         return newID;
     }
 
-    // For updating support tables (e.g. POST --> USER_POST)
-    public static void associationUpdate (String table, int var1, int var2){
 
-        Connection conn = null;;
 
-        try {
-            conn = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO " + table + " VALUES (" + var1 + ", " + var2 + " )");
-            stmt.executeUpdate();
-        }catch(SQLException e){
-            System.out.println("Failed to update pairings: " + e.getMessage());
-        }finally{
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Couldn't close connection: " + e.getMessage());
-            }
-        }
-    }
-
-    // Select and return multiple rows
+    /** This method returns a nested ArrayList of query results for a select query
+     *  that returns more than one row.
+     * 
+     * @param statement The statement to be executed
+     * @return An arraylist of all the results, each row stored in one arraylist of strings
+     */
     public static ArrayList<ArrayList<String>> querySelect(String statement) {
 
         // instantiate connection 
@@ -184,7 +187,12 @@ public class DataUtility {
         return allResults;
     }
 
-    // Select and return one row 
+    /** This method returns an ArrayList<String> that contains a singular result.
+     *  This method is only used when the caller is sure that there's only one result.
+     * 
+     * @param statement The statement to be executed
+     * @return The queried row of database data stored in an ArrayList of Strings
+     */
     public static ArrayList<String> singleQuerySelect(String statement) {
 
         // instantiate connection 
