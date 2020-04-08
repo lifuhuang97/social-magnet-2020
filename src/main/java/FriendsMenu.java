@@ -49,6 +49,7 @@ public class FriendsMenu {
     public static void readOptions(UserProfile currentUser) {
  
         String choice = null;
+        String returnWhere;
         Scanner sc = new Scanner(System.in);
  
         FriendsCtrl ctrl = new FriendsCtrl(currentUser);
@@ -71,7 +72,7 @@ public class FriendsMenu {
             } else if (choice.matches("^A[0-9]+$")) {
                 num = Integer.parseInt(choice.substring(1));
                 choice = "A";
-            } else if (choice.matches("^R[0-9]+$")) {
+            } else if (choice.matches("^R[0-6]+$")) {
                 num = Integer.parseInt(choice.substring(1));
                 choice = "R";
             } 
@@ -110,9 +111,13 @@ public class FriendsMenu {
                     break;
  
                 case "V" :
-                    view(currentUser);
-                    break;
- 
+                    returnWhere = view(currentUser);
+                    if (returnWhere.equals("main")) {
+                        return;
+                    } else {
+                        break;
+                    }
+                    
                 default :
                     System.out.println("Please enter one of the choices above");
             }
@@ -214,7 +219,7 @@ public class FriendsMenu {
      * Reads user's option to view a specific friend's wall 
      * @param currentUser UserProfile object of current user
      */
-    public static void view(UserProfile currentUser) {
+    public static String view(UserProfile currentUser) {
         FriendsCtrl ctrl = new FriendsCtrl(currentUser);
 
         Scanner sc = new Scanner(System.in);
@@ -234,9 +239,11 @@ public class FriendsMenu {
             if (retrievedUser == null) {
                 System.out.println("No such user!");
             } else {
-                FriendsWallMenu.readOptions(currentUser, retrievedUser);
+                return FriendsWallMenu.readOptions(currentUser, retrievedUser);
 
             }
         }
+
+        return "";
     }
 }

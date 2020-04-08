@@ -15,7 +15,7 @@ public class FriendsWallMenu {
      * @param currentUser UserProfile object of current user
      * @param viewedUser UserProfile object of user being viewed
      */
-    public static void readOptions(UserProfile currentUser, UserProfile viewedUser){
+    public static String readOptions(UserProfile currentUser, UserProfile viewedUser){
 
         String choice = null;
         Scanner sc = new Scanner(System.in);
@@ -34,7 +34,7 @@ public class FriendsWallMenu {
             switch(choice){
                 case "M":
                     System.out.println();
-                    return;
+                    return "main";
                 case "T":
                     if (ctrl.isFriends(currentUser, viewedUser)) {
                         if (num > 0) {
@@ -60,6 +60,7 @@ public class FriendsWallMenu {
         } while(choice != "M");
 
         sc.close();
+        return "";
     }
 
     /**
