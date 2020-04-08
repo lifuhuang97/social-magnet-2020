@@ -1,8 +1,10 @@
-// package main.java;
+package project.magnet;
 
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.ArrayList;
+import project.utilities.*;
+import project.exception.*;
 
 public  class ViewThreadMenu {
 

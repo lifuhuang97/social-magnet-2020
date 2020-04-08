@@ -1,4 +1,7 @@
-// package main.java;
+package project.magnet;
+
+import project.farm.Rank;
+
 
 public class UserProfile implements Comparable<UserProfile> {
     private int userId;

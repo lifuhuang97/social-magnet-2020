@@ -1,7 +1,8 @@
-// package main.java;
+package project.magnet;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import project.utilities.*;
 
 public class FriendsCtrl {
 

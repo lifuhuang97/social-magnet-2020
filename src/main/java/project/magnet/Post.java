@@ -1,4 +1,5 @@
-// package main.java;
+package project.magnet;
+import project.utilities.*;
 
 public class Post {
     public int postId;

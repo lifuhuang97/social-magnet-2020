@@ -1,4 +1,6 @@
-// package main.java;
+package project.magnet;
+
+import project.utilities.*;
 
 public class Comment {
     private int commentId;

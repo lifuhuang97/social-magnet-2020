@@ -1,6 +1,7 @@
-// package main.java;
+package project.magnet;
 
 import java.util.*;
+import project.utilities.*;
 
 public class ProfileMenu {
 

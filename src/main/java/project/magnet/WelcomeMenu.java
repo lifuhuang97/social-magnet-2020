@@ -1,8 +1,10 @@
-// package main.java;
+package project.magnet;
 
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import project.utilities.*;
+import project.exception.*;
 
 public class WelcomeMenu {
 

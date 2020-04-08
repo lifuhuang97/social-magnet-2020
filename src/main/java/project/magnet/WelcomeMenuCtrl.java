@@ -1,4 +1,7 @@
-// package main.java;
+package project.magnet;
+
+import project.utilities.*;
+import project.exception.*;
 
 public class WelcomeMenuCtrl {
     
