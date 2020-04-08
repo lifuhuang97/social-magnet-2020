@@ -1,4 +1,7 @@
-// package main.java;
+package project.utilities;
+
+import project.farm.Inventory;
+
 import java.util.*;
 
 public class InventoryDAO {

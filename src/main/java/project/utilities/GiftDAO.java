@@ -1,8 +1,14 @@
+package project.utilities;
+
+import project.farm.Gift;
+import project.magnet.UserProfile;
+
+
 import java.util.ArrayList;
 public class GiftDAO {
     /**
      * Retrieve Gift objects for a specific user
-     * @param currentUser UserProfile of the user to check for gifts 
+     * @param userId userId of the user to check for gifts 
      * @return ArrayList containing Gift objects 
      */
     public static ArrayList<Gift> retrieveGiftsByUserId (int userId) {

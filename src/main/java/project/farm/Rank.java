@@ -1,4 +1,4 @@
-// package main.java;
+package project.farm;
 
 
 public class Rank {

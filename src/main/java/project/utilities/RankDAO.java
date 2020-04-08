@@ -1,4 +1,7 @@
-// package main.java;
+package project.utilities;
+
+import project.farm.Rank;
+
 import java.util.*;
 
 public class RankDAO {
