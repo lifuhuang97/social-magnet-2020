@@ -77,9 +77,9 @@ public class GiftDAO {
         if(result.isEmpty()){
             return false;
         }else{
-
-            SMDate sentDateTime = new SMDate(result.get(0).get(2));
-
+            String postId = result.get(0).get(2);
+            Post post = PostDAO.retrievePostByPostId(Integer.parseInt(postId));
+            SMDate sentDateTime = post.getDateTime();
             return SMDate.checkIfSentWithinOneDay(sentDateTime);
         }
 

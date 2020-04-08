@@ -145,8 +145,6 @@ public class SMDate extends Date{
         Date currentTime = new Date();
 
 
-
-
         try{
             plantedDate = defaultDateFormat.parse(date.toString());
 

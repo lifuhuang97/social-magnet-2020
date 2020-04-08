@@ -5,15 +5,30 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.lang.Math;
-
+/**
+ * This is the central control of all displays after CityFarmerMenu
+ */
 public class CityFarmerCtrl {
 
     private UserProfile user;
 
+    /** Returns a CityFarmerCtrl object that can be called to display farm sub screens for
+     * the specified user
+     * 
+     * @param user initialize an instance of CityFarmerCtrl with given user
+     */
     public CityFarmerCtrl(UserProfile user){
         this.user = user;
     }
 
+    /** Displays farmland and its associated options
+     * <p>
+     * This method returns when M or F is called, which will determine the screen that the
+     * user sees next. If M, 'main' is returned so that CityFarmerMenu will know to return
+     * and hence the user can see the Social Magnet Main Menu straightaway.
+     * 
+     * @return 'main' or 'farm' or empty string
+     */
     public String readFarmlandOptions(){
 
         HashMap<String,HashMap<Integer,Integer>> status;
@@ -90,6 +105,14 @@ public class CityFarmerCtrl {
         
     }
 
+    /** Displays the farm's store and its associated options for purchase.
+     * <p>
+     * This method returns when M or F is called, which will determine the screen that the
+     * user sees next. If M, 'main' is returned so that CityFarmerMenu will know to return
+     * and hence the user can see the Social Magnet Main Menu straightaway.
+     * 
+     * @return 'main' or 'farm' or empty string
+     */
     public String readFarmStoreOptions(){
 
         String choice;
@@ -188,16 +211,24 @@ public class CityFarmerCtrl {
         return "";
     }
 
+    /** Displays the user's inventory for view. Only M or F can be called.
+     * <p>
+     * This method returns when M or F is called, which will determine the screen that the
+     * user sees next. If M, 'main' is returned so that CityFarmerMenu will know to return
+     * and hence the user can see the Social Magnet Main Menu straightaway.
+     * 
+     * @return 'main' or 'farm' or empty string
+     */
     public String readFarmInventoryOptions(){
 
-        ArrayList<Inventory> items = retrieveInventory();
+        ArrayList<Inventory> items = InventoryDAO.retrieveByUserID(user.getUserId());
         Scanner sc= new Scanner(System.in);
 
         while (true) {
             CityFarmerMenu.displayFarmHeader("case3", user);
             for (int i = 0; i < items.size(); i ++) {
                 System.out.println( "" + (i+1) + ". " + items.get(i).getQuantity() + " Bags of " + 
-                retrieveCropNameByCropID(items.get(i).getCropID()) );
+                CropDAO.retrieveName(items.get(i).getCropID()) );
             }
             System.out.print("[M]ain | City [F]armers | ");
             System.out.print("select choice > ");
@@ -214,6 +245,17 @@ public class CityFarmerCtrl {
         }
     }
 
+    /** Displays the user's friends menu. User can input the index that his/her friend is
+     * displayed at to access their farm.
+     * <p>
+     * This method returns when M or F is called, which will determine the screen that the
+     * user sees next. If M, 'main' is returned so that CityFarmerMenu will know to return
+     * and hence the user can see the Social Magnet Main Menu straightaway.
+     * 
+     * @return 'main', 'farm', empty string or a friend's username. If it returns a friend's
+     * username, it triggers the CityFarmerMenu to pass this friend's username to the
+     * method below, readFriendFarmMenuOptions, to display his/her farm.
+     */
     public String readFriendMenuOptions(){
 
         Scanner sc = new Scanner(System.in);
@@ -269,6 +311,19 @@ public class CityFarmerCtrl {
         
     }
 
+    /**Displays a friend's farm to the current user. The user can opt to steal
+     * from any fully grown plots and gain XP and Gold if successful.
+     * 
+     * @param friendUsername This method takes in an user's username and displays
+     * his/her farm to the currentUser with a different interface as compared to
+     * viewing his/her own farm.
+     * 
+     * @return an ArrayList of Strings with index 0 being 'main', 'farm' or '' to
+     * direct CityFarmerMenu accordingly, index 1 and index 2 being the gained XP
+     * and Gold if the user successfully stole any yield from his/her friend. The
+     * user's profile will be updated after the return and will be displayed
+     * immediately.
+     */
     public ArrayList<String> readFriendFarmMenuOptions(String friendUsername){
 
         ArrayList<String> returnWhere = new ArrayList<String>();
@@ -320,6 +375,17 @@ public class CityFarmerCtrl {
 
     }
 
+    /** Displays the farm's gift options. After choosing an item, the user will be prompted
+     * to input someone's username. The user can input multiple usernames as long as they 
+     * are comma separated with no space. These usernames must be his/her friend and the
+     * user cannot send to a friend a gift if one has already been sent in the past 24 hours.
+     * <p>
+     * This method returns when M or F is called, which will determine the screen that the
+     * user sees next. If M, 'main' is returned so that CityFarmerMenu will know to return
+     * and hence the user can see the Social Magnet Main Menu straightaway.
+     * 
+     * @return 'main' or 'farm' or empty string
+     */
     public String readGiftOptions(){
 
         String returnWhere = "";
@@ -422,14 +488,19 @@ public class CityFarmerCtrl {
                     System.out.println("Invalid choice!");
                     break;
                 }
-                System.out.println();
             }while(choice.charAt(0) != 'R');
         
         return returnWhere;
     }
 
-
-    public void processGiftSending(UserProfile friend, int giftChoice){
+    /** This is a support method in CityFarmerCtrl that helps to process a gift sending
+     *  process for the user. This method posts a gift post on the friend's wall and
+     *  updates the Post, Gift database accordingly by calling the associated DAOs & Ctrl.
+     * 
+     * @param friend Selected friend to receive the gift
+     * @param giftChoice The ID of the chosen gift
+     */
+    private void processGiftSending(UserProfile friend, int giftChoice){
 
         // giftchoice 1 is papaya, 2 is pumpkin, 3 is sunfloewr, 4 is watermelon (same as cropID)
 
@@ -448,17 +519,33 @@ public class CityFarmerCtrl {
 
     }
 
-
-    public void displayFriendFarmDetails(UserProfile friend){
+    /** This is a support method in CityFarmerCtrl that prints a friend's name, title and gold
+     *  after the user chooses to view his/her friend's farm.
+     * 
+     * @param friend
+     */
+    private void displayFriendFarmDetails(UserProfile friend){
 
         System.out.println("Name: " + friend.getFullName());
         System.out.println("Title: " + friend.getRank().getRankName());
         System.out.println("Gold: " + friend.getGold());
         
-        
     }
 
-    public HashMap<String,HashMap<Integer,Integer>> displayPlots(UserProfile user, int version){
+    /** This is a support method that helps to print the full farm of an user. It has two versions
+     *  which can be specified by the display methods above.
+     * <p>
+     * This method returns a nested HashMap that will help in validation in the display methods. For
+     * example, if a plot is wilted, the user can only clear it. If the plot is empty, the user can
+     * only plant on it. If the plot is growing, nothing can be done. If the plot is grown, users can
+     * harvest or steal from it.
+     * 
+     * @param user The selected user's profile
+     * @param version 1 for self, 2 for friend
+     * @return A nested HashMap of the categorization of plots in their various phases
+     * (empty / growing / grown / wilted) to help in validation for the farmland options.
+     */
+    private HashMap<String,HashMap<Integer,Integer>> displayPlots(UserProfile user, int version){
 
         HashMap<String,HashMap<Integer,Integer>> result = new HashMap<String,HashMap<Integer,Integer>>();
         HashMap<Integer,Integer> emptyPlotList = new HashMap<Integer,Integer>();
@@ -519,20 +606,11 @@ public class CityFarmerCtrl {
                 System.out.println(index + ". " + PlotDAO.printPlotDetails(plot));
             }
         }
-
-        return result;
-        
+        return result;        
     }
 
-    public String retrieveCropNameByCropID (int cropID) {
-        return CropDAO.retrieveName(cropID);
-    }
 
-    public ArrayList<Inventory> retrieveInventory () {
-        return InventoryDAO.retrieveByUserID(user.getUserId());
-    }
-
-    public UserProfile registerPurchase (Crop crop, int quantity, UserProfile userprofile) {
+    private UserProfile registerPurchase (Crop crop, int quantity, UserProfile userprofile) {
         int cost = crop.getCost()*quantity*(-1);
         int newGold = userprofile.getGold() + cost;
 
@@ -547,7 +625,7 @@ public class CityFarmerCtrl {
         }
     }
 
-    public String plantPlot(int plotId, int choiceId){
+    private String plantPlot(int plotId, int choiceId){
 
         Scanner sc = new Scanner(System.in);
 
@@ -631,7 +709,7 @@ public class CityFarmerCtrl {
         return "";
     }
 
-    public void clearPlot(int plotId, int choiceId){
+    private void clearPlot(int plotId, int choiceId){
         // reset plot's cropId and planted time
         Plot selectedPlot = PlotDAO.getPlotById(plotId);
 
@@ -641,7 +719,7 @@ public class CityFarmerCtrl {
 
     }
 
-    public UserProfile harvestPlot(int plotId, UserProfile user){
+    private UserProfile harvestPlot(int plotId, UserProfile user){
         
         Plot selectedPlot = PlotDAO.getPlotById(plotId);
         int curUserId = user.getUserId();
@@ -691,7 +769,7 @@ public class CityFarmerCtrl {
      * @param stealable
      */
 
-    public ArrayList<String> processSteal(UserProfile friend, HashMap<Integer,Integer> stealable){
+    private ArrayList<String> processSteal(UserProfile friend, HashMap<Integer,Integer> stealable){
 
         ArrayList<String> result = new ArrayList<String>();
         result.add("");
